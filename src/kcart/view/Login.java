@@ -2,9 +2,6 @@ package kcart.view;
 
 public class Login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
     public Login() {
         initComponents();
     }
@@ -18,21 +15,112 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        lblPassword = new javax.swing.JLabel();
+        lblUsername = new javax.swing.JLabel();
+        btnLogin = new javax.swing.JButton();
+        txtPassword = new javax.swing.JPasswordField();
+        lblSubheader = new javax.swing.JLabel();
+        lblHeader = new javax.swing.JLabel();
+        txtUsername = new javax.swing.JPasswordField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+
+        lblPassword.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblPassword.setForeground(new java.awt.Color(255, 255, 255));
+        lblPassword.setText("Password:");
+
+        lblUsername.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblUsername.setForeground(new java.awt.Color(255, 255, 255));
+        lblUsername.setText("Username:");
+
+        btnLogin.setBackground(new java.awt.Color(255, 255, 255));
+        btnLogin.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(0, 0, 0));
+        btnLogin.setText("Log In");
+        btnLogin.setBorder(null);
+        btnLogin.setFocusable(false);
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
+        txtPassword.setBackground(new java.awt.Color(255, 255, 255));
+        txtPassword.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtPassword.setForeground(java.awt.SystemColor.activeCaptionText);
+
+        lblSubheader.setFont(new java.awt.Font("Serif", 2, 18)); // NOI18N
+        lblSubheader.setForeground(new java.awt.Color(255, 255, 255));
+        lblSubheader.setText("Keeping Cars and Rentals on Track");
+
+        lblHeader.setFont(new java.awt.Font("Serif", 1, 36)); // NOI18N
+        lblHeader.setForeground(new java.awt.Color(255, 255, 255));
+        lblHeader.setText("Welcome to KCaRT");
+
+        txtUsername.setBackground(new java.awt.Color(255, 255, 255));
+        txtUsername.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtUsername.setForeground(java.awt.SystemColor.activeCaptionText);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(218, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblUsername)
+                    .addComponent(lblPassword))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(lblSubheader))
+                    .addComponent(lblHeader)
+                    .addComponent(txtUsername))
+                .addContainerGap(295, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(123, Short.MAX_VALUE)
+                .addComponent(lblHeader)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSubheader)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUsername)
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPassword)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(197, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 484, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -60,6 +148,7 @@ public class Login extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -67,10 +156,16 @@ public class Login extends javax.swing.JFrame {
                 new Login().setVisible(true);
             }
         });
-        
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblHeader;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblSubheader;
+    private javax.swing.JLabel lblUsername;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JPasswordField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
