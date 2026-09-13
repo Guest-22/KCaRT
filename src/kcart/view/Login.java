@@ -28,11 +28,11 @@ public class Login extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
-        lblPassword.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblPassword.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblPassword.setForeground(new java.awt.Color(255, 255, 255));
         lblPassword.setText("Password:");
 
-        lblUsername.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblUsername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblUsername.setForeground(new java.awt.Color(255, 255, 255));
         lblUsername.setText("Username:");
 
@@ -69,7 +69,7 @@ public class Login extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(218, Short.MAX_VALUE)
+                .addContainerGap(225, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblUsername)
                     .addComponent(lblPassword))
@@ -82,7 +82,7 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(lblSubheader))
                     .addComponent(lblHeader)
                     .addComponent(txtUsername))
-                .addContainerGap(295, Short.MAX_VALUE))
+                .addContainerGap(302, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

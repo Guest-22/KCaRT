@@ -320,7 +320,7 @@ public class CustomerMenu extends javax.swing.JFrame {
         pnlAction.setBackground(new java.awt.Color(255, 255, 255));
 
         btnAdd.setBackground(new java.awt.Color(0, 0, 0));
-        btnAdd.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnAdd.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Add");
         btnAdd.setFocusable(false);
@@ -331,7 +331,7 @@ public class CustomerMenu extends javax.swing.JFrame {
         });
 
         btnEdit.setBackground(new java.awt.Color(0, 0, 0));
-        btnEdit.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnEdit.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("Edit");
         btnEdit.setFocusable(false);

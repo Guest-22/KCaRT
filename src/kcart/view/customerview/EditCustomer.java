@@ -15,21 +15,408 @@ public class EditCustomer extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlMain = new javax.swing.JPanel();
+        pnlContent1 = new javax.swing.JPanel();
+        lblMiddleName = new javax.swing.JLabel();
+        lblLastName = new javax.swing.JLabel();
+        lblContact = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
+        txtFirstName = new javax.swing.JPasswordField();
+        txtMiddleName = new javax.swing.JPasswordField();
+        txtLastName = new javax.swing.JPasswordField();
+        txtContact = new javax.swing.JPasswordField();
+        txtEmail = new javax.swing.JPasswordField();
+        cmbStatus = new javax.swing.JComboBox<>();
+        lblHeader = new javax.swing.JLabel();
+        lblFirstName = new javax.swing.JLabel();
+        scrlAddress = new javax.swing.JScrollPane();
+        txtaAddress = new javax.swing.JTextArea();
+        lblHeader18 = new javax.swing.JLabel();
+        pnlContent2 = new javax.swing.JPanel();
+        lblSecondaryID = new javax.swing.JLabel();
+        btnImportPhoto = new javax.swing.JButton();
+        btnImportDriverLicense = new javax.swing.JButton();
+        lblPhoto = new javax.swing.JLabel();
+        lblSecondaryIDImage = new javax.swing.JLabel();
+        lblDriverLicenseImage = new javax.swing.JLabel();
+        lblPhotoImage = new javax.swing.JLabel();
+        btnImportSecondaryID = new javax.swing.JButton();
+        lblDriverLicense = new javax.swing.JLabel();
+        pnlContent3 = new javax.swing.JPanel();
+        btnAdd = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1000, 600));
+
+        pnlMain.setBackground(new java.awt.Color(0, 0, 0));
+
+        pnlContent1.setBackground(new java.awt.Color(0, 0, 0));
+
+        lblMiddleName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblMiddleName.setForeground(new java.awt.Color(255, 255, 255));
+        lblMiddleName.setText("Middle Name:");
+        lblMiddleName.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblLastName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblLastName.setForeground(new java.awt.Color(255, 255, 255));
+        lblLastName.setText("Last Name:");
+        lblLastName.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblContact.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblContact.setForeground(new java.awt.Color(255, 255, 255));
+        lblContact.setText("Contact:");
+        lblContact.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblEmail.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblEmail.setForeground(new java.awt.Color(255, 255, 255));
+        lblEmail.setText("Email:");
+        lblEmail.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblStatus.setForeground(new java.awt.Color(255, 255, 255));
+        lblStatus.setText("Status:");
+        lblStatus.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        txtFirstName.setBackground(new java.awt.Color(255, 255, 255));
+        txtFirstName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtFirstName.setForeground(java.awt.SystemColor.activeCaptionText);
+
+        txtMiddleName.setBackground(new java.awt.Color(255, 255, 255));
+        txtMiddleName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtMiddleName.setForeground(java.awt.SystemColor.activeCaptionText);
+
+        txtLastName.setBackground(new java.awt.Color(255, 255, 255));
+        txtLastName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtLastName.setForeground(java.awt.SystemColor.activeCaptionText);
+
+        txtContact.setBackground(new java.awt.Color(255, 255, 255));
+        txtContact.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtContact.setForeground(java.awt.SystemColor.activeCaptionText);
+
+        txtEmail.setBackground(new java.awt.Color(255, 255, 255));
+        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtEmail.setForeground(java.awt.SystemColor.activeCaptionText);
+
+        cmbStatus.setBackground(new java.awt.Color(255, 255, 255));
+        cmbStatus.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cmbStatus.setForeground(new java.awt.Color(0, 0, 0));
+        cmbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
+
+        lblHeader.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        lblHeader.setForeground(new java.awt.Color(255, 255, 255));
+        lblHeader.setText("Add Customer");
+        lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblFirstName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblFirstName.setForeground(new java.awt.Color(255, 255, 255));
+        lblFirstName.setText("First Name:");
+        lblFirstName.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        txtaAddress.setBackground(new java.awt.Color(255, 255, 255));
+        txtaAddress.setColumns(20);
+        txtaAddress.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtaAddress.setForeground(new java.awt.Color(0, 0, 0));
+        txtaAddress.setRows(5);
+        scrlAddress.setViewportView(txtaAddress);
+
+        lblHeader18.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblHeader18.setForeground(new java.awt.Color(255, 255, 255));
+        lblHeader18.setText("Address:");
+        lblHeader18.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
+        pnlContent1.setLayout(pnlContent1Layout);
+        pnlContent1Layout.setHorizontalGroup(
+            pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblHeader)
+                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                        .addComponent(lblHeader18, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(scrlAddress))
+                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addComponent(lblLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtLastName))
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(lblFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblMiddleName))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtFirstName)
+                                    .addComponent(txtMiddleName))))
+                        .addGap(26, 26, 26)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblContact)
+                            .addComponent(lblEmail)
+                            .addComponent(lblStatus))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtContact)
+                            .addComponent(txtEmail)
+                            .addComponent(cmbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(34, 34, 34))
+        );
+        pnlContent1Layout.setVerticalGroup(
+            pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContent1Layout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblContact)
+                            .addComponent(txtContact))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblEmail)
+                            .addComponent(txtEmail))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblStatus)
+                            .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblMiddleName)
+                            .addComponent(txtMiddleName))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblLastName)
+                            .addComponent(txtLastName))))
+                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(scrlAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblHeader18)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+
+        pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
+
+        lblSecondaryID.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblSecondaryID.setForeground(new java.awt.Color(255, 255, 255));
+        lblSecondaryID.setText("Secondary ID:");
+        lblSecondaryID.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        btnImportPhoto.setBackground(new java.awt.Color(255, 255, 255));
+        btnImportPhoto.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        btnImportPhoto.setForeground(new java.awt.Color(0, 0, 0));
+        btnImportPhoto.setText("Import");
+        btnImportPhoto.setFocusable(false);
+        btnImportPhoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportPhotoActionPerformed(evt);
+            }
+        });
+
+        btnImportDriverLicense.setBackground(new java.awt.Color(255, 255, 255));
+        btnImportDriverLicense.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        btnImportDriverLicense.setForeground(new java.awt.Color(0, 0, 0));
+        btnImportDriverLicense.setText("Import");
+        btnImportDriverLicense.setFocusable(false);
+        btnImportDriverLicense.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportDriverLicenseActionPerformed(evt);
+            }
+        });
+
+        lblPhoto.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblPhoto.setForeground(new java.awt.Color(255, 255, 255));
+        lblPhoto.setText("Photo:");
+        lblPhoto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblSecondaryIDImage.setBackground(new java.awt.Color(255, 255, 255));
+        lblSecondaryIDImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblSecondaryIDImage.setForeground(new java.awt.Color(255, 255, 255));
+        lblSecondaryIDImage.setText("<insert photo>");
+
+        lblDriverLicenseImage.setBackground(new java.awt.Color(255, 255, 255));
+        lblDriverLicenseImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblDriverLicenseImage.setForeground(new java.awt.Color(255, 255, 255));
+        lblDriverLicenseImage.setText("<insert photo>");
+
+        lblPhotoImage.setBackground(new java.awt.Color(255, 255, 255));
+        lblPhotoImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblPhotoImage.setForeground(new java.awt.Color(255, 255, 255));
+        lblPhotoImage.setText("<insert photo>");
+
+        btnImportSecondaryID.setBackground(new java.awt.Color(255, 255, 255));
+        btnImportSecondaryID.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        btnImportSecondaryID.setForeground(new java.awt.Color(0, 0, 0));
+        btnImportSecondaryID.setText("Import");
+        btnImportSecondaryID.setFocusable(false);
+        btnImportSecondaryID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportSecondaryIDActionPerformed(evt);
+            }
+        });
+
+        lblDriverLicense.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblDriverLicense.setForeground(new java.awt.Color(255, 255, 255));
+        lblDriverLicense.setText("Driver Lincense:");
+        lblDriverLicense.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        javax.swing.GroupLayout pnlContent2Layout = new javax.swing.GroupLayout(pnlContent2);
+        pnlContent2.setLayout(pnlContent2Layout);
+        pnlContent2Layout.setHorizontalGroup(
+            pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent2Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblDriverLicense)
+                    .addComponent(btnImportDriverLicense, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addComponent(lblDriverLicenseImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblSecondaryID, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnImportSecondaryID, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSecondaryIDImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblPhoto)
+                    .addComponent(btnImportPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+        pnlContent2Layout.setVerticalGroup(
+            pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnlContent2Layout.createSequentialGroup()
+                        .addComponent(lblPhoto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnImportPhoto))
+                    .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlContent2Layout.createSequentialGroup()
+                        .addComponent(lblDriverLicense)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnImportDriverLicense))
+                    .addComponent(lblDriverLicenseImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlContent2Layout.createSequentialGroup()
+                        .addComponent(lblSecondaryID)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnImportSecondaryID))
+                    .addComponent(lblSecondaryIDImage, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
+
+        pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
+
+        btnAdd.setBackground(new java.awt.Color(255, 255, 255));
+        btnAdd.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(0, 0, 0));
+        btnAdd.setText("Add");
+        btnAdd.setBorder(null);
+        btnAdd.setFocusable(false);
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnCancel.setBackground(new java.awt.Color(255, 255, 255));
+        btnCancel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnCancel.setForeground(new java.awt.Color(0, 0, 0));
+        btnCancel.setText("Cancel");
+        btnCancel.setBorder(null);
+        btnCancel.setFocusable(false);
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlContent3Layout = new javax.swing.GroupLayout(pnlContent3);
+        pnlContent3.setLayout(pnlContent3Layout);
+        pnlContent3Layout.setHorizontalGroup(
+            pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent3Layout.createSequentialGroup()
+                .addGap(141, 141, 141)
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlContent3Layout.setVerticalGroup(
+            pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent3Layout.createSequentialGroup()
+                .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 138, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
+        pnlMain.setLayout(pnlMainLayout);
+        pnlMainLayout.setHorizontalGroup(
+            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlContent2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlContent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        pnlMainLayout.setVerticalGroup(
+            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
+                .addComponent(pnlContent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlContent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlContent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnImportPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportPhotoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnImportPhotoActionPerformed
+
+    private void btnImportDriverLicenseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportDriverLicenseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnImportDriverLicenseActionPerformed
+
+    private void btnImportSecondaryIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportSecondaryIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnImportSecondaryIDActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -67,5 +454,36 @@ public class EditCustomer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnImportDriverLicense;
+    private javax.swing.JButton btnImportPhoto;
+    private javax.swing.JButton btnImportSecondaryID;
+    private javax.swing.JComboBox<String> cmbStatus;
+    private javax.swing.JLabel lblContact;
+    private javax.swing.JLabel lblDriverLicense;
+    private javax.swing.JLabel lblDriverLicenseImage;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblFirstName;
+    private javax.swing.JLabel lblHeader;
+    private javax.swing.JLabel lblHeader18;
+    private javax.swing.JLabel lblLastName;
+    private javax.swing.JLabel lblMiddleName;
+    private javax.swing.JLabel lblPhoto;
+    private javax.swing.JLabel lblPhotoImage;
+    private javax.swing.JLabel lblSecondaryID;
+    private javax.swing.JLabel lblSecondaryIDImage;
+    private javax.swing.JLabel lblStatus;
+    private javax.swing.JPanel pnlContent1;
+    private javax.swing.JPanel pnlContent2;
+    private javax.swing.JPanel pnlContent3;
+    private javax.swing.JPanel pnlMain;
+    private javax.swing.JScrollPane scrlAddress;
+    private javax.swing.JPasswordField txtContact;
+    private javax.swing.JPasswordField txtEmail;
+    private javax.swing.JPasswordField txtFirstName;
+    private javax.swing.JPasswordField txtLastName;
+    private javax.swing.JPasswordField txtMiddleName;
+    private javax.swing.JTextArea txtaAddress;
     // End of variables declaration//GEN-END:variables
 }
