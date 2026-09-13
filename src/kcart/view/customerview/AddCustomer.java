@@ -22,17 +22,17 @@ public class AddCustomer extends javax.swing.JFrame {
         lblContact = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
         lblStatus = new javax.swing.JLabel();
-        txtFirstName = new javax.swing.JPasswordField();
-        txtMiddleName = new javax.swing.JPasswordField();
-        txtLastName = new javax.swing.JPasswordField();
-        txtContact = new javax.swing.JPasswordField();
-        txtEmail = new javax.swing.JPasswordField();
         cmbStatus = new javax.swing.JComboBox<>();
         lblHeader = new javax.swing.JLabel();
         lblFirstName = new javax.swing.JLabel();
         scrlAddress = new javax.swing.JScrollPane();
         txtaAddress = new javax.swing.JTextArea();
         lblHeader18 = new javax.swing.JLabel();
+        txtLastName = new javax.swing.JTextField();
+        txtMiddleName = new javax.swing.JTextField();
+        txtFirstName = new javax.swing.JTextField();
+        txtContact = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         pnlContent2 = new javax.swing.JPanel();
         lblSecondaryID = new javax.swing.JLabel();
         btnImportPhoto = new javax.swing.JButton();
@@ -51,6 +51,7 @@ public class AddCustomer extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
+        pnlMain.setPreferredSize(new java.awt.Dimension(1000, 600));
 
         pnlContent1.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -79,26 +80,6 @@ public class AddCustomer extends javax.swing.JFrame {
         lblStatus.setText("Status:");
         lblStatus.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtFirstName.setBackground(new java.awt.Color(255, 255, 255));
-        txtFirstName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        txtFirstName.setForeground(java.awt.SystemColor.activeCaptionText);
-
-        txtMiddleName.setBackground(new java.awt.Color(255, 255, 255));
-        txtMiddleName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        txtMiddleName.setForeground(java.awt.SystemColor.activeCaptionText);
-
-        txtLastName.setBackground(new java.awt.Color(255, 255, 255));
-        txtLastName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        txtLastName.setForeground(java.awt.SystemColor.activeCaptionText);
-
-        txtContact.setBackground(new java.awt.Color(255, 255, 255));
-        txtContact.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        txtContact.setForeground(java.awt.SystemColor.activeCaptionText);
-
-        txtEmail.setBackground(new java.awt.Color(255, 255, 255));
-        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        txtEmail.setForeground(java.awt.SystemColor.activeCaptionText);
-
         cmbStatus.setBackground(new java.awt.Color(255, 255, 255));
         cmbStatus.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cmbStatus.setForeground(new java.awt.Color(0, 0, 0));
@@ -126,6 +107,26 @@ public class AddCustomer extends javax.swing.JFrame {
         lblHeader18.setText("Address:");
         lblHeader18.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        txtLastName.setBackground(new java.awt.Color(255, 255, 255));
+        txtLastName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtLastName.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtMiddleName.setBackground(new java.awt.Color(255, 255, 255));
+        txtMiddleName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMiddleName.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtFirstName.setBackground(new java.awt.Color(255, 255, 255));
+        txtFirstName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtFirstName.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtContact.setBackground(new java.awt.Color(255, 255, 255));
+        txtContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtContact.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtEmail.setBackground(new java.awt.Color(255, 255, 255));
+        txtEmail.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtEmail.setForeground(new java.awt.Color(0, 0, 0));
+
         javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
         pnlContent1.setLayout(pnlContent1Layout);
         pnlContent1Layout.setHorizontalGroup(
@@ -133,11 +134,11 @@ public class AddCustomer extends javax.swing.JFrame {
             .addGroup(pnlContent1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblHeader)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addComponent(lblHeader18, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(scrlAddress))
+                    .addComponent(lblHeader)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent1Layout.createSequentialGroup()
@@ -152,59 +153,61 @@ public class AddCustomer extends javax.swing.JFrame {
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtFirstName)
                                     .addComponent(txtMiddleName))))
-                        .addGap(26, 26, 26)
+                        .addGap(29, 29, 29)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblContact)
                             .addComponent(lblEmail)
                             .addComponent(lblStatus))
                         .addGap(18, 18, 18)
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtContact)
-                            .addComponent(txtEmail)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtContact, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cmbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(34, 34, 34))
+                .addGap(33, 33, 33))
         );
         pnlContent1Layout.setVerticalGroup(
             pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContent1Layout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblContact)
-                            .addComponent(txtContact))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblEmail)
-                            .addComponent(txtEmail))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(9, 9, 9)
+                        .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblStatus)
-                            .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(6, 6, 6)
+                                .addComponent(lblMiddleName)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblLastName))
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblContact)
+                                    .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblEmail)
+                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblStatus)
+                                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(80, 80, 80)
+                        .addComponent(txtMiddleName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblMiddleName)
-                            .addComponent(txtMiddleName))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblLastName)
-                            .addComponent(txtLastName))))
+                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGap(3, 3, 3)
-                        .addComponent(scrlAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE)
-                        .addContainerGap())
+                        .addComponent(scrlAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
                     .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblHeader18)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
@@ -295,7 +298,7 @@ public class AddCustomer extends javax.swing.JFrame {
                     .addComponent(btnImportPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         pnlContent2Layout.setVerticalGroup(
             pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,7 +366,7 @@ public class AddCustomer extends javax.swing.JFrame {
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 138, Short.MAX_VALUE))
+                .addGap(0, 137, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -479,11 +482,11 @@ public class AddCustomer extends javax.swing.JFrame {
     private javax.swing.JPanel pnlContent3;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JScrollPane scrlAddress;
-    private javax.swing.JPasswordField txtContact;
-    private javax.swing.JPasswordField txtEmail;
-    private javax.swing.JPasswordField txtFirstName;
-    private javax.swing.JPasswordField txtLastName;
-    private javax.swing.JPasswordField txtMiddleName;
+    private javax.swing.JTextField txtContact;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtLastName;
+    private javax.swing.JTextField txtMiddleName;
     private javax.swing.JTextArea txtaAddress;
     // End of variables declaration//GEN-END:variables
 }

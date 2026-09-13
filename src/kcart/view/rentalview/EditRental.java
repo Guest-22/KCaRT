@@ -1,11 +1,11 @@
 package kcart.view.rentalview;
 
-public class ProcessPickup extends javax.swing.JFrame {
+public class EditRental extends javax.swing.JFrame {
 
     /**
-     * Creates new form ProcessPickup
+     * Creates new form EditRental
      */
-    public ProcessPickup() {
+    public EditRental() {
         initComponents();
     }
 
@@ -40,17 +40,17 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblFullName = new javax.swing.JLabel();
         lblCustomerDetails = new javax.swing.JLabel();
         lblCustomerID = new javax.swing.JLabel();
-        txtPlateNo5 = new javax.swing.JTextField();
-        txtPlateNo6 = new javax.swing.JTextField();
-        txtPlateNo9 = new javax.swing.JTextField();
+        txtCustomerID = new javax.swing.JTextField();
+        txtFullName = new javax.swing.JTextField();
+        txtContact = new javax.swing.JTextField();
         pnlContent3 = new javax.swing.JPanel();
-        lblPlateNo4 = new javax.swing.JLabel();
-        lblPlateNo5 = new javax.swing.JLabel();
-        lblBrand3 = new javax.swing.JLabel();
-        lblModel3 = new javax.swing.JLabel();
-        lblBrand4 = new javax.swing.JLabel();
-        lblBrand5 = new javax.swing.JLabel();
-        txtPlateNo10 = new javax.swing.JTextField();
+        lblCarID = new javax.swing.JLabel();
+        lblCarDetails = new javax.swing.JLabel();
+        lblBrand = new javax.swing.JLabel();
+        lblYear = new javax.swing.JLabel();
+        lblModel = new javax.swing.JLabel();
+        lblDailyRate = new javax.swing.JLabel();
+        txtCarID = new javax.swing.JTextField();
         txtBrand = new javax.swing.JTextField();
         txtYear = new javax.swing.JTextField();
         txtModel = new javax.swing.JTextField();
@@ -76,7 +76,7 @@ public class ProcessPickup extends javax.swing.JFrame {
 
         lblHeader.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(255, 255, 255));
-        lblHeader.setText("Process Pickup");
+        lblHeader.setText("Edit Rental");
         lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblRentalID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -129,31 +129,27 @@ public class ProcessPickup extends javax.swing.JFrame {
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addComponent(lblHeader)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContent1Layout.createSequentialGroup()
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblStartDate)
+                            .addComponent(lblRentalDetails)
+                            .addComponent(lblRentalID)
+                            .addComponent(lblNoOfDays))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent1Layout.createSequentialGroup()
-                                .addComponent(lblRentalID)
-                                .addGap(43, 43, 43)
-                                .addComponent(txtRentalID))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContent1Layout.createSequentialGroup()
-                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblRentalDetails)
-                                    .addGroup(pnlContent1Layout.createSequentialGroup()
-                                        .addComponent(lblNoOfDays)
-                                        .addGap(27, 27, 27)
-                                        .addComponent(txtNoOfDays))
-                                    .addGroup(pnlContent1Layout.createSequentialGroup()
-                                        .addComponent(lblStartDate)
-                                        .addGap(36, 36, 36)
-                                        .addComponent(txtStartDate)))
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                                    .addComponent(txtNoOfDays))
                                 .addGap(18, 18, 18)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(lblEstimatedCost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(lblReturnDate))
-                                .addGap(18, 18, 18)
-                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtEstimatedCost)
-                                    .addComponent(txtReturnDate))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtReturnDate, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                                    .addComponent(txtEstimatedCost)))
+                            .addComponent(txtRentalID))
                         .addGap(41, 41, 41))))
         );
         pnlContent1Layout.setVerticalGroup(
@@ -232,7 +228,7 @@ public class ProcessPickup extends javax.swing.JFrame {
                 .addGroup(pnlContent4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 164, Short.MAX_VALUE))
+                .addGap(0, 119, Short.MAX_VALUE))
         );
 
         pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
@@ -257,17 +253,17 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblCustomerID.setText("Customer ID:");
         lblCustomerID.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtPlateNo5.setBackground(new java.awt.Color(255, 255, 255));
-        txtPlateNo5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtPlateNo5.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerID.setBackground(new java.awt.Color(255, 255, 255));
+        txtCustomerID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerID.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtPlateNo6.setBackground(new java.awt.Color(255, 255, 255));
-        txtPlateNo6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtPlateNo6.setForeground(new java.awt.Color(0, 0, 0));
+        txtFullName.setBackground(new java.awt.Color(255, 255, 255));
+        txtFullName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtFullName.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtPlateNo9.setBackground(new java.awt.Color(255, 255, 255));
-        txtPlateNo9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtPlateNo9.setForeground(new java.awt.Color(0, 0, 0));
+        txtContact.setBackground(new java.awt.Color(255, 255, 255));
+        txtContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtContact.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout pnlContent2Layout = new javax.swing.GroupLayout(pnlContent2);
         pnlContent2.setLayout(pnlContent2Layout);
@@ -276,22 +272,19 @@ public class ProcessPickup extends javax.swing.JFrame {
             .addGroup(pnlContent2Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCustomerDetails)
                     .addGroup(pnlContent2Layout.createSequentialGroup()
-                        .addComponent(lblCustomerDetails)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(lblContact, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtContact))
                     .addGroup(pnlContent2Layout.createSequentialGroup()
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblFullName)
                             .addComponent(lblCustomerID))
                         .addGap(24, 24, 24)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPlateNo5)
-                            .addGroup(pnlContent2Layout.createSequentialGroup()
-                                .addComponent(txtPlateNo6, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblContact, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPlateNo9)))))
+                            .addComponent(txtFullName)
+                            .addComponent(txtCustomerID))))
                 .addGap(47, 47, 47))
         );
         pnlContent2Layout.setVerticalGroup(
@@ -301,51 +294,53 @@ public class ProcessPickup extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPlateNo5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFullName)
-                    .addComponent(txtPlateNo6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblContact)
-                    .addComponent(txtPlateNo9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
 
-        lblPlateNo4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblPlateNo4.setForeground(new java.awt.Color(255, 255, 255));
-        lblPlateNo4.setText("Car ID:");
-        lblPlateNo4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblCarID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblCarID.setForeground(new java.awt.Color(255, 255, 255));
+        lblCarID.setText("Car ID:");
+        lblCarID.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblPlateNo5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblPlateNo5.setForeground(new java.awt.Color(255, 255, 255));
-        lblPlateNo5.setText("Car Details:");
-        lblPlateNo5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblCarDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblCarDetails.setForeground(new java.awt.Color(255, 255, 255));
+        lblCarDetails.setText("Car Details:");
+        lblCarDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblBrand3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblBrand3.setForeground(new java.awt.Color(255, 255, 255));
-        lblBrand3.setText("Brand:");
-        lblBrand3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblBrand.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblBrand.setForeground(new java.awt.Color(255, 255, 255));
+        lblBrand.setText("Brand:");
+        lblBrand.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblModel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblModel3.setForeground(new java.awt.Color(255, 255, 255));
-        lblModel3.setText("Year:");
-        lblModel3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblYear.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblYear.setForeground(new java.awt.Color(255, 255, 255));
+        lblYear.setText("Year:");
+        lblYear.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblBrand4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblBrand4.setForeground(new java.awt.Color(255, 255, 255));
-        lblBrand4.setText("Model:");
-        lblBrand4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblModel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblModel.setForeground(new java.awt.Color(255, 255, 255));
+        lblModel.setText("Model:");
+        lblModel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblBrand5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblBrand5.setForeground(new java.awt.Color(255, 255, 255));
-        lblBrand5.setText("Daily Rate:");
-        lblBrand5.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblDailyRate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblDailyRate.setForeground(new java.awt.Color(255, 255, 255));
+        lblDailyRate.setText("Daily Rate:");
+        lblDailyRate.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtPlateNo10.setBackground(new java.awt.Color(255, 255, 255));
-        txtPlateNo10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtPlateNo10.setForeground(new java.awt.Color(0, 0, 0));
+        txtCarID.setBackground(new java.awt.Color(255, 255, 255));
+        txtCarID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCarID.setForeground(new java.awt.Color(0, 0, 0));
 
         txtBrand.setBackground(new java.awt.Color(255, 255, 255));
         txtBrand.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -371,17 +366,17 @@ public class ProcessPickup extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContent3Layout.createSequentialGroup()
-                        .addComponent(lblPlateNo5)
+                        .addComponent(lblCarDetails)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlContent3Layout.createSequentialGroup()
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent3Layout.createSequentialGroup()
                                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblBrand3)
-                                    .addComponent(lblPlateNo4))
+                                    .addComponent(lblBrand)
+                                    .addComponent(lblCarID))
                                 .addGap(74, 74, 74))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContent3Layout.createSequentialGroup()
-                                .addComponent(lblModel3, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblYear, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent3Layout.createSequentialGroup()
@@ -393,45 +388,45 @@ public class ProcessPickup extends javax.swing.JFrame {
                                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlContent3Layout.createSequentialGroup()
                                         .addGap(53, 53, 53)
-                                        .addComponent(lblBrand4)
+                                        .addComponent(lblModel)
                                         .addGap(18, 18, 18)
                                         .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(pnlContent3Layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addComponent(lblBrand5))
+                                        .addComponent(lblDailyRate))
                                     .addGroup(pnlContent3Layout.createSequentialGroup()
                                         .addGap(125, 125, 125)
                                         .addComponent(txtDailyRate, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(txtPlateNo10))))
+                            .addComponent(txtCarID))))
                 .addGap(39, 39, 39))
         );
         pnlContent3Layout.setVerticalGroup(
             pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContent3Layout.createSequentialGroup()
-                .addComponent(lblPlateNo5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblCarDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPlateNo4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPlateNo10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblCarID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCarID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContent3Layout.createSequentialGroup()
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lblBrand3)
+                                .addComponent(lblBrand)
                                 .addComponent(txtBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblBrand4))
+                            .addComponent(lblModel))
                         .addGap(8, 8, 8)
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblModel3)
+                            .addComponent(lblYear)
                             .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblBrand5)))
+                            .addComponent(lblDailyRate)))
                     .addGroup(pnlContent3Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
                         .addComponent(txtDailyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -454,7 +449,7 @@ public class ProcessPickup extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlContent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContent3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlContent3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlContent4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -463,7 +458,7 @@ public class ProcessPickup extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, 1009, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, 1021, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -498,20 +493,20 @@ public class ProcessPickup extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProcessPickup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditRental.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProcessPickup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditRental.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProcessPickup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditRental.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProcessPickup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditRental.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProcessPickup().setVisible(true);
+                new EditRental().setVisible(true);
             }
         });
     }
@@ -519,37 +514,37 @@ public class ProcessPickup extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnEdit;
-    private javax.swing.JLabel lblBrand3;
-    private javax.swing.JLabel lblBrand4;
-    private javax.swing.JLabel lblBrand5;
+    private javax.swing.JLabel lblBrand;
+    private javax.swing.JLabel lblCarDetails;
+    private javax.swing.JLabel lblCarID;
     private javax.swing.JLabel lblContact;
     private javax.swing.JLabel lblCustomerDetails;
     private javax.swing.JLabel lblCustomerID;
+    private javax.swing.JLabel lblDailyRate;
     private javax.swing.JLabel lblEstimatedCost;
     private javax.swing.JLabel lblFullName;
     private javax.swing.JLabel lblHeader;
-    private javax.swing.JLabel lblModel3;
+    private javax.swing.JLabel lblModel;
     private javax.swing.JLabel lblNoOfDays;
-    private javax.swing.JLabel lblPlateNo4;
-    private javax.swing.JLabel lblPlateNo5;
     private javax.swing.JLabel lblRentalDetails;
     private javax.swing.JLabel lblRentalID;
     private javax.swing.JLabel lblReturnDate;
     private javax.swing.JLabel lblStartDate;
+    private javax.swing.JLabel lblYear;
     private javax.swing.JPanel pnlContent1;
     private javax.swing.JPanel pnlContent2;
     private javax.swing.JPanel pnlContent3;
     private javax.swing.JPanel pnlContent4;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JTextField txtBrand;
+    private javax.swing.JTextField txtCarID;
+    private javax.swing.JTextField txtContact;
+    private javax.swing.JTextField txtCustomerID;
     private javax.swing.JTextField txtDailyRate;
     private javax.swing.JTextField txtEstimatedCost;
+    private javax.swing.JTextField txtFullName;
     private javax.swing.JTextField txtModel;
     private javax.swing.JTextField txtNoOfDays;
-    private javax.swing.JTextField txtPlateNo10;
-    private javax.swing.JTextField txtPlateNo5;
-    private javax.swing.JTextField txtPlateNo6;
-    private javax.swing.JTextField txtPlateNo9;
     private javax.swing.JTextField txtRentalID;
     private javax.swing.JTextField txtReturnDate;
     private javax.swing.JTextField txtStartDate;
