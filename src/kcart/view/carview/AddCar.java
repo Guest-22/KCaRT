@@ -23,8 +23,8 @@ public class AddCar extends javax.swing.JFrame {
         lblFuel = new javax.swing.JLabel();
         lblHeader = new javax.swing.JLabel();
         lblPlateNo = new javax.swing.JLabel();
+        lblType = new javax.swing.JLabel();
         lblYear = new javax.swing.JLabel();
-        lblColor = new javax.swing.JLabel();
         lblSeat = new javax.swing.JLabel();
         lblDailyRate = new javax.swing.JLabel();
         lblStatus = new javax.swing.JLabel();
@@ -38,9 +38,12 @@ public class AddCar extends javax.swing.JFrame {
         txtBrand = new javax.swing.JTextField();
         txtModel = new javax.swing.JTextField();
         txtYear = new javax.swing.JTextField();
-        txtColor = new javax.swing.JTextField();
         txtSeat = new javax.swing.JTextField();
         txtDailyRate = new javax.swing.JTextField();
+        lblColor = new javax.swing.JLabel();
+        txtColor = new javax.swing.JTextField();
+        cmbType = new javax.swing.JComboBox<>();
+        lblExtraPad = new javax.swing.JLabel();
         pnlContent3 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
@@ -83,15 +86,15 @@ public class AddCar extends javax.swing.JFrame {
         lblPlateNo.setText("Plate No:");
         lblPlateNo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        lblType.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblType.setForeground(new java.awt.Color(255, 255, 255));
+        lblType.setText("Type:");
+        lblType.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
         lblYear.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblYear.setForeground(new java.awt.Color(255, 255, 255));
         lblYear.setText("Year:");
         lblYear.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        lblColor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblColor.setForeground(new java.awt.Color(255, 255, 255));
-        lblColor.setText("Color:");
-        lblColor.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblSeat.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblSeat.setForeground(new java.awt.Color(255, 255, 255));
@@ -160,10 +163,6 @@ public class AddCar extends javax.swing.JFrame {
         txtYear.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtYear.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtColor.setBackground(new java.awt.Color(255, 255, 255));
-        txtColor.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtColor.setForeground(new java.awt.Color(0, 0, 0));
-
         txtSeat.setBackground(new java.awt.Color(255, 255, 255));
         txtSeat.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtSeat.setForeground(new java.awt.Color(0, 0, 0));
@@ -171,6 +170,24 @@ public class AddCar extends javax.swing.JFrame {
         txtDailyRate.setBackground(new java.awt.Color(255, 255, 255));
         txtDailyRate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtDailyRate.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblColor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblColor.setForeground(new java.awt.Color(255, 255, 255));
+        lblColor.setText("Color:");
+        lblColor.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        txtColor.setBackground(new java.awt.Color(255, 255, 255));
+        txtColor.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtColor.setForeground(new java.awt.Color(0, 0, 0));
+
+        cmbType.setBackground(new java.awt.Color(255, 255, 255));
+        cmbType.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cmbType.setForeground(new java.awt.Color(0, 0, 0));
+        cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sedan", "SUV", "Hatchback", "MPV", "Van", "Pickup" }));
+
+        lblExtraPad.setBackground(new java.awt.Color(255, 255, 255));
+        lblExtraPad.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblExtraPad.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
         pnlContent1.setLayout(pnlContent1Layout);
@@ -180,46 +197,61 @@ public class AddCar extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addComponent(lblHeader)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lblModel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblPlateNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblBrand)
-                                .addComponent(lblYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(lblPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnImportPhoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblModel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblPlateNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblBrand)
+                            .addComponent(lblType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent1Layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(txtPlateNo)
-                                .addGap(21, 21, 21))
-                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtBrand)
-                                    .addComponent(txtModel)
-                                    .addComponent(txtYear)
-                                    .addComponent(txtColor, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
-                                    .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(txtPlateNo)
+                                        .addGap(21, 21, 21))
+                                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtBrand)
+                                            .addComponent(txtModel)
+                                            .addComponent(txtYear)
+                                            .addComponent(cmbType, 0, 363, Short.MAX_VALUE))
+                                        .addGap(22, 22, 22))))
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(txtColor)
                                 .addGap(22, 22, 22)))
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTransmission)
-                            .addComponent(lblFuel)
-                            .addComponent(lblSeat)
-                            .addComponent(lblDailyRate)
-                            .addComponent(lblStatus))
-                        .addGap(18, 18, 18)
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblTransmission)
+                                    .addComponent(lblFuel)
+                                    .addComponent(lblSeat)
+                                    .addComponent(lblDailyRate)
+                                    .addComponent(lblStatus))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbTransmission, 0, 350, Short.MAX_VALUE)
+                                    .addComponent(cmbFuel, 0, 350, Short.MAX_VALUE)
+                                    .addComponent(cmbStatus, 0, 350, Short.MAX_VALUE)
+                                    .addComponent(txtSeat)
+                                    .addComponent(txtDailyRate, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addComponent(lblExtraPad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(30, 30, 30))
+                    .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbTransmission, 0, 350, Short.MAX_VALUE)
-                            .addComponent(cmbFuel, 0, 350, Short.MAX_VALUE)
-                            .addComponent(cmbStatus, 0, 350, Short.MAX_VALUE)
-                            .addComponent(txtSeat)
-                            .addComponent(txtDailyRate, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(30, 30, 30))))
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addComponent(btnImportPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblPhoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblHeader))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnlContent1Layout.setVerticalGroup(
             pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,11 +265,7 @@ public class AddCar extends javax.swing.JFrame {
                             .addComponent(lblPlateNo, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtPlateNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
-                        .addComponent(lblBrand)
-                        .addGap(90, 90, 90)
-                        .addComponent(lblPhoto)
-                        .addGap(117, 117, 117)
-                        .addComponent(btnImportPhoto))
+                        .addComponent(lblBrand))
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTransmission)
@@ -256,18 +284,29 @@ public class AddCar extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblDailyRate)
-                            .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblYear)
-                            .addComponent(txtDailyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblType)
+                            .addComponent(txtDailyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblStatus)
                             .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblColor))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(155, 155, 155))
+                            .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblYear))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblExtraPad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblColor)
+                        .addComponent(txtColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                        .addComponent(lblPhoto)
+                        .addGap(121, 121, 121)
+                        .addComponent(btnImportPhoto))
+                    .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
@@ -313,7 +352,7 @@ public class AddCar extends javax.swing.JFrame {
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 307, Short.MAX_VALUE))
+                .addGap(0, 256, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -327,7 +366,7 @@ public class AddCar extends javax.swing.JFrame {
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlContent1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlContent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlContent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -400,9 +439,11 @@ public class AddCar extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbFuel;
     private javax.swing.JComboBox<String> cmbStatus;
     private javax.swing.JComboBox<String> cmbTransmission;
+    private javax.swing.JComboBox<String> cmbType;
     private javax.swing.JLabel lblBrand;
     private javax.swing.JLabel lblColor;
     private javax.swing.JLabel lblDailyRate;
+    private javax.swing.JLabel lblExtraPad;
     private javax.swing.JLabel lblFuel;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblModel;
@@ -412,6 +453,7 @@ public class AddCar extends javax.swing.JFrame {
     private javax.swing.JLabel lblSeat;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblTransmission;
+    private javax.swing.JLabel lblType;
     private javax.swing.JLabel lblYear;
     private javax.swing.JPanel pnlContent1;
     private javax.swing.JPanel pnlContent3;

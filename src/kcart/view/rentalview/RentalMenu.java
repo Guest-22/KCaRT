@@ -37,6 +37,10 @@ public class RentalMenu extends javax.swing.JFrame {
         cmbSort = new javax.swing.JComboBox<>();
         tglSort = new javax.swing.JToggleButton();
         pnlAction = new javax.swing.JPanel();
+        btnAddReservation = new javax.swing.JButton();
+        btnEditRental = new javax.swing.JButton();
+        btnProcessPickup = new javax.swing.JButton();
+        btnProcessReturn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1200, 700));
@@ -203,7 +207,7 @@ public class RentalMenu extends javax.swing.JFrame {
 
         pnlRecord.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblHeader.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblHeader.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(0, 0, 0));
         lblHeader.setText("Rental");
         lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -306,27 +310,87 @@ public class RentalMenu extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(lblHeader)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-                    .addComponent(cmbSort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tglSort, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cmbSort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tglSort, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scrlRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addContainerGap())
         );
 
         pnlAction.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnAddReservation.setBackground(new java.awt.Color(0, 0, 0));
+        btnAddReservation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnAddReservation.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddReservation.setText("Add Reservation");
+        btnAddReservation.setFocusable(false);
+        btnAddReservation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddReservationActionPerformed(evt);
+            }
+        });
+
+        btnEditRental.setBackground(new java.awt.Color(0, 0, 0));
+        btnEditRental.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnEditRental.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditRental.setText("Edit Rental");
+        btnEditRental.setFocusable(false);
+        btnEditRental.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditRentalActionPerformed(evt);
+            }
+        });
+
+        btnProcessPickup.setBackground(new java.awt.Color(0, 0, 0));
+        btnProcessPickup.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnProcessPickup.setForeground(new java.awt.Color(255, 255, 255));
+        btnProcessPickup.setText("Process Pickup");
+        btnProcessPickup.setFocusable(false);
+        btnProcessPickup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcessPickupActionPerformed(evt);
+            }
+        });
+
+        btnProcessReturn.setBackground(new java.awt.Color(0, 0, 0));
+        btnProcessReturn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnProcessReturn.setForeground(new java.awt.Color(255, 255, 255));
+        btnProcessReturn.setText("Process Return");
+        btnProcessReturn.setFocusable(false);
+        btnProcessReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcessReturnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlActionLayout = new javax.swing.GroupLayout(pnlAction);
         pnlAction.setLayout(pnlActionLayout);
         pnlActionLayout.setHorizontalGroup(
             pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(pnlActionLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(btnAddReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEditRental, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnProcessPickup, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnProcessReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlActionLayout.setVerticalGroup(
             pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 74, Short.MAX_VALUE)
+            .addGroup(pnlActionLayout.createSequentialGroup()
+                .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditRental, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnProcessPickup, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnProcessReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 143, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
@@ -424,6 +488,22 @@ public class RentalMenu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_tglSortActionPerformed
 
+    private void btnAddReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReservationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddReservationActionPerformed
+
+    private void btnEditRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditRentalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditRentalActionPerformed
+
+    private void btnProcessPickupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessPickupActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnProcessPickupActionPerformed
+
+    private void btnProcessReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessReturnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnProcessReturnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -460,11 +540,15 @@ public class RentalMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddReservation;
     private javax.swing.JButton btnBilling;
     private javax.swing.JButton btnCar;
     private javax.swing.JButton btnCustomer;
     private javax.swing.JButton btnDashboard;
+    private javax.swing.JButton btnEditRental;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnProcessPickup;
+    private javax.swing.JButton btnProcessReturn;
     private javax.swing.JButton btnRental;
     private javax.swing.JButton btnReturn;
     private javax.swing.JButton btnSearch;

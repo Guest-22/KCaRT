@@ -7,10 +7,10 @@ public class User {
     private String firstName;
     private String middleName;
     private String lastName;
+    private String contactNo;
+    private String role;
     private String username;
     private String password;
-    private String role;
-    private String contactNo;
     private String userStatus;
     private java.sql.Timestamp createdAt;
 
@@ -46,6 +46,22 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getContactNo() {
+        return contactNo;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+    
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
     public String getUsername() {
         return username;
     }
@@ -60,22 +76,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getContactNo() {
-        return contactNo;
-    }
-
-    public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
     }
 
     public String getUserStatus() {

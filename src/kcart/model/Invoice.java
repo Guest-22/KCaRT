@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class Invoice {
     private int invoiceId;
     private int rentalId;
-    private Integer returnId;
+    private int returnId;
     private String description;
     private double invoiceAmount;
     private String invoiceStatus;
@@ -28,11 +28,11 @@ public class Invoice {
         this.rentalId = rentalId;
     }
 
-    public Integer getReturnId() {
+    public int getReturnId() {
         return returnId;
     }
 
-    public void setReturnId(Integer returnId) {
+    public void setReturnId(int returnId) {
         this.returnId = returnId;
     }
 

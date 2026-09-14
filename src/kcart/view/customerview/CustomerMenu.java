@@ -203,7 +203,7 @@ public class CustomerMenu extends javax.swing.JFrame {
 
         pnlRecord.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblHeader.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblHeader.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(0, 0, 0));
         lblHeader.setText("Customer");
         lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));

@@ -1,5 +1,13 @@
 package kcart.view.carview;
 
+import kcart.view.Login;
+import kcart.view.customerview.CustomerMenu;
+import kcart.view.carview.CarMenu;
+import kcart.view.rentalview.RentalMenu;
+import kcart.view.returnview.ReturnMenu;
+import kcart.view.billingview.BillingMenu;
+import kcart.view.userview.UserMenu;
+
 public class CarMenu extends javax.swing.JFrame {
 
     public CarMenu() {
@@ -42,10 +50,11 @@ public class CarMenu extends javax.swing.JFrame {
         pnlDisplay = new javax.swing.JPanel();
         pnlPreview = new javax.swing.JPanel();
         lblSelection = new javax.swing.JLabel();
-        lblPhoto = new javax.swing.JLabel();
+        lblCarPhoto = new javax.swing.JLabel();
         lblPlateNo = new javax.swing.JLabel();
         lblBrand = new javax.swing.JLabel();
         lblModel = new javax.swing.JLabel();
+        lblType = new javax.swing.JLabel();
         lblYear = new javax.swing.JLabel();
         lblColor = new javax.swing.JLabel();
         lblTransmission = new javax.swing.JLabel();
@@ -216,7 +225,7 @@ public class CarMenu extends javax.swing.JFrame {
 
         pnlRecord.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblHeader.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        lblHeader.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(0, 0, 0));
         lblHeader.setText("Car");
         lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -384,10 +393,10 @@ public class CarMenu extends javax.swing.JFrame {
         lblSelection.setText("Selected Car Details");
         lblSelection.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblPhoto.setBackground(new java.awt.Color(204, 204, 204));
-        lblPhoto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lblPhoto.setForeground(new java.awt.Color(255, 255, 255));
-        lblPhoto.setText(" (insert photo)");
+        lblCarPhoto.setBackground(new java.awt.Color(204, 204, 204));
+        lblCarPhoto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblCarPhoto.setForeground(new java.awt.Color(255, 255, 255));
+        lblCarPhoto.setText(" (insert photo)");
 
         lblPlateNo.setBackground(new java.awt.Color(255, 255, 255));
         lblPlateNo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -406,6 +415,12 @@ public class CarMenu extends javax.swing.JFrame {
         lblModel.setForeground(new java.awt.Color(255, 255, 255));
         lblModel.setText("Model:");
         lblModel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblType.setBackground(new java.awt.Color(255, 255, 255));
+        lblType.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        lblType.setForeground(new java.awt.Color(255, 255, 255));
+        lblType.setText("Type:");
+        lblType.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblYear.setBackground(new java.awt.Color(255, 255, 255));
         lblYear.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -457,22 +472,26 @@ public class CarMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblSelection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblCarPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lblColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblYear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblModel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBrand, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblPlateNo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-                    .addComponent(lblTransmission, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE))
+                    .addComponent(lblColor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(lblDailyRate, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                    .addComponent(lblSeat, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblFuel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlPreviewLayout.createSequentialGroup()
+                        .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblSeat, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                            .addComponent(lblFuel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTransmission, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDailyRate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnlPreviewLayout.setVerticalGroup(
             pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -481,27 +500,29 @@ public class CarMenu extends javax.swing.JFrame {
                 .addComponent(lblSelection)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblCarPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlPreviewLayout.createSequentialGroup()
                         .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblPlateNo)
-                            .addComponent(lblFuel))
+                            .addComponent(lblTransmission))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblBrand)
-                            .addComponent(lblSeat))
+                            .addComponent(lblFuel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblModel)
+                            .addComponent(lblSeat))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblType, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblDailyRate))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblYear, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblYear)
                             .addComponent(lblStatus))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblColor)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblTransmission)
                         .addGap(0, 3, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -578,35 +599,42 @@ public class CarMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-
+        
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
-        // TODO add your handling code here:
+        new CustomerMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarActionPerformed
-        // TODO add your handling code here:
+        new CarMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCarActionPerformed
 
     private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
-        // TODO add your handling code here:
+        new RentalMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnRentalActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        // TODO add your handling code here:
+        new ReturnMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBillingActionPerformed
-        // TODO add your handling code here:
+        new BillingMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnBillingActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
-        // TODO add your handling code here:
+        new UserMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnUserActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        // TODO add your handling code here:
+        new Login().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
@@ -682,17 +710,18 @@ public class CarMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnUser;
     private javax.swing.JComboBox<String> cmbSort;
     private javax.swing.JLabel lblBrand;
+    private javax.swing.JLabel lblCarPhoto;
     private javax.swing.JLabel lblColor;
     private javax.swing.JLabel lblDailyRate;
     private javax.swing.JLabel lblFuel;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblModel;
-    private javax.swing.JLabel lblPhoto;
     private javax.swing.JLabel lblPlateNo;
     private javax.swing.JLabel lblSeat;
     private javax.swing.JLabel lblSelection;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblTransmission;
+    private javax.swing.JLabel lblType;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JLabel lblYear;
     private javax.swing.JPanel pnlAction;

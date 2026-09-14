@@ -3,11 +3,11 @@ package kcart.model;
 import java.sql.Timestamp;
 
 public class Car {
-
     private int carId;
     private String plateNo;
     private String brand;
     private String model;
+    private String carType;
     private int year;
     private String color;
     private String transmissionType;
@@ -50,7 +50,15 @@ public class Car {
     public void setModel(String model) {
         this.model = model;
     }
+    
+    public String getCarType() {
+        return carType;
+    }
 
+    public void setCarType(String carType) {
+        this.carType = carType;
+    }
+    
     public int getYear() {
         return year;
     }

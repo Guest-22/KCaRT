@@ -44,7 +44,7 @@ public class EditCustomer extends javax.swing.JFrame {
         btnImportSecondaryID = new javax.swing.JButton();
         lblDriverLicense = new javax.swing.JLabel();
         pnlContent3 = new javax.swing.JPanel();
-        btnAdd = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -87,7 +87,7 @@ public class EditCustomer extends javax.swing.JFrame {
 
         lblHeader.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(255, 255, 255));
-        lblHeader.setText("Add Customer");
+        lblHeader.setText("Edit Customer");
         lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblFirstName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -325,15 +325,15 @@ public class EditCustomer extends javax.swing.JFrame {
 
         pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
 
-        btnAdd.setBackground(new java.awt.Color(255, 255, 255));
-        btnAdd.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnAdd.setForeground(new java.awt.Color(0, 0, 0));
-        btnAdd.setText("Add");
-        btnAdd.setBorder(null);
-        btnAdd.setFocusable(false);
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+        btnEdit.setBackground(new java.awt.Color(255, 255, 255));
+        btnEdit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(0, 0, 0));
+        btnEdit.setText("Edit");
+        btnEdit.setBorder(null);
+        btnEdit.setFocusable(false);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
+                btnEditActionPerformed(evt);
             }
         });
 
@@ -355,7 +355,7 @@ public class EditCustomer extends javax.swing.JFrame {
             pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContent3Layout.createSequentialGroup()
                 .addGap(141, 141, 141)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -364,7 +364,7 @@ public class EditCustomer extends javax.swing.JFrame {
             pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContent3Layout.createSequentialGroup()
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 137, Short.MAX_VALUE))
         );
@@ -413,9 +413,9 @@ public class EditCustomer extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnImportSecondaryIDActionPerformed
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
 
-    }//GEN-LAST:event_btnAddActionPerformed
+    }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
@@ -457,8 +457,8 @@ public class EditCustomer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnImportDriverLicense;
     private javax.swing.JButton btnImportPhoto;
     private javax.swing.JButton btnImportSecondaryID;
