@@ -1,5 +1,13 @@
 package kcart.view.dashboardview;
 
+import kcart.view.Login;
+import kcart.view.customerview.CustomerMenu;
+import kcart.view.carview.CarMenu;
+import kcart.view.rentalview.RentalMenu;
+import kcart.view.returnview.ReturnMenu;
+import kcart.view.billingview.BillingMenu;
+import kcart.view.userview.UserMenu;
+
 public class StaffDashboard extends javax.swing.JFrame {
 
     /**
@@ -239,32 +247,38 @@ public class StaffDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
-        // TODO add your handling code here:
+        new CustomerMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarActionPerformed
-        // TODO add your handling code here:
+        new CustomerMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCarActionPerformed
 
-    private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRentalActionPerformed
-
-    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnReturnActionPerformed
-
     private void btnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBillingActionPerformed
-        // TODO add your handling code here:
+        new CustomerMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnBillingActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnUserActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        // TODO add your handling code here:
+        new CustomerMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
+        new CustomerMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRentalActionPerformed
+
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        new CustomerMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnReturnActionPerformed
 
     /**
      * @param args the command line arguments

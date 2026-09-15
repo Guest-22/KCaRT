@@ -266,7 +266,7 @@ public class BillingMenu extends javax.swing.JFrame {
         });
 
         tglSort.setBackground(new java.awt.Color(0, 0, 0));
-        tglSort.setFont(new java.awt.Font("SansSerif", 1, 10)); // NOI18N
+        tglSort.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         tglSort.setForeground(new java.awt.Color(255, 255, 255));
         tglSort.setText("ASC");
         tglSort.setBorderPainted(false);

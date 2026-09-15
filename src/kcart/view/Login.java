@@ -1,5 +1,8 @@
 package kcart.view;
 
+import kcart.view.dashboardview.AdminDashboard;
+import kcart.view.dashboardview.StaffDashboard;
+
 public class Login extends javax.swing.JFrame {
 
     public Login() {
@@ -119,7 +122,7 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        
+        new AdminDashboard().setVisible(true);
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**

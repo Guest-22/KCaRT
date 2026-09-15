@@ -1,5 +1,12 @@
 package kcart.view.returnview;
 
+import kcart.view.Login;
+import kcart.view.customerview.CustomerMenu;
+import kcart.view.carview.CarMenu;
+import kcart.view.rentalview.RentalMenu;
+import kcart.view.billingview.BillingMenu;
+import kcart.view.userview.UserMenu;
+
 public class ReturnMenu extends javax.swing.JFrame {
 
     /**
@@ -42,9 +49,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         pnlAction = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1200, 700));
         setMinimumSize(new java.awt.Dimension(1200, 700));
-        setPreferredSize(new java.awt.Dimension(1200, 700));
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));
         pnlMain.setPreferredSize(new java.awt.Dimension(1200, 600));
@@ -266,7 +271,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         });
 
         tglSort.setBackground(new java.awt.Color(0, 0, 0));
-        tglSort.setFont(new java.awt.Font("SansSerif", 1, 10)); // NOI18N
+        tglSort.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         tglSort.setForeground(new java.awt.Color(255, 255, 255));
         tglSort.setText("ASC");
         tglSort.setBorderPainted(false);
@@ -384,31 +389,37 @@ public class ReturnMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
-        // TODO add your handling code here:
+        new CustomerMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarActionPerformed
-        // TODO add your handling code here:
+        new CarMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCarActionPerformed
 
     private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
-        // TODO add your handling code here:
+        new RentalMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnRentalActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBillingActionPerformed
-        // TODO add your handling code here:
+        new BillingMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnBillingActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
-        // TODO add your handling code here:
+        new UserMenu().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnUserActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        // TODO add your handling code here:
+        new Login().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
