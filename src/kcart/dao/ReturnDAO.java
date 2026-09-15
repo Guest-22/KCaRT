@@ -1,5 +1,5 @@
 package kcart.dao;
 
-public class ReturnDAO {
+public interface ReturnDAO {
     
 }

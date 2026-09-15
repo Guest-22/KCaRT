@@ -1,5 +1,7 @@
 package kcart.daoimpl;
 
-public class ReturnDAOImpl {
+import kcart.dao.ReturnDAO;
+
+public class ReturnDAOImpl implements ReturnDAO {
     
 }

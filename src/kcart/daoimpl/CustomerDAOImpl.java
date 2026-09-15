@@ -1,5 +1,7 @@
 package kcart.daoimpl;
 
-public class CustomerDAOImpl {
+import kcart.dao.CustomerDAO;
+
+public class CustomerDAOImpl implements CustomerDAO {
     
 }

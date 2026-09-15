@@ -14,6 +14,34 @@ public class User {
     private String userStatus;
     private java.sql.Timestamp createdAt;
 
+    public User(int userId, String firstName, String middleName,
+            String lastName, String contactNo, String role,
+            String username, String password, String userStatus) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.contactNo = contactNo;
+        this.role = role;
+        this.username = username;
+        this.password = password;
+        this.userStatus = userStatus;
+    }
+    
+    public User(String firstName, String middleName,
+            String lastName, String contactNo, String role,
+            String username, String password, String userStatus) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.contactNo = contactNo;
+        this.role = role;
+        this.username = username;
+        this.password = password;
+        this.userStatus = userStatus;
+    }
+    
     public int getUserId() {
         return userId;
     }

@@ -1,16 +1,111 @@
 package kcart.view.carview;
 
+import java.awt.Color;
+import java.awt.Image;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+import kcart.dao.CarDAO;
+import kcart.daoimpl.CarDAOImpl;
+import kcart.model.Car;
+import kcart.util.Message;
 import kcart.view.Login;
 import kcart.view.customerview.CustomerMenu;
 import kcart.view.rentalview.RentalMenu;
 import kcart.view.returnview.ReturnMenu;
 import kcart.view.billingview.BillingMenu;
 import kcart.view.userview.UserMenu;
+import kcart.util.SearchUtil;
+import kcart.util.SortUtil;
 
 public class CarMenu extends javax.swing.JFrame {
 
+    private int selectedCarId = -1;
+
     public CarMenu() {
         initComponents();
+
+        setDefaultTglSort();
+
+        populateCarRecord("");
+    }
+
+    // Sets the default toggle button style.
+    private void setDefaultTglSort() {
+        tglSort.setFocusPainted(false);
+        tglSort.setContentAreaFilled(false);
+        tglSort.setBorderPainted(false);
+        tglSort.setOpaque(true);
+        tglSort.setBackground(Color.BLACK);
+        tglSort.setForeground(Color.WHITE);
+    }
+
+    private void populateCarRecord(String keyword) {
+        DefaultTableModel carModel = (DefaultTableModel) tblRecord.getModel();
+        carModel.setRowCount(0); // Clear existing rows.
+
+        try {
+            CarDAO carDao = new CarDAOImpl();
+            List<Car> cars = carDao.getAllCars();
+
+            // Optional: filter by keyword (brand, model).
+            cars = SearchUtil.searchCarsByKeyword(cars, keyword);
+
+            // Sorting
+            String selectedSort = cmbSort.getSelectedItem().toString();
+            String selectedOrder = tglSort.isSelected() ? "DESC" : "ASC";
+
+            switch (selectedSort) {
+                case "Sort by Daily Rate":
+                    SortUtil.sortCarByDailyRate(cars);
+                    break;
+                case "Sort by Year":
+                    SortUtil.sortCarByYear(cars);
+                    break;
+                case "Sort by Seat":
+                    SortUtil.sortCarBySeat(cars);
+                    break;
+            }
+
+            // Reverse if DESC.
+            if (selectedOrder.equals("DESC")) {
+                Collections.reverse(cars);
+            }
+
+            // Populate table with car records.
+            for (Car c : cars) {
+                Object[] row = {
+                    c.getCarId(),
+                    c.getPlateNo(),
+                    c.getBrand(),
+                    c.getModel(),
+                    c.getCarType(),
+                    c.getYear(),
+                    c.getColor(),
+                    c.getTransmissionType(),
+                    c.getFuelType(),
+                    c.getSeatCap(),
+                    c.getDailyRate(),
+                    c.getCarStatus(),
+                    (c.getCreatedAt() != null) ? c.getCreatedAt().toString() : "—"
+                };
+                carModel.addRow(row);
+            }
+
+            // Hide car_id.
+            tblRecord.getColumnModel().getColumn(0).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(0).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(0).setWidth(0);
+
+            // Hide created_at.
+            tblRecord.getColumnModel().getColumn(12).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(12).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(12).setWidth(0);
+
+        } catch (Exception e) {
+            // Message.error("Error loading car table:\n" + e.getMessage());
+        }
     }
 
     /**
@@ -61,6 +156,8 @@ public class CarMenu extends javax.swing.JFrame {
         lblSeat = new javax.swing.JLabel();
         lblDailyRate = new javax.swing.JLabel();
         lblStatus = new javax.swing.JLabel();
+        lblCreatedAt = new javax.swing.JLabel();
+        lblCarId = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1200, 700));
@@ -233,21 +330,26 @@ public class CarMenu extends javax.swing.JFrame {
         tblRecord.setForeground(new java.awt.Color(255, 255, 255));
         tblRecord.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Plate No.", "Brand", "Model", "Type", "Year", "Color", "Transmission", "Fuel", "Seats", "Daily Rate", "Status"
+                "ID", "Plate No.", "Brand", "Model", "Type", "Year", "Color", "Transmission", "Fuel", "Seat", "Daily Rate", "Status", "Created At"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblRecord.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRecordMouseClicked(evt);
             }
         });
         scrlRecord.setViewportView(tblRecord);
@@ -281,7 +383,7 @@ public class CarMenu extends javax.swing.JFrame {
         cmbSort.setBackground(new java.awt.Color(0, 0, 0));
         cmbSort.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         cmbSort.setForeground(new java.awt.Color(255, 255, 255));
-        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by " }));
+        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by Daily Rate", "Sort by Year", "Sort by Seat" }));
         cmbSort.setFocusable(false);
         cmbSort.setMinimumSize(new java.awt.Dimension(147, 24));
         cmbSort.setPreferredSize(new java.awt.Dimension(147, 24));
@@ -316,20 +418,20 @@ public class CarMenu extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlRecordLayout.createSequentialGroup()
-                        .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRecordLayout.createSequentialGroup()
-                                .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblHeader)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRecordLayout.createSequentialGroup()
+                        .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(scrlRecord)
+                            .addGroup(pnlRecordLayout.createSequentialGroup()
+                                .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cmbSort, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tglSort, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(scrlRecord, javax.swing.GroupLayout.DEFAULT_SIZE, 1005, Short.MAX_VALUE))
-                        .addGap(17, 17, 17))
-                    .addGroup(pnlRecordLayout.createSequentialGroup()
-                        .addComponent(lblHeader)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(tglSort, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(17, 17, 17))))
         );
         pnlRecordLayout.setVerticalGroup(
             pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -403,7 +505,6 @@ public class CarMenu extends javax.swing.JFrame {
         lblCarPhoto.setBackground(new java.awt.Color(204, 204, 204));
         lblCarPhoto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblCarPhoto.setForeground(new java.awt.Color(255, 255, 255));
-        lblCarPhoto.setText(" (insert photo)");
 
         lblPlateNo.setBackground(new java.awt.Color(255, 255, 255));
         lblPlateNo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -471,6 +572,18 @@ public class CarMenu extends javax.swing.JFrame {
         lblStatus.setText("Status:");
         lblStatus.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        lblCreatedAt.setBackground(new java.awt.Color(255, 255, 255));
+        lblCreatedAt.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        lblCreatedAt.setForeground(new java.awt.Color(255, 255, 255));
+        lblCreatedAt.setText("Created At:");
+        lblCreatedAt.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblCarId.setBackground(new java.awt.Color(255, 255, 255));
+        lblCarId.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        lblCarId.setForeground(new java.awt.Color(255, 255, 255));
+        lblCarId.setText("Car ID:");
+        lblCarId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
         javax.swing.GroupLayout pnlPreviewLayout = new javax.swing.GroupLayout(pnlPreview);
         pnlPreview.setLayout(pnlPreviewLayout);
         pnlPreviewLayout.setHorizontalGroup(
@@ -478,36 +591,36 @@ public class CarMenu extends javax.swing.JFrame {
             .addGroup(pnlPreviewLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCarPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSelection))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlPreviewLayout.createSequentialGroup()
-                        .addComponent(lblSelection)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pnlPreviewLayout.createSequentialGroup()
-                        .addComponent(lblCarPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblType, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblModel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblBrand, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblPlateNo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-                            .addComponent(lblColor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblPlateNo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblColor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlPreviewLayout.createSequentialGroup()
-                                .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(lblSeat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblFuel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblTransmission, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                                    .addComponent(lblDailyRate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 83, Short.MAX_VALUE))
-                            .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
+                            .addComponent(lblFuel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblCreatedAt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblDailyRate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblSeat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTransmission, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
+                    .addComponent(lblCarId))
+                .addGap(240, 240, 240))
         );
         pnlPreviewLayout.setVerticalGroup(
             pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlPreviewLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(lblSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCarId))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(pnlPreviewLayout.createSequentialGroup()
@@ -531,7 +644,9 @@ public class CarMenu extends javax.swing.JFrame {
                             .addComponent(lblYear)
                             .addComponent(lblStatus))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblColor))
+                        .addGroup(pnlPreviewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblColor)
+                            .addComponent(lblCreatedAt)))
                     .addComponent(lblCarPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
@@ -541,7 +656,7 @@ public class CarMenu extends javax.swing.JFrame {
         pnlDisplayLayout.setHorizontalGroup(
             pnlDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlDisplayLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addContainerGap()
                 .addComponent(pnlPreview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -610,7 +725,7 @@ public class CarMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-        
+
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
@@ -653,24 +768,83 @@ public class CarMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-
+        String keyword = txtSearch.getText().trim();
+        if (keyword.isEmpty()) {
+            Message.error("Please enter a movie title to search.");
+            return;
+        }
+        populateCarRecord(keyword);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void cmbSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSortActionPerformed
-
+        String sortQuery = txtSearch.getText().trim();
+        populateCarRecord(sortQuery);
     }//GEN-LAST:event_cmbSortActionPerformed
 
     private void tglSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSortActionPerformed
-
+        if (tglSort.isSelected()) {
+            tglSort.setText("DESC");
+        } else {
+            tglSort.setText("ASC");
+        }
+        populateCarRecord(txtSearch.getText().trim());
     }//GEN-LAST:event_tglSortActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        new AddCar().setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
+        if (selectedCarId <= 0) { // No row selected
+            Message.error("Please select a car record first.");
+            return;
+        }
+
+        // If valid, open EditCar form.
+        new EditCar(selectedCarId).setVisible(true);
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void tblRecordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRecordMouseClicked
+        try {
+            int row = tblRecord.getSelectedRow();
+            if (row >= 0) {
+                selectedCarId = Integer.parseInt(tblRecord.getValueAt(row, 0).toString());
+
+                // Append values to preview labels for preview purposes.
+                lblCarId.setText("Car ID: " + selectedCarId);
+                lblPlateNo.setText("Plate No: " + tblRecord.getValueAt(row, 1).toString());
+                lblBrand.setText("Brand: " + tblRecord.getValueAt(row, 2).toString());
+                lblModel.setText("Model: " + tblRecord.getValueAt(row, 3).toString());
+                lblType.setText("Type: " + tblRecord.getValueAt(row, 4).toString());
+                lblYear.setText("Year: " + tblRecord.getValueAt(row, 5).toString());
+                lblColor.setText("Color: " + tblRecord.getValueAt(row, 6).toString());
+                lblTransmission.setText("Transmission: " + tblRecord.getValueAt(row, 7).toString());
+                lblFuel.setText("Fuel: " + tblRecord.getValueAt(row, 8).toString());
+                lblSeat.setText("Seat: " + tblRecord.getValueAt(row, 9).toString());
+                lblDailyRate.setText("Daily Rate: " + tblRecord.getValueAt(row, 10).toString());
+                lblStatus.setText("Status: " + tblRecord.getValueAt(row, 11).toString());
+                lblCreatedAt.setText("Created at: " + tblRecord.getValueAt(row, 12).toString());
+
+                // Query car_photo blob directly.
+                CarDAO carDao = new CarDAOImpl();
+                byte[] photoBytes = carDao.getCarPhotoById(selectedCarId);
+
+                if (photoBytes != null) {
+                    ImageIcon icon = new ImageIcon(photoBytes);
+                    Image scaled = icon.getImage().getScaledInstance(
+                            lblCarPhoto.getWidth(),
+                            lblCarPhoto.getHeight(),
+                            Image.SCALE_SMOOTH
+                    );
+                    lblCarPhoto.setIcon(new ImageIcon(scaled));
+                } else {
+                    lblCarPhoto.setIcon(null); // Clear if no photo.
+                }
+            }
+        } catch (Exception e) {
+            // Message.error ("Something went wrong: " + e.getMessage());
+        }
+    }//GEN-LAST:event_tblRecordMouseClicked
 
     /**
      * @param args the command line arguments
@@ -721,8 +895,10 @@ public class CarMenu extends javax.swing.JFrame {
     private javax.swing.JButton btnUser;
     private javax.swing.JComboBox<String> cmbSort;
     private javax.swing.JLabel lblBrand;
+    private javax.swing.JLabel lblCarId;
     private javax.swing.JLabel lblCarPhoto;
     private javax.swing.JLabel lblColor;
+    private javax.swing.JLabel lblCreatedAt;
     private javax.swing.JLabel lblDailyRate;
     private javax.swing.JLabel lblFuel;
     private javax.swing.JLabel lblHeader;

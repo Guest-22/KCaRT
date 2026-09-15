@@ -1,5 +1,5 @@
 package kcart.dao;
 
-public class RentalDAO {
+public interface RentalDAO {
     
 }
