@@ -27,7 +27,6 @@ public class CarMenu extends javax.swing.JFrame {
         initComponents();
 
         setDefaultTglSort();
-
         populateCarRecord("");
     }
 
@@ -57,6 +56,9 @@ public class CarMenu extends javax.swing.JFrame {
             String selectedOrder = tglSort.isSelected() ? "DESC" : "ASC";
 
             switch (selectedSort) {
+                case "Sort by Date":
+                    SortUtil.sortCarByDate(cars);
+                    break;
                 case "Sort by Daily Rate":
                     SortUtil.sortCarByDailyRate(cars);
                     break;
@@ -383,7 +385,7 @@ public class CarMenu extends javax.swing.JFrame {
         cmbSort.setBackground(new java.awt.Color(0, 0, 0));
         cmbSort.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         cmbSort.setForeground(new java.awt.Color(255, 255, 255));
-        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by Daily Rate", "Sort by Year", "Sort by Seat" }));
+        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by Date", "Sort by Daily Rate", "Sort by Year", "Sort by Seat" }));
         cmbSort.setFocusable(false);
         cmbSort.setMinimumSize(new java.awt.Dimension(147, 24));
         cmbSort.setPreferredSize(new java.awt.Dimension(147, 24));
@@ -440,9 +442,9 @@ public class CarMenu extends javax.swing.JFrame {
                 .addComponent(lblHeader)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
                     .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cmbSort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(tglSort, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -487,9 +489,11 @@ public class CarMenu extends javax.swing.JFrame {
         );
         pnlActionLayout.setVerticalGroup(
             pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(pnlActionLayout.createSequentialGroup()
+                .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pnlDisplay.setBackground(new java.awt.Color(255, 255, 255));
@@ -579,9 +583,9 @@ public class CarMenu extends javax.swing.JFrame {
         lblCreatedAt.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblCarId.setBackground(new java.awt.Color(255, 255, 255));
-        lblCarId.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        lblCarId.setForeground(new java.awt.Color(255, 255, 255));
-        lblCarId.setText("Car ID:");
+        lblCarId.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        lblCarId.setForeground(new java.awt.Color(204, 0, 255));
+        lblCarId.setText("ID:");
         lblCarId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout pnlPreviewLayout = new javax.swing.GroupLayout(pnlPreview);
@@ -610,7 +614,7 @@ public class CarMenu extends javax.swing.JFrame {
                             .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblDailyRate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblSeat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblTransmission, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
+                            .addComponent(lblTransmission, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(lblCarId))
                 .addGap(240, 240, 240))
         );
@@ -657,8 +661,8 @@ public class CarMenu extends javax.swing.JFrame {
             pnlDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlDisplayLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlPreview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlPreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(28, 28, 28))
         );
         pnlDisplayLayout.setVerticalGroup(
             pnlDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -674,21 +678,17 @@ public class CarMenu extends javax.swing.JFrame {
             .addComponent(pnlRecord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlContentLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContentLayout.createSequentialGroup()
-                        .addComponent(pnlAction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addComponent(pnlDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(pnlDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlAction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlContentLayout.setVerticalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlContentLayout.createSequentialGroup()
-                .addComponent(pnlRecord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlRecord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlAction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlAction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -703,7 +703,9 @@ public class CarMenu extends javax.swing.JFrame {
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlSideNav, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnlMainLayout.createSequentialGroup()
+                .addComponent(pnlContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -716,9 +718,7 @@ public class CarMenu extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, 750, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, 783, Short.MAX_VALUE)
         );
 
         pack();
@@ -734,8 +734,7 @@ public class CarMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCustomerActionPerformed
 
     private void btnCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarActionPerformed
-        new CarMenu().setVisible(true);
-        this.dispose();
+        
     }//GEN-LAST:event_btnCarActionPerformed
 
     private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
@@ -764,13 +763,13 @@ public class CarMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String keyword = txtSearch.getText().trim();
         if (keyword.isEmpty()) {
-            Message.error("Please enter a movie title to search.");
+            Message.error("Please enter a brand or model to search.");
             return;
         }
         populateCarRecord(keyword);
@@ -811,7 +810,7 @@ public class CarMenu extends javax.swing.JFrame {
                 selectedCarId = Integer.parseInt(tblRecord.getValueAt(row, 0).toString());
 
                 // Append values to preview labels for preview purposes.
-                lblCarId.setText("Car ID: " + selectedCarId);
+                lblCarId.setText("ID: " + selectedCarId);
                 lblPlateNo.setText("Plate No: " + tblRecord.getValueAt(row, 1).toString());
                 lblBrand.setText("Brand: " + tblRecord.getValueAt(row, 2).toString());
                 lblModel.setText("Model: " + tblRecord.getValueAt(row, 3).toString());

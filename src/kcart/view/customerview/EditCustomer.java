@@ -47,7 +47,7 @@ public class EditCustomer extends javax.swing.JFrame {
         btnEdit = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
@@ -247,17 +247,14 @@ public class EditCustomer extends javax.swing.JFrame {
         lblSecondaryIDImage.setBackground(new java.awt.Color(255, 255, 255));
         lblSecondaryIDImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblSecondaryIDImage.setForeground(new java.awt.Color(255, 255, 255));
-        lblSecondaryIDImage.setText("<insert photo>");
 
         lblDriverLicenseImage.setBackground(new java.awt.Color(255, 255, 255));
         lblDriverLicenseImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblDriverLicenseImage.setForeground(new java.awt.Color(255, 255, 255));
-        lblDriverLicenseImage.setText("<insert photo>");
 
         lblPhotoImage.setBackground(new java.awt.Color(255, 255, 255));
         lblPhotoImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPhotoImage.setForeground(new java.awt.Color(255, 255, 255));
-        lblPhotoImage.setText("<insert photo>");
 
         btnImportSecondaryID.setBackground(new java.awt.Color(255, 255, 255));
         btnImportSecondaryID.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -283,22 +280,22 @@ public class EditCustomer extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblDriverLicense)
-                    .addComponent(btnImportDriverLicense, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnImportDriverLicense))
                 .addGap(12, 12, 12)
                 .addComponent(lblDriverLicenseImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblSecondaryID, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnImportSecondaryID, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSecondaryID)
+                    .addComponent(btnImportSecondaryID))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSecondaryIDImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblPhoto)
-                    .addComponent(btnImportPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnImportPhoto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         pnlContent2Layout.setVerticalGroup(
             pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,7 +317,7 @@ public class EditCustomer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnImportSecondaryID))
                     .addComponent(lblSecondaryIDImage, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
@@ -366,7 +363,7 @@ public class EditCustomer extends javax.swing.JFrame {
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 137, Short.MAX_VALUE))
+                .addGap(0, 158, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -418,7 +415,7 @@ public class EditCustomer extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**

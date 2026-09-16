@@ -34,10 +34,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="pnlMain" pref="750" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
-          </Group>
+          <Component id="pnlMain" pref="783" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -65,7 +62,10 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="pnlSideNav" alignment="0" max="32767" attributes="0"/>
-              <Component id="pnlContent" alignment="0" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="pnlContent" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -321,25 +321,19 @@
                   <Component id="pnlRecord" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="pnlAction" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="pnlDisplay" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="pnlDisplay" max="32767" attributes="0"/>
                   </Group>
+                  <Component id="pnlAction" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="pnlRecord" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlRecord" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="pnlDisplay" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlDisplay" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="pnlAction" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="pnlAction" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -388,9 +382,9 @@
                           <Component id="lblHeader" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnSearch" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btnSearch" alignment="0" pref="25" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtSearch" alignment="3" pref="25" max="32767" attributes="0"/>
+                                  <Component id="txtSearch" alignment="3" max="32767" attributes="0"/>
                                   <Component id="cmbSort" alignment="3" max="32767" attributes="0"/>
                                   <Component id="tglSort" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                               </Group>
@@ -520,10 +514,11 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="3">
-                        <StringItem index="0" value="Sort by Daily Rate"/>
-                        <StringItem index="1" value="Sort by Year"/>
-                        <StringItem index="2" value="Sort by Seat"/>
+                      <StringArray count="4">
+                        <StringItem index="0" value="Sort by Date"/>
+                        <StringItem index="1" value="Sort by Daily Rate"/>
+                        <StringItem index="2" value="Sort by Year"/>
+                        <StringItem index="3" value="Sort by Seat"/>
                       </StringArray>
                     </Property>
                     <Property name="focusable" type="boolean" value="false"/>
@@ -594,9 +589,12 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnAdd" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                          <Component id="btnEdit" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnAdd" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="btnEdit" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="39" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -651,9 +649,9 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="pnlPreview" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <Component id="pnlPreview" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -701,7 +699,7 @@
                                           <Component id="lblStatus" alignment="0" max="32767" attributes="0"/>
                                           <Component id="lblDailyRate" alignment="0" max="32767" attributes="0"/>
                                           <Component id="lblSeat" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="lblTransmission" alignment="0" pref="213" max="32767" attributes="0"/>
+                                          <Component id="lblTransmission" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Component id="lblCarId" min="-2" max="-2" attributes="0"/>
@@ -999,12 +997,12 @@
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="SansSerif" size="12" style="0"/>
+                          <Font name="SansSerif" size="12" style="1"/>
                         </Property>
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                          <Color blue="ff" green="0" red="cc" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Car ID:"/>
+                        <Property name="text" type="java.lang.String" value="ID:"/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                           <Color id="Default Cursor"/>
                         </Property>

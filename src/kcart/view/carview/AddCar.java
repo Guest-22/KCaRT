@@ -401,6 +401,38 @@ public class AddCar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Validation Methods.
+    // Check if inputted year is a valid year (1900 - current year).
+    private boolean isValidYear(String str) {
+        try {
+            int year = Integer.parseInt(str);
+            int currentYear = java.time.Year.now().getValue();
+            return (year >= 1900 && year <= currentYear);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    // Check if string is an int.
+    private boolean isInteger(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    // Check if string is a double.
+    private boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try {
             // Basic validation; photo is nullable.
@@ -414,7 +446,24 @@ public class AddCar extends javax.swing.JFrame {
                 Message.error("Please fill in all required fields.");
                 return;
             }
-            // Store values from textfields and comboboxes.
+
+            // Numeric validation of int & double.
+            if (!isValidYear(txtYear.getText().trim())) {
+                int currentYear = java.time.Year.now().getValue();
+                Message.error("Year must be a number between 1900 and " + currentYear + ".");
+                return;
+            }
+
+            if (!isInteger(txtSeat.getText().trim())) {
+                Message.error("Seat capacity must be a whole number.");
+                return;
+            }
+            if (!isDouble(txtDailyRate.getText().trim())) {
+                Message.error("Daily rate must be a valid number.");
+                return;
+            }
+
+            // Store values from textfields and comboboxes to their respective vars.
             String plateNo = txtPlateNo.getText().trim();
             String brand = txtBrand.getText().trim();
             String model = txtModel.getText().trim();
@@ -444,7 +493,7 @@ public class AddCar extends javax.swing.JFrame {
                 photoBytes = baos.toByteArray();
             }
 
-            // Build Car object (carId auto-increment, createdAt handled by DB).
+            // Build Car object (carId auto-increment, createdAt auto-timestamp).
             Car car = new Car(
                     plateNo, brand, model, carType,
                     year, color, transmission, fuel,
@@ -464,7 +513,7 @@ public class AddCar extends javax.swing.JFrame {
                 Message.error("Failed to add car.");
             }
         } catch (Exception e) {
-            // Message.error("Error adding car:\n" + e.getMessage());
+            Message.error("Error adding car:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -474,7 +523,11 @@ public class AddCar extends javax.swing.JFrame {
 
     private void btnImportPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportPhotoActionPerformed
         try {
-            JFileChooser fileChooser = new JFileChooser();
+            // Point to user's Downloads folder.
+            String userHome = System.getProperty("user.home");
+            java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
+
+            JFileChooser fileChooser = new JFileChooser(downloadsDir);
             fileChooser.setDialogTitle("Select Car Photo");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
@@ -491,7 +544,7 @@ public class AddCar extends javax.swing.JFrame {
                 ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
                 java.awt.Image img = originalIcon.getImage();
 
-                // Scale image to fit lblCarPhoto size.
+                // Scale image to fit lblCarImage size.
                 java.awt.Image scaledImg = img.getScaledInstance(
                         lblCarImage.getWidth(),
                         lblCarImage.getHeight(),

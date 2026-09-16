@@ -1,5 +1,13 @@
 package kcart.view.customerview;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import kcart.dao.CustomerDAO;
+import kcart.daoimpl.CustomerDAOImpl;
+import kcart.model.Customer;
+import kcart.util.Message;
+
 public class AddCustomer extends javax.swing.JFrame {
 
     public AddCustomer() {
@@ -38,7 +46,7 @@ public class AddCustomer extends javax.swing.JFrame {
         btnImportPhoto = new javax.swing.JButton();
         btnImportDriverLicense = new javax.swing.JButton();
         lblPhoto = new javax.swing.JLabel();
-        lblSecondaryIDImage = new javax.swing.JLabel();
+        lblSecondaryIdImage = new javax.swing.JLabel();
         lblDriverLicenseImage = new javax.swing.JLabel();
         lblPhotoImage = new javax.swing.JLabel();
         btnImportSecondaryID = new javax.swing.JButton();
@@ -47,7 +55,7 @@ public class AddCustomer extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
@@ -244,20 +252,17 @@ public class AddCustomer extends javax.swing.JFrame {
         lblPhoto.setText("Photo:");
         lblPhoto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblSecondaryIDImage.setBackground(new java.awt.Color(255, 255, 255));
-        lblSecondaryIDImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lblSecondaryIDImage.setForeground(new java.awt.Color(255, 255, 255));
-        lblSecondaryIDImage.setText("<insert photo>");
+        lblSecondaryIdImage.setBackground(new java.awt.Color(255, 255, 255));
+        lblSecondaryIdImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblSecondaryIdImage.setForeground(new java.awt.Color(255, 255, 255));
 
         lblDriverLicenseImage.setBackground(new java.awt.Color(255, 255, 255));
         lblDriverLicenseImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblDriverLicenseImage.setForeground(new java.awt.Color(255, 255, 255));
-        lblDriverLicenseImage.setText("<insert photo>");
 
         lblPhotoImage.setBackground(new java.awt.Color(255, 255, 255));
         lblPhotoImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblPhotoImage.setForeground(new java.awt.Color(255, 255, 255));
-        lblPhotoImage.setText("<insert photo>");
 
         btnImportSecondaryID.setBackground(new java.awt.Color(255, 255, 255));
         btnImportSecondaryID.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -283,22 +288,22 @@ public class AddCustomer extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblDriverLicense)
-                    .addComponent(btnImportDriverLicense, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnImportDriverLicense))
                 .addGap(12, 12, 12)
                 .addComponent(lblDriverLicenseImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblSecondaryID, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnImportSecondaryID, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSecondaryID)
+                    .addComponent(btnImportSecondaryID))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblSecondaryIDImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblSecondaryIdImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblPhoto)
-                    .addComponent(btnImportPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnImportPhoto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addComponent(lblPhotoImage, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addGap(21, 21, 21))
         );
         pnlContent2Layout.setVerticalGroup(
             pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,7 +314,6 @@ public class AddCustomer extends javax.swing.JFrame {
                         .addComponent(lblPhoto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnImportPhoto))
-                    .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlContent2Layout.createSequentialGroup()
                         .addComponent(lblDriverLicense)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -319,8 +323,11 @@ public class AddCustomer extends javax.swing.JFrame {
                         .addComponent(lblSecondaryID)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnImportSecondaryID))
-                    .addComponent(lblSecondaryIDImage, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+                    .addComponent(lblSecondaryIdImage, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
+            .addGroup(pnlContent2Layout.createSequentialGroup()
+                .addComponent(lblPhotoImage, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
@@ -366,7 +373,7 @@ public class AddCustomer extends javax.swing.JFrame {
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 137, Short.MAX_VALUE))
+                .addGap(0, 160, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -402,23 +409,239 @@ public class AddCustomer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnImportPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportPhotoActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Point to user's Downloads folder.
+            String userHome = System.getProperty("user.home");
+            java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
+
+            JFileChooser fileChooser = new JFileChooser(downloadsDir);
+            fileChooser.setDialogTitle("Select Customer Photo");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+            // Filter only image files.
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                    "Image files", "jpg", "jpeg", "png", "gif"
+            ));
+
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                java.io.File file = fileChooser.getSelectedFile();
+
+                // Load image
+                ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+                java.awt.Image img = originalIcon.getImage();
+
+                // Scale image to fit lblDriverLicenseImage size.
+                java.awt.Image scaledImg = img.getScaledInstance(
+                        lblPhotoImage.getWidth(),
+                        lblPhotoImage.getHeight(),
+                        java.awt.Image.SCALE_SMOOTH
+                );
+
+                // Set scaled image as icon.
+                lblPhotoImage.setIcon(new ImageIcon(scaledImg));
+
+                Message.show("Photo imported successfully!", "Import");
+            }
+        } catch (Exception e) {
+            Message.error("Error importing photo:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnImportPhotoActionPerformed
 
     private void btnImportDriverLicenseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportDriverLicenseActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Point to user's Downloads folder.
+            String userHome = System.getProperty("user.home");
+            java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
+
+            JFileChooser fileChooser = new JFileChooser(downloadsDir);
+            fileChooser.setDialogTitle("Select Secondary ID Photo");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+            // Filter only image files.
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                    "Image files", "jpg", "jpeg", "png", "gif"
+            ));
+
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                java.io.File file = fileChooser.getSelectedFile();
+
+                // Load image.
+                ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+                java.awt.Image img = originalIcon.getImage();
+
+                // Scale image to fit lblDriverLicenseImage size.
+                java.awt.Image scaledImg = img.getScaledInstance(
+                        lblDriverLicenseImage.getWidth(),
+                        lblDriverLicenseImage.getHeight(),
+                        java.awt.Image.SCALE_SMOOTH
+                );
+
+                // Set scaled image as icon.
+                lblDriverLicenseImage.setIcon(new ImageIcon(scaledImg));
+
+                Message.show("Photo imported successfully!", "Import");
+            }
+        } catch (Exception e) {
+            Message.error("Error importing photo:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnImportDriverLicenseActionPerformed
 
     private void btnImportSecondaryIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportSecondaryIDActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Point to user's Downloads folder.
+            String userHome = System.getProperty("user.home");
+            java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
+
+            JFileChooser fileChooser = new JFileChooser(downloadsDir);
+            fileChooser.setDialogTitle("Select Driver License Photo");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+            // Filter only image files.
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                    "Image files", "jpg", "jpeg", "png", "gif"
+            ));
+
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                java.io.File file = fileChooser.getSelectedFile();
+
+                // Load image
+                ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+                java.awt.Image img = originalIcon.getImage();
+
+                // Scale image to fit lblDriverLicenseImage size.
+                java.awt.Image scaledImg = img.getScaledInstance(
+                        lblSecondaryIdImage.getWidth(),
+                        lblSecondaryIdImage.getHeight(),
+                        java.awt.Image.SCALE_SMOOTH
+                );
+
+                // Set scaled image as icon.
+                lblSecondaryIdImage.setIcon(new ImageIcon(scaledImg));
+
+                Message.show("Photo imported successfully!", "Import");
+            }
+        } catch (Exception e) {
+            Message.error("Error importing photo:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnImportSecondaryIDActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        try {
+            // Basic input validation.
+            if (txtFirstName.getText().trim().isEmpty()
+                    || txtLastName.getText().trim().isEmpty()
+                    || txtContact.getText().trim().isEmpty()
+                    || txtEmail.getText().trim().isEmpty()
+                    || txtaAddress.getText().trim().isEmpty()) {
+                Message.error("Please fill in all required fields.");
+                return;
+            }
 
+            // Validate empty image; images are required.
+            if (lblDriverLicenseImage.getIcon() == null) {
+                Message.error("Driver License image is required.");
+                return;
+            }
+            if (lblSecondaryIdImage.getIcon() == null) {
+                Message.error("Secondary ID image is required.");
+                return;
+            }
+            if (lblPhotoImage.getIcon() == null) {
+                Message.error("Customer photo is required.");
+                return;
+            }
+            
+            // Store values from textfields and comboboxes.
+            String firstName = txtFirstName.getText().trim();
+            String middleName = txtMiddleName.getText().trim(); // Optional/nullable.
+            String lastName = txtLastName.getText().trim();
+            String contactNo = txtContact.getText().trim();
+            String email = txtEmail.getText().trim();
+            String address = txtaAddress.getText().trim();
+            String status = cmbStatus.getSelectedItem().toString();
+
+            // Handle Driver License image.
+            byte[] driverLicenseBytes = null;
+            Icon dlIcon = lblDriverLicenseImage.getIcon();
+            if (dlIcon != null && dlIcon instanceof ImageIcon) {
+                ImageIcon imgIcon = (ImageIcon) dlIcon;
+                java.awt.Image img = imgIcon.getImage();
+                java.awt.image.BufferedImage bImg = new java.awt.image.BufferedImage(
+                        img.getWidth(null), img.getHeight(null), java.awt.image.BufferedImage.TYPE_INT_RGB);
+                java.awt.Graphics2D g2 = bImg.createGraphics();
+                g2.drawImage(img, 0, 0, null);
+                g2.dispose();
+
+                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                javax.imageio.ImageIO.write(bImg, "jpg", baos);
+                driverLicenseBytes = baos.toByteArray();
+            }
+
+            // Handle Secondary ID image.
+            byte[] secondaryIdBytes = null;
+            Icon secIcon = lblSecondaryIdImage.getIcon();
+            if (secIcon != null && secIcon instanceof ImageIcon) {
+                ImageIcon imgIcon = (ImageIcon) secIcon;
+                java.awt.Image img = imgIcon.getImage();
+                java.awt.image.BufferedImage bImg = new java.awt.image.BufferedImage(
+                        img.getWidth(null), img.getHeight(null), java.awt.image.BufferedImage.TYPE_INT_RGB);
+                java.awt.Graphics2D g2 = bImg.createGraphics();
+                g2.drawImage(img, 0, 0, null);
+                g2.dispose();
+
+                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                javax.imageio.ImageIO.write(bImg, "jpg", baos);
+                secondaryIdBytes = baos.toByteArray();
+            }
+
+            // Handle Customer Photo image.
+            byte[] photoBytes = null;
+            Icon photoIcon = lblPhotoImage.getIcon();
+            if (photoIcon != null && photoIcon instanceof ImageIcon) {
+                ImageIcon imgIcon = (ImageIcon) photoIcon;
+                java.awt.Image img = imgIcon.getImage();
+                java.awt.image.BufferedImage bImg = new java.awt.image.BufferedImage(
+                        img.getWidth(null), img.getHeight(null), java.awt.image.BufferedImage.TYPE_INT_RGB);
+                java.awt.Graphics2D g2 = bImg.createGraphics();
+                g2.drawImage(img, 0, 0, null);
+                g2.dispose();
+
+                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                javax.imageio.ImageIO.write(bImg, "jpg", baos);
+                photoBytes = baos.toByteArray();
+            }
+
+            // Build Customer object (customer_id auto-increment, created_at auto-timestamp).
+            Customer customer = new Customer(
+                    firstName, middleName, lastName,
+                    contactNo, email, address,
+                    status
+            );
+            customer.setDriverLicense(driverLicenseBytes);
+            customer.setSecondaryId(secondaryIdBytes);
+            customer.setCustomerPhoto(photoBytes);
+
+            // Stores the input to DB.
+            CustomerDAO customerDao = new CustomerDAOImpl();
+            boolean success = customerDao.addCustomer(customer);
+
+            // Show message whether it succeeded or failed.
+            if (success) {
+                Message.show("Customer added successfully!", "Success");
+                this.dispose(); // close Add Customer UI after success.
+            } else {
+                Message.error("Failed to add customer.");
+            }
+        } catch (Exception e) {
+            // Message.error("Error adding customer:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
@@ -475,7 +698,7 @@ public class AddCustomer extends javax.swing.JFrame {
     private javax.swing.JLabel lblPhoto;
     private javax.swing.JLabel lblPhotoImage;
     private javax.swing.JLabel lblSecondaryID;
-    private javax.swing.JLabel lblSecondaryIDImage;
+    private javax.swing.JLabel lblSecondaryIdImage;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JPanel pnlContent1;
     private javax.swing.JPanel pnlContent2;

@@ -16,6 +16,34 @@ public class Customer {
     private String customerStatus;
     private java.sql.Timestamp createdAt;
 
+    // Constructor for adding new customer (ID auto-increment, createdAt auto-timestamp).
+    public Customer(String firstName, String middleName, String lastName,
+            String contactNo, String email, String address,
+            String customerStatus) {
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.contactNo = contactNo;
+        this.email = email;
+        this.address = address;
+        this.customerStatus = customerStatus;
+    }
+
+    // Constructor for retrieving list of customers from the DB.
+    public Customer(int customerId, String firstName, String middleName, String lastName,
+            String contactNo, String email, String address,
+            String customerStatus, Timestamp createdAt) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.contactNo = contactNo;
+        this.email = email;
+        this.address = address;
+        this.customerStatus = customerStatus;
+        this.createdAt = createdAt;
+    }
+
     public int getCustomerId() {
         return customerId;
     }

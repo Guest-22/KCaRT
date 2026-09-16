@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import kcart.util.Message;
 
 public class CarDAOImpl implements CarDAO {
-
     private static final String TABLE_NAME = "tbl_car";
     private static final String COL_ID = "car_id";
     private static final String COL_PLATE_NO = "plate_no";
