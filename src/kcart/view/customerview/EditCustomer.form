@@ -433,7 +433,7 @@
                           <Component id="btnImportSecondaryID" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblSecondaryIDImage" min="-2" pref="240" max="-2" attributes="0"/>
+                      <Component id="lblSecondaryIdImage" min="-2" pref="240" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="lblPhoto" min="-2" max="-2" attributes="0"/>
@@ -467,7 +467,7 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="btnImportSecondaryID" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="lblSecondaryIDImage" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
+                          <Component id="lblSecondaryIdImage" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="19" max="32767" attributes="0"/>
                   </Group>
@@ -539,7 +539,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblSecondaryIDImage">
+            <Component class="javax.swing.JLabel" name="lblSecondaryIdImage">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>

@@ -1,9 +1,74 @@
 package kcart.view.customerview;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import kcart.dao.CustomerDAO;
+import kcart.daoimpl.CustomerDAOImpl;
+import kcart.model.Customer;
+import kcart.util.ImageUtil;
+import kcart.util.Message;
+
 public class EditCustomer extends javax.swing.JFrame {
 
+    private int customerId;
+
     public EditCustomer() {
+        
+    }
+
+    public EditCustomer(int customerId) {
+        this.customerId = customerId;
         initComponents();
+        loadCustomerDetails();
+    }
+
+    private void loadCustomerDetails() {
+        CustomerDAO customerDao = new CustomerDAOImpl();
+        Customer customer = customerDao.getCustomerById(customerId);
+
+        if (customer != null) {
+            txtFirstName.setText(customer.getFirstName());
+            txtMiddleName.setText(customer.getMiddleName());
+            txtLastName.setText(customer.getLastName());
+            txtContact.setText(customer.getContactNo());
+            txtEmail.setText(customer.getEmail());
+            txtaAddress.setText(customer.getAddress());
+            cmbStatus.setSelectedItem(customer.getCustomerStatus());
+
+            // Driver License
+            if (customer.getDriverLicense() != null) {
+                ImageIcon icon = new ImageIcon(customer.getDriverLicense());
+                Image scaled = icon.getImage().getScaledInstance(
+                        lblDriverLicenseImage.getWidth(),
+                        lblDriverLicenseImage.getHeight(),
+                        Image.SCALE_SMOOTH
+                );
+                lblDriverLicenseImage.setIcon(new ImageIcon(scaled));
+            }
+
+            // Secondary ID
+            if (customer.getSecondaryId() != null) {
+                ImageIcon icon = new ImageIcon(customer.getSecondaryId());
+                Image scaled = icon.getImage().getScaledInstance(
+                        lblSecondaryIdImage.getWidth(),
+                        lblSecondaryIdImage.getHeight(),
+                        Image.SCALE_SMOOTH
+                );
+                lblSecondaryIdImage.setIcon(new ImageIcon(scaled));
+            }
+
+            // Customer Photo
+            if (customer.getCustomerPhoto() != null) {
+                ImageIcon icon = new ImageIcon(customer.getCustomerPhoto());
+                Image scaled = icon.getImage().getScaledInstance(
+                        lblPhotoImage.getWidth(),
+                        lblPhotoImage.getHeight(),
+                        Image.SCALE_SMOOTH
+                );
+                lblPhotoImage.setIcon(new ImageIcon(scaled));
+            }
+        }
     }
 
     /**
@@ -38,7 +103,7 @@ public class EditCustomer extends javax.swing.JFrame {
         btnImportPhoto = new javax.swing.JButton();
         btnImportDriverLicense = new javax.swing.JButton();
         lblPhoto = new javax.swing.JLabel();
-        lblSecondaryIDImage = new javax.swing.JLabel();
+        lblSecondaryIdImage = new javax.swing.JLabel();
         lblDriverLicenseImage = new javax.swing.JLabel();
         lblPhotoImage = new javax.swing.JLabel();
         btnImportSecondaryID = new javax.swing.JButton();
@@ -244,9 +309,9 @@ public class EditCustomer extends javax.swing.JFrame {
         lblPhoto.setText("Photo:");
         lblPhoto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblSecondaryIDImage.setBackground(new java.awt.Color(255, 255, 255));
-        lblSecondaryIDImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lblSecondaryIDImage.setForeground(new java.awt.Color(255, 255, 255));
+        lblSecondaryIdImage.setBackground(new java.awt.Color(255, 255, 255));
+        lblSecondaryIdImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblSecondaryIdImage.setForeground(new java.awt.Color(255, 255, 255));
 
         lblDriverLicenseImage.setBackground(new java.awt.Color(255, 255, 255));
         lblDriverLicenseImage.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -288,7 +353,7 @@ public class EditCustomer extends javax.swing.JFrame {
                     .addComponent(lblSecondaryID)
                     .addComponent(btnImportSecondaryID))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblSecondaryIDImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblSecondaryIdImage, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblPhoto)
@@ -316,7 +381,7 @@ public class EditCustomer extends javax.swing.JFrame {
                         .addComponent(lblSecondaryID)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnImportSecondaryID))
-                    .addComponent(lblSecondaryIDImage, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSecondaryIdImage, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -399,19 +464,188 @@ public class EditCustomer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnImportPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportPhotoActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Point to user's Downloads folder.
+            String userHome = System.getProperty("user.home");
+            java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
+
+            JFileChooser fileChooser = new JFileChooser(downloadsDir);
+            fileChooser.setDialogTitle("Select Customer Photo");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+            // Filter only image files.
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                    "Image files", "jpg", "jpeg", "png", "gif"
+            ));
+
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                java.io.File file = fileChooser.getSelectedFile();
+
+                // Load image.
+                ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+                java.awt.Image img = originalIcon.getImage();
+
+                // Scale image to fit lblDriverLicenseImage size.
+                java.awt.Image scaledImg = img.getScaledInstance(
+                        lblDriverLicenseImage.getWidth(),
+                        lblDriverLicenseImage.getHeight(),
+                        java.awt.Image.SCALE_SMOOTH
+                );
+
+                // Set scaled image as icon.
+                lblDriverLicenseImage.setIcon(new ImageIcon(scaledImg));
+
+                Message.show("Photo imported successfully!", "Import");
+            }
+        } catch (Exception e) {
+            Message.error("Error importing photo:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnImportPhotoActionPerformed
 
     private void btnImportDriverLicenseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportDriverLicenseActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Point to user's Downloads folder.
+            String userHome = System.getProperty("user.home");
+            java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
+
+            JFileChooser fileChooser = new JFileChooser(downloadsDir);
+            fileChooser.setDialogTitle("Select Driver License Photo");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+            // Filter only image files.
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                    "Image files", "jpg", "jpeg", "png", "gif"
+            ));
+
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                java.io.File file = fileChooser.getSelectedFile();
+
+                // Load image.
+                ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+                java.awt.Image img = originalIcon.getImage();
+
+                // Scale image to fit lblDriverLicenseImage size.
+                java.awt.Image scaledImg = img.getScaledInstance(
+                        lblDriverLicenseImage.getWidth(),
+                        lblDriverLicenseImage.getHeight(),
+                        java.awt.Image.SCALE_SMOOTH
+                );
+
+                // Set scaled image as icon.
+                lblDriverLicenseImage.setIcon(new ImageIcon(scaledImg));
+
+                Message.show("Photo imported successfully!", "Import");
+            }
+        } catch (Exception e) {
+            Message.error("Error importing photo:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnImportDriverLicenseActionPerformed
 
     private void btnImportSecondaryIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportSecondaryIDActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Point to user's Downloads folder.
+            String userHome = System.getProperty("user.home");
+            java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
+
+            JFileChooser fileChooser = new JFileChooser(downloadsDir);
+            fileChooser.setDialogTitle("Select Secondary ID Photo");
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+            // Filter only image files.
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                    "Image files", "jpg", "jpeg", "png", "gif"
+            ));
+
+            int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                java.io.File file = fileChooser.getSelectedFile();
+
+                // Load image.
+                ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
+                java.awt.Image img = originalIcon.getImage();
+
+                // Scale image to fit lblDriverLicenseImage size.
+                java.awt.Image scaledImg = img.getScaledInstance(
+                        lblDriverLicenseImage.getWidth(),
+                        lblDriverLicenseImage.getHeight(),
+                        java.awt.Image.SCALE_SMOOTH
+                );
+
+                // Set scaled image as icon.
+                lblDriverLicenseImage.setIcon(new ImageIcon(scaledImg));
+
+                Message.show("Photo imported successfully!", "Import");
+            }
+        } catch (Exception e) {
+            Message.error("Error importing photo:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnImportSecondaryIDActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        try {
+        // Validation: ensure required fields are not empty; middle name is optional/nullable.
+        if (txtFirstName.getText().trim().isEmpty() ||
+            txtLastName.getText().trim().isEmpty() ||
+            txtContact.getText().trim().isEmpty() ||
+            txtEmail.getText().trim().isEmpty() ||
+            txtaAddress.getText().trim().isEmpty()) {
 
+            Message.error("Please fill in all required fields before editing.");
+            return;
+        }
+
+        // Validate required images.
+        if (lblDriverLicenseImage.getIcon() == null) {
+            Message.error("Driver License image is required.");
+            return;
+        }
+        if (lblSecondaryIdImage.getIcon() == null) {
+            Message.error("Secondary ID image is required.");
+            return;
+        }
+        if (lblPhotoImage.getIcon() == null) {
+            Message.error("Customer photo is required.");
+            return;
+        }
+
+        // Collect values
+        String firstName = txtFirstName.getText().trim();
+        String middleName = txtMiddleName.getText().trim();
+        String lastName = txtLastName.getText().trim();
+        String contactNo = txtContact.getText().trim();
+        String email = txtEmail.getText().trim();
+        String address = txtaAddress.getText().trim();
+        String status = cmbStatus.getSelectedItem().toString();
+
+        // Convert images to byte[],
+        byte[] driverLicenseBytes = ImageUtil.iconToBytes(lblDriverLicenseImage.getIcon());
+        byte[] secondaryIdBytes = ImageUtil.iconToBytes(lblSecondaryIdImage.getIcon());
+        byte[] photoBytes = ImageUtil.iconToBytes(lblPhotoImage.getIcon());
+
+        // Build Customer object with customerId.
+        Customer customer = new Customer(
+            customerId, firstName, middleName, lastName,
+            contactNo, email, address, status, null, null, null, null
+        );
+        customer.setDriverLicense(driverLicenseBytes);
+        customer.setSecondaryId(secondaryIdBytes);
+        customer.setCustomerPhoto(photoBytes);
+
+            // Call DAO
+            CustomerDAO customerDao = new CustomerDAOImpl();
+            boolean success = customerDao.editCustomer(customer);
+
+            if (success) {
+                Message.show("Customer updated successfully!", "Success");
+                this.dispose(); // close Edit Customer UI upon success.
+            } else {
+                Message.error("Failed to update customer.");
+            }
+        } catch (Exception e) {
+            Message.error("Error editing customer:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -472,7 +706,7 @@ public class EditCustomer extends javax.swing.JFrame {
     private javax.swing.JLabel lblPhoto;
     private javax.swing.JLabel lblPhotoImage;
     private javax.swing.JLabel lblSecondaryID;
-    private javax.swing.JLabel lblSecondaryIDImage;
+    private javax.swing.JLabel lblSecondaryIdImage;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JPanel pnlContent1;
     private javax.swing.JPanel pnlContent2;

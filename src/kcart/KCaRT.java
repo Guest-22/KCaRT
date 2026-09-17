@@ -31,7 +31,7 @@ public class KCaRT {
 
         // Pre-loads UI; avoid glitches.
         javax.swing.SwingUtilities.invokeLater(() -> {
-            new CustomerMenu().setVisible(true);
+            new CarMenu().setVisible(true);
         });
     }
 }

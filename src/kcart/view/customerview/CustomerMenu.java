@@ -1,3 +1,4 @@
+
 package kcart.view.customerview;
 
 import java.awt.Color;
@@ -17,8 +18,9 @@ import kcart.view.returnview.ReturnMenu;
 import kcart.view.billingview.BillingMenu;
 import kcart.view.userview.UserMenu;
 
-public class CustomerMenu extends javax.swing.JFrame {
 
+public class CustomerMenu extends javax.swing.JFrame {
+    private int selectedCustomerId = -1;
     public CustomerMenu() {
         initComponents();
 
@@ -64,12 +66,12 @@ public class CustomerMenu extends javax.swing.JFrame {
                     break;
             }
 
-            // Reverse if DESC
+            // Reverse if DESC.
             if (selectedOrder.equals("DESC")) {
                 Collections.reverse(customers);
             }
 
-            // Populate table with customer records
+            // Populate table with customer records.
             for (Customer c : customers) {
                 Object[] row = {
                     c.getCustomerId(),
@@ -96,7 +98,7 @@ public class CustomerMenu extends javax.swing.JFrame {
             tblRecord.getColumnModel().getColumn(8).setWidth(0);
 
         } catch (Exception e) {
-            Message.error("Error loading customer table:\n" + e.getMessage());
+            // Message.error("Error loading customer table:\n" + e.getMessage());
         }
     }
 
@@ -321,6 +323,11 @@ public class CustomerMenu extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblRecord.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRecordMouseClicked(evt);
             }
         });
         scrlRecord.setViewportView(tblRecord);
@@ -580,43 +587,61 @@ public class CustomerMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        new EditCustomer().setVisible(true);
+        if (selectedCustomerId <= 0) { // No row selected.
+            Message.error("Please select a car record first.");
+            return;
+        }
+
+        // If valid, open EditCar form.
+        new EditCustomer(selectedCustomerId).setVisible(true);
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void tblRecordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRecordMouseClicked
+        try {
+            int row = tblRecord.getSelectedRow();
+            if (row >= 0) {
+                // Store selected ID.
+                selectedCustomerId = Integer.parseInt(tblRecord.getValueAt(row, 0).toString());
+            }
+        } catch (Exception e) {
+            // Message.error("Something went wrong: " + e.getMessage());
+        }
+    }//GEN-LAST:event_tblRecordMouseClicked
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CustomerMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CustomerMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CustomerMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CustomerMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CustomerMenu().setVisible(true);
-            }
-        });
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(CustomerMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(CustomerMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(CustomerMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(CustomerMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            new CustomerMenu().setVisible(true);
+        }
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;

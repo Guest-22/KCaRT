@@ -95,5 +95,69 @@ public class CustomerDAOImpl implements CustomerDAO {
             return list;
         }
     }
-    
+
+    @Override
+    public Customer getCustomerById(int customerId) {
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_ID + " = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, customerId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Customer(
+                            rs.getInt(COL_ID),
+                            rs.getString(COL_FIRST_NAME),
+                            rs.getString(COL_MIDDLE_NAME),
+                            rs.getString(COL_LAST_NAME),
+                            rs.getString(COL_CONTACT_NO),
+                            rs.getString(COL_EMAIL),
+                            rs.getString(COL_ADDRESS),
+                            rs.getString(COL_STATUS),
+                            rs.getBytes(COL_DRIVER_LICENSE),
+                            rs.getBytes(COL_SECONDARY_ID),
+                            rs.getBytes(COL_PHOTO),
+                            rs.getTimestamp(COL_CREATED_AT)
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving customer by ID:\n" + e.getMessage());
+        }
+        return null;
+    }
+
+    // Update customer information based off customer_id given in the customer model.
+    @Override
+    public boolean editCustomer(Customer customer) {
+        String sql = "UPDATE " + TABLE_NAME + " SET "
+                + COL_FIRST_NAME + " = ?, "
+                + COL_MIDDLE_NAME + " = ?, "
+                + COL_LAST_NAME + " = ?, "
+                + COL_CONTACT_NO + " = ?, "
+                + COL_EMAIL + " = ?, "
+                + COL_ADDRESS + " = ?, "
+                + COL_DRIVER_LICENSE + " = ?, "
+                + COL_SECONDARY_ID + " = ?, "
+                + COL_PHOTO + " = ?, "
+                + COL_STATUS + " = ? "
+                + "WHERE " + COL_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, customer.getFirstName());
+            stmt.setString(2, customer.getMiddleName());
+            stmt.setString(3, customer.getLastName());
+            stmt.setString(4, customer.getContactNo());
+            stmt.setString(5, customer.getEmail());
+            stmt.setString(6, customer.getAddress());
+            stmt.setBytes(7, customer.getDriverLicense());
+            stmt.setBytes(8, customer.getSecondaryId());
+            stmt.setBytes(9, customer.getCustomerPhoto());
+            stmt.setString(10, customer.getCustomerStatus());
+            stmt.setInt(11, customer.getCustomerId());
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            Message.error("Error editing customer:\n" + e.getMessage());
+            return false;
+        }
+    }
 }

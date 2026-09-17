@@ -20,7 +20,6 @@ import kcart.util.SearchUtil;
 import kcart.util.SortUtil;
 
 public class CarMenu extends javax.swing.JFrame {
-
     private int selectedCarId = -1;
 
     public CarMenu() {

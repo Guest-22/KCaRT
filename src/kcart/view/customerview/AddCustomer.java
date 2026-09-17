@@ -455,7 +455,7 @@ public class AddCustomer extends javax.swing.JFrame {
             java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
 
             JFileChooser fileChooser = new JFileChooser(downloadsDir);
-            fileChooser.setDialogTitle("Select Secondary ID Photo");
+            fileChooser.setDialogTitle("Select Driver License Photo");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
             // Filter only image files.
@@ -495,7 +495,7 @@ public class AddCustomer extends javax.swing.JFrame {
             java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
 
             JFileChooser fileChooser = new JFileChooser(downloadsDir);
-            fileChooser.setDialogTitle("Select Driver License Photo");
+            fileChooser.setDialogTitle("Select Secondary ID Photo");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
             // Filter only image files.

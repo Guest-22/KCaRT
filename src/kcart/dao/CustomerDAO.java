@@ -6,4 +6,6 @@ import kcart.model.Customer;
 public interface CustomerDAO {
     boolean addCustomer(Customer customer);
     List<Customer> getAllCustomers();
+    Customer getCustomerById(int customerId);
+    boolean editCustomer(Customer customer);
 }

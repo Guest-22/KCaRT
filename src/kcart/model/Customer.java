@@ -3,6 +3,7 @@ package kcart.model;
 import java.sql.Timestamp;
 
 public class Customer {
+
     private int customerId;
     private String firstName;
     private String middleName;
@@ -29,7 +30,7 @@ public class Customer {
         this.customerStatus = customerStatus;
     }
 
-    // Constructor for retrieving list of customers from the DB.
+    // Constructor for retrieving list of customers from the DB; used for CustomerMenu.
     public Customer(int customerId, String firstName, String middleName, String lastName,
             String contactNo, String email, String address,
             String customerStatus, Timestamp createdAt) {
@@ -41,6 +42,26 @@ public class Customer {
         this.email = email;
         this.address = address;
         this.customerStatus = customerStatus;
+        this.createdAt = createdAt;
+    }
+    
+     // Constructor for retrieving from DB by ID; Used for EditCustomer.
+    public Customer(int customerId, String firstName, String middleName, String lastName,
+            String contactNo, String email, String address,
+            String customerStatus, byte[] driverLicense,
+            byte[] secondaryId, byte[] customerPhoto,
+            Timestamp createdAt) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.contactNo = contactNo;
+        this.email = email;
+        this.address = address;
+        this.customerStatus = customerStatus;
+        this.driverLicense = driverLicense;
+        this.secondaryId = secondaryId;
+        this.customerPhoto = customerPhoto;
         this.createdAt = createdAt;
     }
 

@@ -7,25 +7,27 @@ import javax.swing.JFileChooser;
 import kcart.dao.CarDAO;
 import kcart.daoimpl.CarDAOImpl;
 import kcart.model.Car;
+import kcart.util.ImageUtil;
 import kcart.util.Message;
 
 public class EditCar extends javax.swing.JFrame {
+
     private int carId; // From CarMenu referencing the selected row/car.
-    
-    public EditCar (){
-        
+
+    public EditCar() {
+
     }
-    
+
     public EditCar(int carId) {
-        initComponents();
         this.carId = carId;
+        initComponents();
         loadCarDetails();
     }
-    
+
     private void loadCarDetails() {
         CarDAO carDao = new CarDAOImpl();
         Car car = carDao.getCarById(carId);
-        
+
         if (car != null) {
             txtPlateNo.setText(car.getPlateNo());
             txtBrand.setText(car.getBrand());
@@ -42,9 +44,9 @@ public class EditCar extends javax.swing.JFrame {
             if (car.getCarPhoto() != null) {
                 ImageIcon icon = new ImageIcon(car.getCarPhoto());
                 Image scaled = icon.getImage().getScaledInstance(
-                    lblCarImage.getWidth(),
-                    lblCarImage.getHeight(),
-                    Image.SCALE_SMOOTH
+                        lblCarImage.getWidth(),
+                        lblCarImage.getHeight(),
+                        Image.SCALE_SMOOTH
                 );
                 lblCarImage.setIcon(new ImageIcon(scaled));
             } else {
@@ -52,7 +54,7 @@ public class EditCar extends javax.swing.JFrame {
             }
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -440,13 +442,17 @@ public class EditCar extends javax.swing.JFrame {
 
     private void btnImportPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportPhotoActionPerformed
         try {
-            JFileChooser fileChooser = new JFileChooser();
+            // Point to user's Downloads folder.
+            String userHome = System.getProperty("user.home");
+            java.io.File downloadsDir = new java.io.File(userHome, "Downloads");
+
+            JFileChooser fileChooser = new JFileChooser(downloadsDir);
             fileChooser.setDialogTitle("Select Car Photo");
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-            // Filter only image files
+            // Filter only image files.
             fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
-                "Image files", "jpg", "jpeg", "png", "gif"
+                    "Image files", "jpg", "jpeg", "png", "gif"
             ));
 
             int result = fileChooser.showOpenDialog(this);
@@ -457,11 +463,11 @@ public class EditCar extends javax.swing.JFrame {
                 ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
                 java.awt.Image img = originalIcon.getImage();
 
-                // Scale image to fit lblCarPhoto size.
+                // Scale image to fit lblCarImage size.
                 java.awt.Image scaledImg = img.getScaledInstance(
-                    lblCarImage.getWidth(),
-                    lblCarImage.getHeight(),
-                    java.awt.Image.SCALE_SMOOTH
+                        lblCarImage.getWidth(),
+                        lblCarImage.getHeight(),
+                        java.awt.Image.SCALE_SMOOTH
                 );
 
                 // Set scaled image as icon.
@@ -477,13 +483,13 @@ public class EditCar extends javax.swing.JFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
             // Validation: ensure required fields are not empty.
-            if (txtPlateNo.getText().trim().isEmpty() ||
-                txtBrand.getText().trim().isEmpty() ||
-                txtModel.getText().trim().isEmpty() ||
-                txtYear.getText().trim().isEmpty() ||
-                txtColor.getText().trim().isEmpty() ||
-                txtSeat.getText().trim().isEmpty() ||
-                txtDailyRate.getText().trim().isEmpty()) {
+            if (txtPlateNo.getText().trim().isEmpty()
+                    || txtBrand.getText().trim().isEmpty()
+                    || txtModel.getText().trim().isEmpty()
+                    || txtYear.getText().trim().isEmpty()
+                    || txtColor.getText().trim().isEmpty()
+                    || txtSeat.getText().trim().isEmpty()
+                    || txtDailyRate.getText().trim().isEmpty()) {
 
                 Message.error("Please fill in all required fields before editing.");
                 return;
@@ -503,27 +509,13 @@ public class EditCar extends javax.swing.JFrame {
             String status = cmbStatus.getSelectedItem().toString();
 
             // Convert photo from lblCarPhoto to byte[].
-            byte[] photoBytes = null;
-            Icon icon = lblCarImage.getIcon();
-            if (icon instanceof ImageIcon) {
-                ImageIcon imgIcon = (ImageIcon) icon;
-                java.awt.Image img = imgIcon.getImage();
-                java.awt.image.BufferedImage bImg = new java.awt.image.BufferedImage(
-                        img.getWidth(null), img.getHeight(null), java.awt.image.BufferedImage.TYPE_INT_RGB);
-                java.awt.Graphics2D g2 = bImg.createGraphics();
-                g2.drawImage(img, 0, 0, null);
-                g2.dispose();
-
-                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-                javax.imageio.ImageIO.write(bImg, "jpg", baos);
-                photoBytes = baos.toByteArray();
-            }
+            byte[] photoBytes = ImageUtil.iconToBytes(lblCarImage.getIcon());
 
             // Build Car object with carId.
             Car car = new Car(
-                carId, plateNo, brand, model, carType,
-                year, color, transmission, fuel,
-                seatCap, dailyRate, status
+                    carId, plateNo, brand, model, carType,
+                    year, color, transmission, fuel,
+                    seatCap, dailyRate, status
             );
             car.setCarPhoto(photoBytes);
 
