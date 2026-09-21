@@ -513,7 +513,7 @@ public class AddCar extends javax.swing.JFrame {
                 Message.error("Failed to add car.");
             }
         } catch (Exception e) {
-            Message.error("Error adding car:\n" + e.getMessage());
+            // Message.error("Error adding car:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnAddActionPerformed
 

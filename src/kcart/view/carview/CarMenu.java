@@ -10,6 +10,8 @@ import kcart.dao.CarDAO;
 import kcart.daoimpl.CarDAOImpl;
 import kcart.model.Car;
 import kcart.util.Message;
+import kcart.view.dashboardview.AdminDashboard;
+import kcart.view.dashboardview.StaffDashboard;
 import kcart.view.Login;
 import kcart.view.customerview.CustomerMenu;
 import kcart.view.rentalview.RentalMenu;
@@ -18,6 +20,7 @@ import kcart.view.billingview.BillingMenu;
 import kcart.view.userview.UserMenu;
 import kcart.util.SearchUtil;
 import kcart.util.SortUtil;
+import kcart.view.rentalview.AddRental;
 
 public class CarMenu extends javax.swing.JFrame {
     private int selectedCarId = -1;
@@ -142,6 +145,7 @@ public class CarMenu extends javax.swing.JFrame {
         pnlAction = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
+        btnAddReservation = new javax.swing.JButton();
         pnlDisplay = new javax.swing.JPanel();
         pnlPreview = new javax.swing.JPanel();
         lblSelection = new javax.swing.JLabel();
@@ -161,10 +165,14 @@ public class CarMenu extends javax.swing.JFrame {
         lblCarId = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1200, 700));
+        setMaximumSize(new java.awt.Dimension(1200, 750));
+        setMinimumSize(new java.awt.Dimension(1200, 750));
+        setPreferredSize(new java.awt.Dimension(1200, 750));
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));
-        pnlMain.setPreferredSize(new java.awt.Dimension(1200, 600));
+        pnlMain.setMaximumSize(new java.awt.Dimension(1200, 750));
+        pnlMain.setMinimumSize(new java.awt.Dimension(1200, 750));
+        pnlMain.setPreferredSize(new java.awt.Dimension(1200, 750));
 
         pnlSideNav.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -440,12 +448,11 @@ public class CarMenu extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(lblHeader)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-                    .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbSort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tglSort, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(pnlRecordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbSort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tglSort, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scrlRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -475,6 +482,17 @@ public class CarMenu extends javax.swing.JFrame {
             }
         });
 
+        btnAddReservation.setBackground(new java.awt.Color(0, 0, 0));
+        btnAddReservation.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnAddReservation.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddReservation.setText("Add Reservation");
+        btnAddReservation.setFocusable(false);
+        btnAddReservation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddReservationActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlActionLayout = new javax.swing.GroupLayout(pnlAction);
         pnlAction.setLayout(pnlActionLayout);
         pnlActionLayout.setHorizontalGroup(
@@ -484,6 +502,8 @@ public class CarMenu extends javax.swing.JFrame {
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnAddReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlActionLayout.setVerticalGroup(
@@ -491,8 +511,9 @@ public class CarMenu extends javax.swing.JFrame {
             .addGroup(pnlActionLayout.createSequentialGroup()
                 .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddReservation, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlDisplay.setBackground(new java.awt.Color(255, 255, 255));
@@ -703,8 +724,8 @@ public class CarMenu extends javax.swing.JFrame {
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlSideNav, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlMainLayout.createSequentialGroup()
-                .addComponent(pnlContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(215, 215, 215))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -717,7 +738,7 @@ public class CarMenu extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, 783, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, 783, Short.MAX_VALUE)
         );
 
         pack();
@@ -793,7 +814,7 @@ public class CarMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        if (selectedCarId <= 0) { // No row selected
+        if (selectedCarId <= 0) { // No row selected.
             Message.error("Please select a car record first.");
             return;
         }
@@ -844,6 +865,16 @@ public class CarMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblRecordMouseClicked
 
+    private void btnAddReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReservationActionPerformed
+        if (selectedCarId <= 0) { // No row selected.
+            Message.error("Please select a car record first.");
+            return;
+        }
+
+        // If valid, open AddRental form and pass the selected car ID as reference.
+        new AddRental(selectedCarId).setVisible(true);
+    }//GEN-LAST:event_btnAddReservationActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -881,6 +912,7 @@ public class CarMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAddReservation;
     private javax.swing.JButton btnBilling;
     private javax.swing.JButton btnCar;
     private javax.swing.JButton btnCustomer;

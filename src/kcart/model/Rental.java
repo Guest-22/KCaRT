@@ -4,18 +4,48 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Rental {
+
     private int rentalId;
     private int customerId;
+    private String customerName; // Fetch using customer_id.
     private int carId;
-    private int processedBy;
-    private java.sql.Date startDate;
-    private java.sql.Date expectedReturnDate;
+    private String carInfo; // Fetch using car_id.
+    private int processedBy; // Fetch using ActiveSession.
+    private String processedByName;
+    private Date startDate;
+    private Date expectedReturnDate;
     private String rentalStatus;
-    private java.sql.Timestamp createdAt;
+    private Timestamp createdAt;
 
-    // Getter/Setter method
+    // Used for adding new rental entry to DB; Used by Add Rental/Reservation form.
+    public Rental(int customerId, int carId, int processedBy, Date startDate, Date expectedReturnDate, String rentalStatus) {
+        this.customerId = customerId;
+        this.carId = carId;
+        this.processedBy = processedBy;
+        this.startDate = startDate;
+        this.expectedReturnDate = expectedReturnDate;
+        this.rentalStatus = rentalStatus;
+    }
+
+    // Getter/Setter method.
     public int getRentalId() {
         return rentalId;
+    }
+
+    public int getProcessedBy() {
+        return processedBy;
+    }
+
+    public void setProcessedBy(int processedBy) {
+        this.processedBy = processedBy;
+    }
+
+    public String getProcessedByName() {
+        return processedByName;
+    }
+
+    public void setProcessedByName(String processedByName) {
+        this.processedByName = processedByName;
     }
 
     public void setRentalId(int rentalId) {
@@ -30,6 +60,14 @@ public class Rental {
         this.customerId = customerId;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public int getCarId() {
         return carId;
     }
@@ -38,12 +76,12 @@ public class Rental {
         this.carId = carId;
     }
 
-    public int getProcessedBy() {
-        return processedBy;
+    public String getCarInfo() {
+        return carInfo;
     }
 
-    public void setProcessedBy(int processedBy) {
-        this.processedBy = processedBy;
+    public void setCarInfo(String carInfo) {
+        this.carInfo = carInfo;
     }
 
     public Date getStartDate() {

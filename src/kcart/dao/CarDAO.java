@@ -9,4 +9,5 @@ public interface CarDAO {
     boolean editCar(Car car);
     byte[] getCarPhotoById(int carId);
     Car getCarById(int carId);
+    Car getCarInfo(int carId);
 }

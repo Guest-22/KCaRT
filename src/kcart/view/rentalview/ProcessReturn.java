@@ -69,10 +69,8 @@ public class ProcessReturn extends javax.swing.JFrame {
         btnCompleteReturn = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1000, 600));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 600));
-        setPreferredSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -90,7 +88,7 @@ public class ProcessReturn extends javax.swing.JFrame {
 
         lblHeader.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(255, 255, 255));
-        lblHeader.setText("Process Pickup");
+        lblHeader.setText("Process Return");
         lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblRentalID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -600,7 +598,7 @@ public class ProcessReturn extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCompleteReturnActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**

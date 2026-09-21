@@ -161,6 +161,7 @@ public class CarDAOImpl implements CarDAO {
         return null;
     }
 
+    // Retrieve all information based off the referenced Car ID.
     @Override
     public Car getCarById(int carId) {
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_ID + " = ?";
@@ -191,6 +192,39 @@ public class CarDAOImpl implements CarDAO {
             }
         } catch (SQLException e) {
             Message.error("Error retrieving car by ID:\n" + e.getMessage());
+        }
+        return null;
+    }
+
+    // Retrieve basic car info. for rental reservations.
+    @Override
+    public Car getCarInfo(int carId) {
+        String sql = "SELECT " 
+                + COL_ID + ", "
+                + COL_BRAND + ", "
+                + COL_MODEL + ", "
+                + COL_TYPE + ", "
+                + COL_YEAR + ", "
+                + COL_DAILY_RATE
+                + " FROM " + TABLE_NAME
+                + " WHERE " + COL_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, carId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Car(
+                        rs.getInt(COL_ID),
+                        rs.getString(COL_BRAND),
+                        rs.getString(COL_MODEL),
+                        rs.getString(COL_TYPE),   // carType
+                        rs.getInt(COL_YEAR),
+                        rs.getDouble(COL_DAILY_RATE)
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving car info:\n" + e.getMessage());
         }
         return null;
     }

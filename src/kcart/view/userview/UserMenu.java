@@ -1,5 +1,8 @@
 package kcart.view.userview;
 
+import java.awt.Color;
+import kcart.view.dashboardview.AdminDashboard;
+import kcart.view.dashboardview.StaffDashboard;
 import kcart.view.Login;
 import kcart.view.customerview.CustomerMenu;
 import kcart.view.carview.CarMenu;
@@ -11,8 +14,19 @@ public class UserMenu extends javax.swing.JFrame {
 
     public UserMenu() {
         initComponents();
+        
+        setDefaultTglSort();
     }
 
+    private void setDefaultTglSort() {
+        tglSort.setFocusPainted(false);
+        tglSort.setContentAreaFilled(false);
+        tglSort.setBorderPainted(false);
+        tglSort.setOpaque(true);
+        tglSort.setBackground(Color.BLACK);
+        tglSort.setForeground(Color.WHITE);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -211,7 +225,7 @@ public class UserMenu extends javax.swing.JFrame {
 
         lblHeader.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(0, 0, 0));
-        lblHeader.setText("Customer");
+        lblHeader.setText("User");
         lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         tblRecord.setBackground(new java.awt.Color(0, 0, 0));
@@ -326,7 +340,7 @@ public class UserMenu extends javax.swing.JFrame {
         pnlAction.setBackground(new java.awt.Color(255, 255, 255));
 
         btnAdd.setBackground(new java.awt.Color(0, 0, 0));
-        btnAdd.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnAdd.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Add");
         btnAdd.setFocusable(false);
@@ -337,7 +351,7 @@ public class UserMenu extends javax.swing.JFrame {
         });
 
         btnEdit.setBackground(new java.awt.Color(0, 0, 0));
-        btnEdit.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnEdit.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("Edit");
         btnEdit.setFocusable(false);
@@ -469,7 +483,7 @@ public class UserMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_tglSortActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        new AddUser().setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed

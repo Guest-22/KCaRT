@@ -31,7 +31,7 @@ public class Login extends javax.swing.JFrame {
         txtPassword = new javax.swing.JPasswordField();
         lblSubheader = new javax.swing.JLabel();
         lblHeader = new javax.swing.JLabel();
-        txtUsername = new javax.swing.JPasswordField();
+        txtUsername = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,7 +74,7 @@ public class Login extends javax.swing.JFrame {
 
         txtUsername.setBackground(new java.awt.Color(255, 255, 255));
         txtUsername.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        txtUsername.setForeground(java.awt.SystemColor.activeCaptionText);
+        txtUsername.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
@@ -99,7 +99,7 @@ public class Login extends javax.swing.JFrame {
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
-                .addContainerGap(82, Short.MAX_VALUE)
+                .addContainerGap(83, Short.MAX_VALUE)
                 .addComponent(lblHeader)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSubheader)
@@ -113,7 +113,7 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -159,8 +159,8 @@ public class Login extends javax.swing.JFrame {
                 boolean matches = PasswordHasher.verifyPassword(password, user.getPassword());
 
                 if (matches) {
-                    // Set ActiveSession details.
-                    ActiveSession.loggedInUserID = user.getUserId();
+                    // If matches are found, set current user's ActiveSession details.
+                    ActiveSession.loggedInUserId = user.getUserId();
                     ActiveSession.loggedInUsername = user.getUsername();
                     ActiveSession.role = user.getRole();
 
@@ -228,6 +228,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel lblUsername;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JPasswordField txtUsername;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }

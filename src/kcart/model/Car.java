@@ -69,6 +69,16 @@ public class Car {
         this.carStatus = carStatus;
     }
 
+    // Model for Add Rental form.
+    public Car(int carId, String brand, String model, String carType, int year, double dailyRate) {
+        this.carId = carId;
+        this.brand = brand;
+        this.model = model;
+        this.carType = carType;
+        this.year = year;
+        this.dailyRate = dailyRate;
+    }
+    
     // Getter/Setter method.
     public int getCarId() {
         return carId;

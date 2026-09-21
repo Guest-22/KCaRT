@@ -1,5 +1,7 @@
 package kcart.view.rentalview;
 
+import kcart.view.dashboardview.AdminDashboard;
+import kcart.view.dashboardview.StaffDashboard;
 import kcart.view.Login;
 import kcart.view.customerview.CustomerMenu;
 import kcart.view.carview.CarMenu;
@@ -8,6 +10,10 @@ import kcart.view.billingview.BillingMenu;
 import kcart.view.userview.UserMenu;
 
 public class RentalMenu extends javax.swing.JFrame {
+
+    private int selectedRentalId = -1;
+    private int selectedCustomerId = -1;
+    private int selectedCarId = -1;
 
     public RentalMenu() {
         initComponents();
@@ -221,15 +227,28 @@ public class RentalMenu extends javax.swing.JFrame {
         tblRecord.setForeground(new java.awt.Color(255, 255, 255));
         tblRecord.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Rent ID", "Customer ID", "Customer Name", "Car ID", "Car Info", "Processed By", "Start Date", "Return Date", "Status", "Created At"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblRecord.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRecordMouseClicked(evt);
+            }
+        });
         scrlRecord.setViewportView(tblRecord);
 
         txtSearch.setBackground(new java.awt.Color(0, 0, 0));
@@ -446,7 +465,7 @@ public class RentalMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-        
+
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
@@ -460,7 +479,7 @@ public class RentalMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCarActionPerformed
 
     private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
-        
+
     }//GEN-LAST:event_btnRentalActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
@@ -500,20 +519,34 @@ public class RentalMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_tglSortActionPerformed
 
     private void btnAddReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReservationActionPerformed
-        // TODO add your handling code here:
+        new AddRental().setVisible(true);
     }//GEN-LAST:event_btnAddReservationActionPerformed
 
     private void btnEditRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditRentalActionPerformed
-        // TODO add your handling code here:
+        new EditRental().setVisible(true);
     }//GEN-LAST:event_btnEditRentalActionPerformed
 
     private void btnProcessPickupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessPickupActionPerformed
-        // TODO add your handling code here:
+        new ProcessPickup().setVisible(true);
     }//GEN-LAST:event_btnProcessPickupActionPerformed
 
     private void btnProcessReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessReturnActionPerformed
-        // TODO add your handling code here:
+        new ProcessReturn().setVisible(true);
     }//GEN-LAST:event_btnProcessReturnActionPerformed
+
+    private void tblRecordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRecordMouseClicked
+        try {
+            int row = tblRecord.getSelectedRow();
+            if (row >= 0) {
+                // Store selected IDs for reference.
+                selectedRentalId = Integer.parseInt(tblRecord.getValueAt(row, 0).toString());
+                selectedCustomerId = Integer.parseInt(tblRecord.getValueAt(row, 1).toString());
+                selectedCarId = Integer.parseInt(tblRecord.getValueAt(row, 3).toString());
+            }
+        } catch (Exception e) {
+            // Message.error("Something went wrong: " + e.getMessage());
+        }
+    }//GEN-LAST:event_tblRecordMouseClicked
 
     /**
      * @param args the command line arguments

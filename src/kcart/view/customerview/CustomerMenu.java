@@ -11,6 +11,8 @@ import kcart.model.Customer;
 import kcart.util.Message;
 import kcart.util.SearchUtil;
 import kcart.util.SortUtil;
+import kcart.view.dashboardview.AdminDashboard;
+import kcart.view.dashboardview.StaffDashboard;
 import kcart.view.Login;
 import kcart.view.carview.CarMenu;
 import kcart.view.rentalview.RentalMenu;
@@ -21,6 +23,7 @@ import kcart.view.userview.UserMenu;
 
 public class CustomerMenu extends javax.swing.JFrame {
     private int selectedCustomerId = -1;
+    
     public CustomerMenu() {
         initComponents();
 
@@ -137,10 +140,14 @@ public class CustomerMenu extends javax.swing.JFrame {
         btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1200, 700));
+        setMaximumSize(new java.awt.Dimension(1200, 600));
+        setMinimumSize(new java.awt.Dimension(1200, 600));
+        setPreferredSize(new java.awt.Dimension(1200, 600));
         setSize(new java.awt.Dimension(1200, 700));
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));
+        pnlMain.setMaximumSize(new java.awt.Dimension(1200, 600));
+        pnlMain.setMinimumSize(new java.awt.Dimension(1200, 600));
         pnlMain.setPreferredSize(new java.awt.Dimension(1200, 600));
 
         pnlSideNav.setBackground(new java.awt.Color(0, 0, 0));
@@ -511,7 +518,7 @@ public class CustomerMenu extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, 702, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
         );
 
         pack();
@@ -588,7 +595,7 @@ public class CustomerMenu extends javax.swing.JFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         if (selectedCustomerId <= 0) { // No row selected.
-            Message.error("Please select a car record first.");
+            Message.error("Please select a customer record first.");
             return;
         }
 

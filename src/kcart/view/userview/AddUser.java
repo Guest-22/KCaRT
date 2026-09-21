@@ -1,10 +1,9 @@
 package kcart.view.userview;
 
+import kcart.util.Message;
+
 public class AddUser extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AddUser
-     */
     public AddUser() {
         initComponents();
     }
@@ -43,7 +42,7 @@ public class AddUser extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1000, 600));
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
@@ -317,6 +316,16 @@ public class AddUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        if (txtFirstName.getText().trim().isEmpty()
+                || txtLastName.getText().trim().isEmpty()
+                || txtContact.getText().trim().isEmpty()
+                || txtUsername.getText().trim().isEmpty()
+                || txtPassword.getPassword().length == 0
+                || txtConfirmPassword.getPassword().length == 0) {
+            Message.error("Please fill in all required fields.");
+            return;
+        }
+
 
     }//GEN-LAST:event_btnAddActionPerformed
 

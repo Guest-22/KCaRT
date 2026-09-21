@@ -8,4 +8,5 @@ public interface CustomerDAO {
     List<Customer> getAllCustomers();
     Customer getCustomerById(int customerId);
     boolean editCustomer(Customer customer);
+    Customer getCustomerInfo(int customerId);
 }

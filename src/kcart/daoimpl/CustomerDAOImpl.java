@@ -160,4 +160,34 @@ public class CustomerDAOImpl implements CustomerDAO {
             return false;
         }
     }
+
+    @Override
+    public Customer getCustomerInfo(int customerId) {
+        String sql = "SELECT "
+                + COL_ID + ", "
+                + COL_FIRST_NAME + ", "
+                + COL_MIDDLE_NAME + ", "
+                + COL_LAST_NAME + ", "
+                + COL_CONTACT_NO
+                + " FROM " + TABLE_NAME
+                + " WHERE " + COL_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, customerId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Customer(
+                            rs.getInt(COL_ID),
+                            rs.getString(COL_FIRST_NAME),
+                            rs.getString(COL_MIDDLE_NAME),
+                            rs.getString(COL_LAST_NAME),
+                            rs.getString(COL_CONTACT_NO)
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving customer info:\n" + e.getMessage());
+        }
+        return null;
+    }
 }

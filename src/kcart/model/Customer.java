@@ -17,7 +17,7 @@ public class Customer {
     private String customerStatus;
     private java.sql.Timestamp createdAt;
 
-    // Constructor for adding new customer (ID auto-increment, createdAt auto-timestamp).
+    // Model for adding new customer (ID auto-increment, createdAt auto-timestamp).
     public Customer(String firstName, String middleName, String lastName,
             String contactNo, String email, String address,
             String customerStatus) {
@@ -30,7 +30,7 @@ public class Customer {
         this.customerStatus = customerStatus;
     }
 
-    // Constructor for retrieving list of customers from the DB; used for CustomerMenu.
+    // Model for retrieving list of customers from the DB; used for CustomerMenu.
     public Customer(int customerId, String firstName, String middleName, String lastName,
             String contactNo, String email, String address,
             String customerStatus, Timestamp createdAt) {
@@ -45,7 +45,7 @@ public class Customer {
         this.createdAt = createdAt;
     }
     
-     // Constructor for retrieving from DB by ID; Used for EditCustomer.
+     // Model for retrieving from DB by ID; Used for EditCustomer.
     public Customer(int customerId, String firstName, String middleName, String lastName,
             String contactNo, String email, String address,
             String customerStatus, byte[] driverLicense,
@@ -65,6 +65,15 @@ public class Customer {
         this.createdAt = createdAt;
     }
 
+    // Model for retrieving basic Customer info. for Add Rental form.
+    public Customer(int customerId, String firstName, String middleName, String lastName, String contactNo) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.contactNo = contactNo;
+    }
+    
     public int getCustomerId() {
         return customerId;
     }

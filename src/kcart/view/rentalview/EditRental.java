@@ -59,7 +59,7 @@ public class EditRental extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
@@ -102,7 +102,8 @@ public class EditRental extends javax.swing.JFrame {
         lblRentalDetails.setText("Rental Details:");
         lblRentalDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtRentalID.setBackground(new java.awt.Color(255, 255, 255));
+        txtRentalID.setEditable(false);
+        txtRentalID.setBackground(new java.awt.Color(204, 204, 204));
         txtRentalID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtRentalID.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -110,7 +111,8 @@ public class EditRental extends javax.swing.JFrame {
         txtStartDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtStartDate.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtNoOfDays.setBackground(new java.awt.Color(255, 255, 255));
+        txtNoOfDays.setEditable(false);
+        txtNoOfDays.setBackground(new java.awt.Color(204, 204, 204));
         txtNoOfDays.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNoOfDays.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -118,7 +120,8 @@ public class EditRental extends javax.swing.JFrame {
         txtReturnDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtReturnDate.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtCost.setBackground(new java.awt.Color(255, 255, 255));
+        txtCost.setEditable(false);
+        txtCost.setBackground(new java.awt.Color(204, 204, 204));
         txtCost.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCost.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -209,7 +212,7 @@ public class EditRental extends javax.swing.JFrame {
 
         lblFullName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblFullName.setForeground(new java.awt.Color(255, 255, 255));
-        lblFullName.setText("Full Name:");
+        lblFullName.setText("Name:");
         lblFullName.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblCustomerDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -226,11 +229,13 @@ public class EditRental extends javax.swing.JFrame {
         txtCustomerID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCustomerID.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtFullName.setBackground(new java.awt.Color(255, 255, 255));
+        txtFullName.setEditable(false);
+        txtFullName.setBackground(new java.awt.Color(204, 204, 204));
         txtFullName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtFullName.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtContact.setBackground(new java.awt.Color(255, 255, 255));
+        txtContact.setEditable(false);
+        txtContact.setBackground(new java.awt.Color(204, 204, 204));
         txtContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtContact.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -238,7 +243,8 @@ public class EditRental extends javax.swing.JFrame {
         lblExtraPad2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblExtraPad2.setForeground(new java.awt.Color(255, 255, 255));
 
-        txtDailyRate.setBackground(new java.awt.Color(255, 255, 255));
+        txtDailyRate.setEditable(false);
+        txtDailyRate.setBackground(new java.awt.Color(204, 204, 204));
         txtDailyRate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtDailyRate.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -271,15 +277,18 @@ public class EditRental extends javax.swing.JFrame {
         txtCarID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCarID.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtBrand.setBackground(new java.awt.Color(255, 255, 255));
+        txtBrand.setEditable(false);
+        txtBrand.setBackground(new java.awt.Color(204, 204, 204));
         txtBrand.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtBrand.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtYear.setBackground(new java.awt.Color(255, 255, 255));
+        txtYear.setEditable(false);
+        txtYear.setBackground(new java.awt.Color(204, 204, 204));
         txtYear.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtYear.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtModel.setBackground(new java.awt.Color(255, 255, 255));
+        txtModel.setEditable(false);
+        txtModel.setBackground(new java.awt.Color(204, 204, 204));
         txtModel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtModel.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -293,10 +302,10 @@ public class EditRental extends javax.swing.JFrame {
         lblType.setText("Type:");
         lblType.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        cmbType.setBackground(new java.awt.Color(255, 255, 255));
+        cmbType.setBackground(new java.awt.Color(204, 204, 204));
         cmbType.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cmbType.setForeground(new java.awt.Color(0, 0, 0));
-        cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gasoline", "Diesel", "Electric", "Hybrid" }));
+        cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sedan", "SUV", "Hatchback", "MPV", "Van", "Pickup" }));
 
         javax.swing.GroupLayout pnlContent2Layout = new javax.swing.GroupLayout(pnlContent2);
         pnlContent2.setLayout(pnlContent2Layout);
@@ -490,7 +499,7 @@ public class EditRental extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed

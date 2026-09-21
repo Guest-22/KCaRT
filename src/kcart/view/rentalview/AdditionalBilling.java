@@ -31,7 +31,6 @@ public class AdditionalBilling extends javax.swing.JFrame {
         lblCarType = new javax.swing.JLabel();
         lblCarBrand = new javax.swing.JLabel();
         lblHeader = new javax.swing.JLabel();
-        lblRentalID = new javax.swing.JLabel();
         lblCustomerName = new javax.swing.JLabel();
         lblCarModel = new javax.swing.JLabel();
         lblReturnDetails = new javax.swing.JLabel();
@@ -40,6 +39,7 @@ public class AdditionalBilling extends javax.swing.JFrame {
         txtCarModel = new javax.swing.JTextField();
         txtCustomerName = new javax.swing.JTextField();
         cmbCarType = new javax.swing.JComboBox<>();
+        lblRentalID = new javax.swing.JLabel();
         pnlContent2 = new javax.swing.JPanel();
         txtMethod = new javax.swing.JTextField();
         lblInvoiceAmount = new javax.swing.JLabel();
@@ -55,10 +55,8 @@ public class AdditionalBilling extends javax.swing.JFrame {
         btnConfirm = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1000, 600));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 600));
-        setPreferredSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -78,11 +76,6 @@ public class AdditionalBilling extends javax.swing.JFrame {
         lblHeader.setForeground(new java.awt.Color(255, 255, 255));
         lblHeader.setText("Additional Billing");
         lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        lblRentalID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblRentalID.setForeground(new java.awt.Color(255, 255, 255));
-        lblRentalID.setText("Rental ID:");
-        lblRentalID.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblCustomerName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lblCustomerName.setForeground(new java.awt.Color(255, 255, 255));
@@ -120,6 +113,11 @@ public class AdditionalBilling extends javax.swing.JFrame {
         cmbCarType.setForeground(new java.awt.Color(0, 0, 0));
         cmbCarType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sedan", "SUV", "Hatchback", "MPV", "Van", "Pickup" }));
 
+        lblRentalID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblRentalID.setForeground(new java.awt.Color(255, 255, 255));
+        lblRentalID.setText("Rental ID:");
+        lblRentalID.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
         javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
         pnlContent1.setLayout(pnlContent1Layout);
         pnlContent1Layout.setHorizontalGroup(
@@ -134,26 +132,23 @@ public class AdditionalBilling extends javax.swing.JFrame {
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblReturnDetails)
                             .addGroup(pnlContent1Layout.createSequentialGroup()
-                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblCarType)
-                                    .addComponent(lblCustomerName)
-                                    .addComponent(lblRentalID))
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblCustomerName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblCarType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblRentalID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(22, 22, 22)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlContent1Layout.createSequentialGroup()
-                                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(pnlContent1Layout.createSequentialGroup()
-                                                .addComponent(txtRentalID)
-                                                .addGap(18, 18, 18))
-                                            .addGroup(pnlContent1Layout.createSequentialGroup()
-                                                .addComponent(cmbCarType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(cmbCarType, 0, 324, Short.MAX_VALUE)
+                                            .addComponent(txtRentalID))
+                                        .addGap(18, 18, 18)
                                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lblCarBrand)
                                             .addComponent(lblCarModel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(15, 15, 15)
+                                        .addGap(29, 29, 29)
                                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtCarBrand, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
+                                            .addComponent(txtCarBrand)
                                             .addComponent(txtCarModel)))
                                     .addComponent(txtCustomerName))))
                         .addGap(39, 39, 39))))
@@ -165,11 +160,11 @@ public class AdditionalBilling extends javax.swing.JFrame {
                 .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
                 .addComponent(lblReturnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(5, 5, 5)
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtRentalID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtRentalID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblRentalID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)
                         .addComponent(lblCarType)
@@ -178,12 +173,11 @@ public class AdditionalBilling extends javax.swing.JFrame {
                         .addComponent(txtCarBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4)
                         .addComponent(txtCarModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblCarModel)
-                        .addComponent(cmbCarType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbCarType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCarModel)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addComponent(lblCarBrand)
-                        .addGap(28, 28, 28)))
+                        .addGap(26, 26, 26)))
                 .addGap(5, 5, 5)
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCustomerName)
@@ -383,7 +377,7 @@ public class AdditionalBilling extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
