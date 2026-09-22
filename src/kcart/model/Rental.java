@@ -17,7 +17,7 @@ public class Rental {
     private String rentalStatus;
     private Timestamp createdAt;
 
-    // Used for adding new rental entry to DB; Used by Add Rental/Reservation form.
+    // Model for adding new rental entry to DB; Used by Add Rental/Reservation form.
     public Rental(int customerId, int carId, int processedBy, Date startDate, Date expectedReturnDate, String rentalStatus) {
         this.customerId = customerId;
         this.carId = carId;
@@ -25,6 +25,40 @@ public class Rental {
         this.startDate = startDate;
         this.expectedReturnDate = expectedReturnDate;
         this.rentalStatus = rentalStatus;
+    }
+
+    // Model for editing rental (start and return date are only editable; rest are not).
+    public Rental(int rentalId, int customerId, int carId, int processedBy, Date startDate, Date expectedReturnDate) {
+        this.rentalId = rentalId;
+        this.customerId = customerId;
+        this.carId = carId;
+        this.processedBy = processedBy;
+        this.startDate = startDate;
+        this.expectedReturnDate = expectedReturnDate;
+    }
+
+    // Model for retrieving all the necessary rental info. for Rental Menu.
+    public Rental(int rentalId, int customerId, String customerName,
+            int carId, String carInfo, int processedBy, String processedByName,
+            Date startDate, Date expectedReturnDate,
+            String rentalStatus, Timestamp createdAt) {
+        this.rentalId = rentalId;
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.carId = carId;
+        this.carInfo = carInfo;
+        this.processedBy = processedBy;
+        this.processedByName = processedByName;
+        this.startDate = startDate;
+        this.expectedReturnDate = expectedReturnDate;
+        this.rentalStatus = rentalStatus;
+        this.createdAt = createdAt;
+    }
+
+    public Rental(int rentalId, Date startDate, Date expectedReturnDate) {
+        this.rentalId = rentalId;
+        this.startDate = startDate;
+        this.expectedReturnDate = expectedReturnDate;
     }
 
     // Getter/Setter method.

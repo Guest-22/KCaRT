@@ -1,5 +1,16 @@
 package kcart.view.rentalview;
 
+import java.awt.Color;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import kcart.dao.RentalDAO;
+import kcart.daoimpl.RentalDAOImpl;
+import kcart.util.SortUtil;
+import kcart.util.SearchUtil;
+import kcart.model.Rental;
+import kcart.util.Message;
+import kcart.util.SortUtil;
 import kcart.view.dashboardview.AdminDashboard;
 import kcart.view.dashboardview.StaffDashboard;
 import kcart.view.Login;
@@ -17,6 +28,94 @@ public class RentalMenu extends javax.swing.JFrame {
 
     public RentalMenu() {
         initComponents();
+
+        setDefaultTglSort();
+        populateRentalRecord("");
+    }
+
+    // Sets the default toggle button style.
+    private void setDefaultTglSort() {
+        tglSort.setFocusPainted(false);
+        tglSort.setContentAreaFilled(false);
+        tglSort.setBorderPainted(false);
+        tglSort.setOpaque(true);
+        tglSort.setBackground(Color.BLACK);
+        tglSort.setForeground(Color.WHITE);
+    }
+
+    private void populateRentalRecord(String keyword) {
+        DefaultTableModel rentalModel = (DefaultTableModel) tblRecord.getModel();
+        rentalModel.setRowCount(0); // Clear existing rows.
+
+        try {
+            RentalDAO rentalDao = new RentalDAOImpl();
+            List<Rental> rentals = rentalDao.getAllRentals();
+
+            // Filter by keyword (customer name, car info, processedbyname,start/return date, status).
+            rentals = SearchUtil.searchRentalsByKeyword(rentals, keyword);
+
+            // Sorting.
+            String selectedSort = cmbSort.getSelectedItem().toString();
+            String selectedOrder = tglSort.isSelected() ? "DESC" : "ASC";
+
+            switch (selectedSort) {
+                case "Sort by Start Date":
+                    SortUtil.sortRentalByStartDate(rentals);
+                    break;
+                case "Sort by Return Date":
+                    SortUtil.sortRentalByReturnDate(rentals);
+                    break;
+                case "Sort by Status":
+                    SortUtil.sortRentalByStatus(rentals);
+                    break;
+            }
+
+            // Reverse if DESC.
+            if (selectedOrder.equals("DESC")) {
+                Collections.reverse(rentals);
+            }
+
+            // Populate table with rental records.
+            for (Rental r : rentals) {
+                Object[] row = {
+                    r.getRentalId(),
+                    r.getCustomerId(), // hidden
+                    r.getCustomerName(),
+                    r.getCarId(), // hidden
+                    r.getCarInfo(),
+                    r.getProcessedBy(), // hidden
+                    r.getProcessedByName(),
+                    (r.getStartDate() != null) ? r.getStartDate().toString() : "—",
+                    (r.getExpectedReturnDate() != null) ? r.getExpectedReturnDate().toString() : "—",
+                    r.getRentalStatus(),
+                    (r.getCreatedAt() != null) ? r.getCreatedAt().toString() : "—" // hidden
+                };
+                rentalModel.addRow(row);
+            }
+
+            // Hide customer_id (col 1).
+            tblRecord.getColumnModel().getColumn(1).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(1).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(1).setWidth(0);
+
+            // Hide car_id (col 3).
+            tblRecord.getColumnModel().getColumn(3).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(3).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(3).setWidth(0);
+
+            // Hide user_id (col 5).
+            tblRecord.getColumnModel().getColumn(5).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(5).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(5).setWidth(0);
+
+            // Hide created_at (col 10).
+            tblRecord.getColumnModel().getColumn(10).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(10).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(10).setWidth(0);
+
+        } catch (Exception e) {
+            Message.error("Error loading rental table:\n" + e.getMessage());
+        }
     }
 
     /**
@@ -227,17 +326,17 @@ public class RentalMenu extends javax.swing.JFrame {
         tblRecord.setForeground(new java.awt.Color(255, 255, 255));
         tblRecord.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Rent ID", "Customer ID", "Customer Name", "Car ID", "Car Info", "Processed By", "Start Date", "Return Date", "Status", "Created At"
+                "Rent ID", "Customer ID", "Customer Name", "Car ID", "Car Info", "User ID", "Processed By", "Start Date", "Return Date", "Status", "Created At"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -280,7 +379,7 @@ public class RentalMenu extends javax.swing.JFrame {
         cmbSort.setBackground(new java.awt.Color(0, 0, 0));
         cmbSort.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         cmbSort.setForeground(new java.awt.Color(255, 255, 255));
-        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by " }));
+        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by Date", "Sort by Start Date", "Sort by Return Date", "Sort by Status" }));
         cmbSort.setFocusable(false);
         cmbSort.setMinimumSize(new java.awt.Dimension(147, 24));
         cmbSort.setPreferredSize(new java.awt.Dimension(147, 24));
@@ -507,15 +606,26 @@ public class RentalMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-
+        String keyword = txtSearch.getText().trim();
+        if (keyword.isEmpty()) {
+            Message.error("Please enter a valid keyword to search.");
+            return;
+        }
+        populateRentalRecord(keyword);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void cmbSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSortActionPerformed
-
+        String sortQuery = txtSearch.getText().trim();
+        populateRentalRecord(sortQuery);
     }//GEN-LAST:event_cmbSortActionPerformed
 
     private void tglSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSortActionPerformed
-
+        if (tglSort.isSelected()) {
+            tglSort.setText("DESC");
+        } else {
+            tglSort.setText("ASC");
+        }
+        populateRentalRecord(txtSearch.getText().trim());
     }//GEN-LAST:event_tglSortActionPerformed
 
     private void btnAddReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReservationActionPerformed
@@ -523,7 +633,13 @@ public class RentalMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddReservationActionPerformed
 
     private void btnEditRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditRentalActionPerformed
-        new EditRental().setVisible(true);
+        if (selectedRentalId <= 0) { // No row selected.
+            Message.error("Please select a rental record first.");
+            return;
+        }
+
+        // If valid, open EditRental form and pass rentalId, customerId, and carId as arguments.
+        new EditRental(selectedRentalId, selectedCustomerId, selectedCarId).setVisible(true);
     }//GEN-LAST:event_btnEditRentalActionPerformed
 
     private void btnProcessPickupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessPickupActionPerformed
@@ -538,13 +654,13 @@ public class RentalMenu extends javax.swing.JFrame {
         try {
             int row = tblRecord.getSelectedRow();
             if (row >= 0) {
-                // Store selected IDs for reference.
+                // Store selected rental ID for reference.
                 selectedRentalId = Integer.parseInt(tblRecord.getValueAt(row, 0).toString());
                 selectedCustomerId = Integer.parseInt(tblRecord.getValueAt(row, 1).toString());
                 selectedCarId = Integer.parseInt(tblRecord.getValueAt(row, 3).toString());
             }
         } catch (Exception e) {
-            // Message.error("Something went wrong: " + e.getMessage());
+            Message.error("Something went wrong: " + e.getMessage());
         }
     }//GEN-LAST:event_tblRecordMouseClicked
 

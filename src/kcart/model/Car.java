@@ -18,6 +18,7 @@ public class Car {
     private String carStatus;
     private java.sql.Timestamp createdAt;
     
+    // Model for previewing selected car.
     public Car(int carId, String plateNo, String brand, String model, String carType,
                int year, String color, String transmissionType, String fuelType,
                int seatCap, double dailyRate, String carStatus, Timestamp createdAt) {

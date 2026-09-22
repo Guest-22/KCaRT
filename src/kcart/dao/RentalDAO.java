@@ -5,4 +5,7 @@ import kcart.model.Rental;
 
 public interface RentalDAO {
     boolean addRental(Rental rental);
+    List<Rental> getAllRentals();
+    boolean editRental(Rental rental);
+    Rental getRentalInfo(int rentalId);
 }

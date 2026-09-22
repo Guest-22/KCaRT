@@ -1,12 +1,161 @@
 package kcart.view.rentalview;
 
+import java.util.Date;
+import kcart.dao.CarDAO;
+import kcart.dao.CustomerDAO;
+import kcart.dao.RentalDAO;
+import kcart.daoimpl.CarDAOImpl;
+import kcart.daoimpl.CustomerDAOImpl;
+import kcart.daoimpl.RentalDAOImpl;
+import kcart.model.Car;
+import kcart.model.Customer;
+import kcart.model.Rental;
+import kcart.util.ActiveSession;
+import kcart.util.Message;
+
 public class EditRental extends javax.swing.JFrame {
 
-    /**
-     * Creates new form EditRental
-     */
+    private int rentalId;
+    private int customerId;
+    private int carId;
+
     public EditRental() {
+
+    }
+
+    public EditRental(int rentalId, int customerId, int carId) {
         initComponents();
+
+        this.rentalId = rentalId;
+        this.customerId = customerId;
+        this.carId = carId;
+
+        loadCarDetails();
+        loadCustomerDetails();
+        loadRentalDetails();
+    }
+
+    // Retrieves two editable fields for rental.
+    private void loadRentalDetails() {
+        RentalDAO rentalDao = new RentalDAOImpl();
+        Rental rental = rentalDao.getRentalInfo(rentalId);
+
+        if (rental != null) {
+            // Fill the textfields with rental dates.
+            txtRentalId.setText(String.valueOf(rentalId));
+            txtStartDate.setDate(rental.getStartDate());
+            txtReturnDate.setDate(rental.getExpectedReturnDate());
+            // Updates no. of days and cost after the data is retrieved.
+            updateRentalDays();
+            calculateTotalCost();
+        } else {
+            Message.error("Rental not found for ID: " + rentalId);
+        }
+    }
+
+    // Retrieves customer info.
+    private void loadCustomerDetails() {
+        CustomerDAO customerDao = new CustomerDAOImpl();
+        Customer customer = customerDao.getCustomerInfo(customerId);
+
+        if (customer != null) {
+            txtCustomerId.setText(String.valueOf(customerId));
+            // Name format: LastName, FirstName M.I.
+            String middleInitial = (customer.getMiddleName() != null && !customer.getMiddleName().isEmpty())
+                    ? customer.getMiddleName().substring(0, 1) + "."
+                    : "";
+
+            String formattedName = customer.getLastName() + ", " + customer.getFirstName() + " " + middleInitial;
+
+            txtCustomerName.setText(formattedName);
+            txtContact.setText(customer.getContactNo());
+        } else {
+            Message.error("Customer not found for ID: " + customerId);
+        }
+    }
+
+    // Retrieves Car info.
+    private void loadCarDetails() {
+        CarDAO carDao = new CarDAOImpl();
+        Car car = carDao.getCarInfo(carId);
+
+        if (car != null) {
+            txtCarId.setText(String.valueOf(car.getCarId()));
+            txtBrand.setText(car.getBrand());
+            txtModel.setText(car.getModel());
+            cmbType.setSelectedItem(car.getCarType());
+            txtYear.setText(String.valueOf(car.getYear()));
+            txtDailyRate.setText(String.valueOf(car.getDailyRate()));
+        } else {
+            Message.error("Car details not found for ID: " + carId);
+        }
+    }
+
+    // Uses start and return date to calculate total no. of days.
+    private long calculateDaysBetween(Date startDate, Date returnDate) {
+        if (startDate == null || returnDate == null) {
+            return 0;
+        }
+        long diffInMillis = returnDate.getTime() - startDate.getTime();
+        return diffInMillis / (1000 * 60 * 60 * 24);
+    }
+
+    // Update rental days; verifies if dates are valid.
+    private void updateRentalDays() {
+        Date startDate = txtStartDate.getDate();
+        Date returnDate = txtReturnDate.getDate();
+
+        long days = calculateDaysBetween(startDate, returnDate);
+
+        if (days > 0) {
+            txtNoOfDays.setText(String.valueOf(days));
+            calculateTotalCost(); // Updates cost.
+        } else {
+            txtNoOfDays.setText("0");
+            txtCost.setText("0");
+            if (startDate != null && returnDate != null) {
+                txtReturnDate.setDate(null); // Clear invalid (past) return date.
+                Message.error("Return date must be after start date.");
+            }
+        }
+    }
+
+    // Calculate total cost based on no. of days and daily rate of Car reference.
+    private void calculateTotalCost() {
+        try {
+            String rateText = txtDailyRate.getText().trim();
+            String daysText = txtNoOfDays.getText().trim();
+
+            if (rateText.isEmpty() || daysText.isEmpty()) {
+                txtCost.setText("0");
+                return;
+            }
+
+            double dailyRate = Double.parseDouble(rateText);
+            int days = Integer.parseInt(daysText);
+            double totalCost = dailyRate * days;
+            txtCost.setText(String.valueOf(totalCost));
+        } catch (NumberFormatException e) {
+            Message.error("Invalid number format for daily rate or days.");
+        }
+    }
+
+    private boolean isInteger(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
@@ -27,19 +176,19 @@ public class EditRental extends javax.swing.JFrame {
         lblReturnDate = new javax.swing.JLabel();
         lblCost = new javax.swing.JLabel();
         lblRentalDetails = new javax.swing.JLabel();
-        txtRentalID = new javax.swing.JTextField();
-        txtStartDate = new javax.swing.JTextField();
+        txtRentalId = new javax.swing.JTextField();
         txtNoOfDays = new javax.swing.JTextField();
-        txtReturnDate = new javax.swing.JTextField();
         txtCost = new javax.swing.JTextField();
         lblExtraPad1 = new javax.swing.JLabel();
+        txtStartDate = new com.toedter.calendar.JDateChooser();
+        txtReturnDate = new com.toedter.calendar.JDateChooser();
         pnlContent2 = new javax.swing.JPanel();
         lblContact = new javax.swing.JLabel();
         lblFullName = new javax.swing.JLabel();
         lblCustomerDetails = new javax.swing.JLabel();
-        lblCustomerID = new javax.swing.JLabel();
-        txtCustomerID = new javax.swing.JTextField();
-        txtFullName = new javax.swing.JTextField();
+        lblCustomerId = new javax.swing.JLabel();
+        txtCustomerId = new javax.swing.JTextField();
+        txtCustomerName = new javax.swing.JTextField();
         txtContact = new javax.swing.JTextField();
         lblExtraPad2 = new javax.swing.JLabel();
         txtDailyRate = new javax.swing.JTextField();
@@ -48,11 +197,11 @@ public class EditRental extends javax.swing.JFrame {
         lblYear = new javax.swing.JLabel();
         lblModel = new javax.swing.JLabel();
         lblDailyRate = new javax.swing.JLabel();
-        txtCarID = new javax.swing.JTextField();
+        txtCarId = new javax.swing.JTextField();
         txtBrand = new javax.swing.JTextField();
         txtYear = new javax.swing.JTextField();
         txtModel = new javax.swing.JTextField();
-        lblCarID = new javax.swing.JLabel();
+        lblCarId = new javax.swing.JLabel();
         lblType = new javax.swing.JLabel();
         cmbType = new javax.swing.JComboBox<>();
         pnlContent3 = new javax.swing.JPanel();
@@ -102,32 +251,50 @@ public class EditRental extends javax.swing.JFrame {
         lblRentalDetails.setText("Rental Details:");
         lblRentalDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtRentalID.setEditable(false);
-        txtRentalID.setBackground(new java.awt.Color(204, 204, 204));
-        txtRentalID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtRentalID.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtStartDate.setBackground(new java.awt.Color(255, 255, 255));
-        txtStartDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtStartDate.setForeground(new java.awt.Color(0, 0, 0));
+        txtRentalId.setEditable(false);
+        txtRentalId.setBackground(new java.awt.Color(204, 204, 204));
+        txtRentalId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtRentalId.setForeground(new java.awt.Color(0, 0, 0));
+        txtRentalId.setEnabled(false);
 
         txtNoOfDays.setEditable(false);
         txtNoOfDays.setBackground(new java.awt.Color(204, 204, 204));
         txtNoOfDays.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNoOfDays.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtReturnDate.setBackground(new java.awt.Color(255, 255, 255));
-        txtReturnDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtReturnDate.setForeground(new java.awt.Color(0, 0, 0));
+        txtNoOfDays.setText("0");
+        txtNoOfDays.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNoOfDaysActionPerformed(evt);
+            }
+        });
 
         txtCost.setEditable(false);
         txtCost.setBackground(new java.awt.Color(204, 204, 204));
         txtCost.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCost.setForeground(new java.awt.Color(0, 0, 0));
+        txtCost.setText("0");
 
         lblExtraPad1.setBackground(new java.awt.Color(255, 255, 255));
         lblExtraPad1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblExtraPad1.setForeground(new java.awt.Color(255, 255, 255));
+
+        txtStartDate.setBackground(new java.awt.Color(255, 255, 255));
+        txtStartDate.setForeground(new java.awt.Color(0, 0, 0));
+        txtStartDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtStartDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtStartDatePropertyChange(evt);
+            }
+        });
+
+        txtReturnDate.setBackground(new java.awt.Color(255, 255, 255));
+        txtReturnDate.setForeground(new java.awt.Color(0, 0, 0));
+        txtReturnDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtReturnDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtReturnDatePropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
         pnlContent1.setLayout(pnlContent1Layout);
@@ -148,10 +315,10 @@ public class EditRental extends javax.swing.JFrame {
                                     .addComponent(lblReturnDate)
                                     .addComponent(lblRentalID))
                                 .addGap(22, 22, 22)
-                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtStartDate, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtRentalID, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtReturnDate))))
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtRentalId, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                                    .addComponent(txtStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtReturnDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(18, 18, 18)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent1Layout.createSequentialGroup()
@@ -160,7 +327,7 @@ public class EditRental extends javax.swing.JFrame {
                                     .addComponent(lblCost, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(15, 15, 15)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNoOfDays)
+                                    .addComponent(txtNoOfDays, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
                                     .addComponent(txtCost)))
                             .addComponent(lblExtraPad1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(39, 39, 39))))
@@ -173,34 +340,34 @@ public class EditRental extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addComponent(lblRentalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtRentalID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRentalId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblRentalID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContent1Layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblStartDate)))
-                    .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addComponent(txtNoOfDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblCost)
-                    .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addComponent(lblNoOfDays)
-                        .addGap(28, 28, 28)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblReturnDate)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblExtraPad1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(1, 1, 1)))
-                .addContainerGap())
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addComponent(txtNoOfDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblCost)
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addComponent(lblNoOfDays)
+                                .addGap(28, 28, 28)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblReturnDate)
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(lblExtraPad1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(1, 1, 1)))))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
@@ -220,19 +387,25 @@ public class EditRental extends javax.swing.JFrame {
         lblCustomerDetails.setText("Customer Details:");
         lblCustomerDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblCustomerID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblCustomerID.setForeground(new java.awt.Color(255, 255, 255));
-        lblCustomerID.setText("Customer ID:");
-        lblCustomerID.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblCustomerId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblCustomerId.setForeground(new java.awt.Color(255, 255, 255));
+        lblCustomerId.setText("Customer ID:");
+        lblCustomerId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtCustomerID.setBackground(new java.awt.Color(255, 255, 255));
-        txtCustomerID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtCustomerID.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerId.setEditable(false);
+        txtCustomerId.setBackground(new java.awt.Color(204, 204, 204));
+        txtCustomerId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerId.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCustomerIdActionPerformed(evt);
+            }
+        });
 
-        txtFullName.setEditable(false);
-        txtFullName.setBackground(new java.awt.Color(204, 204, 204));
-        txtFullName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtFullName.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerName.setEditable(false);
+        txtCustomerName.setBackground(new java.awt.Color(204, 204, 204));
+        txtCustomerName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerName.setForeground(new java.awt.Color(0, 0, 0));
 
         txtContact.setEditable(false);
         txtContact.setBackground(new java.awt.Color(204, 204, 204));
@@ -273,9 +446,15 @@ public class EditRental extends javax.swing.JFrame {
         lblDailyRate.setText("Daily Rate:");
         lblDailyRate.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtCarID.setBackground(new java.awt.Color(255, 255, 255));
-        txtCarID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtCarID.setForeground(new java.awt.Color(0, 0, 0));
+        txtCarId.setEditable(false);
+        txtCarId.setBackground(new java.awt.Color(204, 204, 204));
+        txtCarId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCarId.setForeground(new java.awt.Color(0, 0, 0));
+        txtCarId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCarIdActionPerformed(evt);
+            }
+        });
 
         txtBrand.setEditable(false);
         txtBrand.setBackground(new java.awt.Color(204, 204, 204));
@@ -292,10 +471,10 @@ public class EditRental extends javax.swing.JFrame {
         txtModel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtModel.setForeground(new java.awt.Color(0, 0, 0));
 
-        lblCarID.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblCarID.setForeground(new java.awt.Color(255, 255, 255));
-        lblCarID.setText("Car ID:");
-        lblCarID.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblCarId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblCarId.setForeground(new java.awt.Color(255, 255, 255));
+        lblCarId.setText("Car ID:");
+        lblCarId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblType.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblType.setForeground(new java.awt.Color(255, 255, 255));
@@ -325,13 +504,13 @@ public class EditRental extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContent2Layout.createSequentialGroup()
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(lblBrand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblCarID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblCarId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(lblModel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(25, 25, 25)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtCarID, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCarId, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtBrand, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtModel, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
+                                    .addComponent(txtModel, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -340,17 +519,17 @@ public class EditRental extends javax.swing.JFrame {
                                     .addComponent(lblType, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(29, 29, 29)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtDailyRate, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                                    .addComponent(txtDailyRate, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
                                     .addComponent(txtYear)
                                     .addComponent(cmbType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContent2Layout.createSequentialGroup()
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblFullName)
-                                    .addComponent(lblCustomerID))
+                                    .addComponent(lblCustomerId))
                                 .addGap(24, 24, 24)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFullName)
-                                    .addComponent(txtCustomerID))
+                                    .addComponent(txtCustomerName)
+                                    .addComponent(txtCustomerId))
                                 .addGap(18, 18, 18)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlContent2Layout.createSequentialGroup()
@@ -366,15 +545,15 @@ public class EditRental extends javax.swing.JFrame {
                 .addComponent(lblCustomerDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCustomerId, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCustomerId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblContact)
                     .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFullName)
-                        .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblExtraPad2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCarDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -383,7 +562,7 @@ public class EditRental extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent2Layout.createSequentialGroup()
-                                .addComponent(lblCarID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblCarId, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(6, 6, 6)
                                 .addComponent(lblBrand))
                             .addGroup(pnlContent2Layout.createSequentialGroup()
@@ -393,7 +572,7 @@ public class EditRental extends javax.swing.JFrame {
                                             .addComponent(lblType)
                                             .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(2, 2, 2))
-                                    .addComponent(txtCarID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtCarId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(6, 6, 6)
                                 .addComponent(txtBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(pnlContent2Layout.createSequentialGroup()
@@ -412,7 +591,7 @@ public class EditRental extends javax.swing.JFrame {
                             .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtModel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblModel)))))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
@@ -457,9 +636,9 @@ public class EditRental extends javax.swing.JFrame {
             .addGroup(pnlContent3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(155, Short.MAX_VALUE))
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -468,27 +647,23 @@ public class EditRental extends javax.swing.JFrame {
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlContent2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlContent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pnlMainLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(pnlContent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlContent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlContent3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, 1005, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -498,12 +673,58 @@ public class EditRental extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtNoOfDaysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoOfDaysActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNoOfDaysActionPerformed
+
+    private void txtStartDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtStartDatePropertyChange
+        if ("date".equals(evt.getPropertyName())) {
+            updateRentalDays();
+        }
+    }//GEN-LAST:event_txtStartDatePropertyChange
+
+    private void txtReturnDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtReturnDatePropertyChange
+        if ("date".equals(evt.getPropertyName())) {
+            updateRentalDays();
+        }
+    }//GEN-LAST:event_txtReturnDatePropertyChange
+
+    private void txtCustomerIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerIdActionPerformed
+
+    }//GEN-LAST:event_txtCustomerIdActionPerformed
+
+    private void txtCarIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCarIdActionPerformed
+
+    }//GEN-LAST:event_txtCarIdActionPerformed
+
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        try {
+            if (txtStartDate.getDate() == null || txtReturnDate.getDate() == null) {
+                Message.error("Please fill in both dates.");
+                return;
+            }
 
+            java.sql.Date startDate = new java.sql.Date(txtStartDate.getDate().getTime());
+            java.sql.Date returnDate = new java.sql.Date(txtReturnDate.getDate().getTime());
+
+            Rental rental = new Rental(rentalId, startDate, returnDate);
+
+            RentalDAO rentalDao = new RentalDAOImpl();
+            boolean success = rentalDao.editRental(rental);
+
+            if (success) {
+                Message.show("Rental dates updated successfully!", "Success");
+                this.dispose();
+            } else {
+                Message.error("Failed to update rental dates.");
+            }
+        } catch (Exception e) {
+            // Message.error("Error updating rental:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     /**
@@ -547,11 +768,11 @@ public class EditRental extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbType;
     private javax.swing.JLabel lblBrand;
     private javax.swing.JLabel lblCarDetails;
-    private javax.swing.JLabel lblCarID;
+    private javax.swing.JLabel lblCarId;
     private javax.swing.JLabel lblContact;
     private javax.swing.JLabel lblCost;
     private javax.swing.JLabel lblCustomerDetails;
-    private javax.swing.JLabel lblCustomerID;
+    private javax.swing.JLabel lblCustomerId;
     private javax.swing.JLabel lblDailyRate;
     private javax.swing.JLabel lblExtraPad1;
     private javax.swing.JLabel lblExtraPad2;
@@ -570,17 +791,17 @@ public class EditRental extends javax.swing.JFrame {
     private javax.swing.JPanel pnlContent3;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JTextField txtBrand;
-    private javax.swing.JTextField txtCarID;
+    private javax.swing.JTextField txtCarId;
     private javax.swing.JTextField txtContact;
     private javax.swing.JTextField txtCost;
-    private javax.swing.JTextField txtCustomerID;
+    private javax.swing.JTextField txtCustomerId;
+    private javax.swing.JTextField txtCustomerName;
     private javax.swing.JTextField txtDailyRate;
-    private javax.swing.JTextField txtFullName;
     private javax.swing.JTextField txtModel;
     private javax.swing.JTextField txtNoOfDays;
-    private javax.swing.JTextField txtRentalID;
-    private javax.swing.JTextField txtReturnDate;
-    private javax.swing.JTextField txtStartDate;
+    private javax.swing.JTextField txtRentalId;
+    private com.toedter.calendar.JDateChooser txtReturnDate;
+    private com.toedter.calendar.JDateChooser txtStartDate;
     private javax.swing.JTextField txtYear;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,8 +3,10 @@ package kcart.util;
 import java.util.List;
 import kcart.model.Car;
 import kcart.model.Customer;
+import kcart.model.Rental;
 
 public class SortUtil {
+
     // Sorting Options for Car Module.
     // Sort by Date Added using Selection Sort.
     public static void sortCarByDate(List<Car> cars) {
@@ -66,7 +68,7 @@ public class SortUtil {
             cars.set(i, temp);
         }
     }
-    
+
     // Sorting options for Customer Module.
     // Sort by Date Added using Selection Sort (newest first).
     public static void sortCustomerByDate(List<Customer> customers) {
@@ -111,6 +113,68 @@ public class SortUtil {
             Customer temp = customers.get(minIndex);
             customers.set(minIndex, customers.get(i));
             customers.set(i, temp);
+        }
+    }
+
+    // Sorting options for Rental Module.
+    // Sort by Date Created (latest first)
+    public static void sortRentalByCreatedAt(List<Rental> rentals) {
+        for (int i = 0; i < rentals.size() - 1; i++) {
+            int maxIndex = i;
+            for (int j = i + 1; j < rentals.size(); j++) {
+                if (rentals.get(j).getCreatedAt().after(rentals.get(maxIndex).getCreatedAt())) {
+                    maxIndex = j;
+                }
+            }
+            Rental temp = rentals.get(maxIndex);
+            rentals.set(maxIndex, rentals.get(i));
+            rentals.set(i, temp);
+        }
+    }
+
+    // Sort by Start Date (earliest first).
+    public static void sortRentalByStartDate(List<Rental> rentals) {
+        for (int i = 0; i < rentals.size() - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < rentals.size(); j++) {
+                if (rentals.get(j).getStartDate().before(rentals.get(minIndex).getStartDate())) {
+                    minIndex = j;
+                }
+            }
+            Rental temp = rentals.get(minIndex);
+            rentals.set(minIndex, rentals.get(i));
+            rentals.set(i, temp);
+        }
+    }
+
+    // Sort by Return Date (earliest first).
+    public static void sortRentalByReturnDate(List<Rental> rentals) {
+        for (int i = 0; i < rentals.size() - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < rentals.size(); j++) {
+                if (rentals.get(j).getExpectedReturnDate().before(rentals.get(minIndex).getExpectedReturnDate())) {
+                    minIndex = j;
+                }
+            }
+            Rental temp = rentals.get(minIndex);
+            rentals.set(minIndex, rentals.get(i));
+            rentals.set(i, temp);
+        }
+    }
+
+    // Sort by Status (alphabetical order).
+    public static void sortRentalByStatus(List<Rental> rentals) {
+        for (int i = 0; i < rentals.size() - 1; i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < rentals.size(); j++) {
+                if (rentals.get(j).getRentalStatus()
+                        .compareToIgnoreCase(rentals.get(minIndex).getRentalStatus()) < 0) {
+                    minIndex = j;
+                }
+            }
+            Rental temp = rentals.get(minIndex);
+            rentals.set(minIndex, rentals.get(i));
+            rentals.set(i, temp);
         }
     }
 }

@@ -18,7 +18,7 @@ public class AddRental extends javax.swing.JFrame {
     private int carId;
 
     public AddRental() {
-
+        initComponents();
     }
 
     public AddRental(int carId) {
@@ -28,7 +28,25 @@ public class AddRental extends javax.swing.JFrame {
         loadCarDetails();
     }
 
+    // Retrieve car info. based-off the passed argument in CarMenu form.
     private void loadCarDetails() {
+        CarDAO carDao = new CarDAOImpl();
+        Car car = carDao.getCarInfo(carId);
+
+        if (car != null) {
+            txtCarId.setText(String.valueOf(car.getCarId()));
+            txtBrand.setText(car.getBrand());
+            txtModel.setText(car.getModel());
+            cmbType.setSelectedItem(car.getCarType());
+            txtYear.setText(String.valueOf(car.getYear()));
+            txtDailyRate.setText(String.valueOf(car.getDailyRate()));
+        } else {
+            Message.error("Car details not found for ID: " + carId);
+        }
+    }
+    
+    // Retrieve car info. based on the inputted Car ID.
+    private void loadCarDetails(int carId) {
         CarDAO carDao = new CarDAOImpl();
         Car car = carDao.getCarInfo(carId);
 
@@ -492,8 +510,8 @@ public class AddRental extends javax.swing.JFrame {
                                     .addComponent(lblCustomerId))
                                 .addGap(24, 24, 24)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCustomerName)
-                                    .addComponent(txtCustomerId))
+                                    .addComponent(txtCustomerId)
+                                    .addComponent(txtCustomerName))
                                 .addGap(18, 18, 18)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlContent2Layout.createSequentialGroup()
@@ -665,7 +683,15 @@ public class AddRental extends javax.swing.JFrame {
     }//GEN-LAST:event_txtStartDatePropertyChange
 
     private void txtCarIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCarIdActionPerformed
-
+        if (!txtCarId.getText().isEmpty()) {
+            try {
+                int carId = Integer.parseInt(txtCarId.getText());
+                // Get the inputted Car ID in textfield and retrieve the necessary details.
+                loadCarDetails(carId); 
+            } catch (NumberFormatException e) {
+                Message.error("Invalid Car ID format.");
+            }
+        }
     }//GEN-LAST:event_txtCarIdActionPerformed
 
     private void txtNoOfDaysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNoOfDaysActionPerformed
