@@ -8,4 +8,5 @@ public interface RentalDAO {
     List<Rental> getAllRentals();
     boolean editRental(Rental rental);
     Rental getRentalInfo(int rentalId);
+    boolean updateRentalStatus(int rentalId, String rentalStatus);
 }

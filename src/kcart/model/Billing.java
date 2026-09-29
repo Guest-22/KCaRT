@@ -1,11 +1,25 @@
 package kcart.model;
 
+import java.sql.Timestamp;
+
 public class Billing {
+
     // Invoice details.
     private int invoiceId;
-    private int rentalId; 
-    private int returnId;
+    private int rentalId;
+    private Integer returnId; // Nullable.
     private String description;
+    private double invoiceAmount;
+    private String invoiceStatus;
+    private Timestamp invoiceDate;
+
+    // Payment details.
+    private int paymentId;
+    private int processedBy;
+    private String payMethod;
+    private double payAmount;
+    private String payStatus;
+    private Timestamp paymentDate;
 
     // Getter/Setter method.
     public int getInvoiceId() {
@@ -24,11 +38,11 @@ public class Billing {
         this.rentalId = rentalId;
     }
 
-    public int getReturnId() {
+    public Integer getReturnId() {
         return returnId;
     }
 
-    public void setReturnId(int returnId) {
+    public void setReturnId(Integer returnId) {
         this.returnId = returnId;
     }
 
@@ -54,14 +68,6 @@ public class Billing {
 
     public void setInvoiceStatus(String invoiceStatus) {
         this.invoiceStatus = invoiceStatus;
-    }
-
-    public String getBillingDate() {
-        return billingDate;
-    }
-
-    public void setBillingDate(String billingDate) {
-        this.billingDate = billingDate;
     }
 
     public int getPaymentId() {
@@ -96,21 +102,4 @@ public class Billing {
         this.payAmount = payAmount;
     }
 
-    public String getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(String paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-    private double invoiceAmount;
-    private String invoiceStatus;
-    private String billingDate;
-
-    // Payment details.
-    private int paymentId;
-    private int processedBy;
-    private String payMethod;
-    private double payAmount;
-    private String paymentDate;
 }

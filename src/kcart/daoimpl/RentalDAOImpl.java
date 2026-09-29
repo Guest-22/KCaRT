@@ -1,6 +1,5 @@
 package kcart.daoimpl;
 
-import java.sql.Connection;
 import java.util.List;
 import kcart.dao.RentalDAO;
 import kcart.model.Rental;
@@ -94,19 +93,25 @@ public class RentalDAOImpl implements RentalDAO {
     // Updates existing rental info. (start & return date are the only field editable; rest are not).
     @Override
     public boolean editRental(Rental rental) {
-        String sql = "UPDATE " + TABLE_NAME + " SET "
+        String sql = "UPDATE " + TABLE_NAME
+                + " SET " + COL_CUSTOMER_ID + " = ?, "
+                + COL_CAR_ID + " = ?, "
                 + COL_START_DATE + " = ?, "
                 + COL_RETURN_DATE + " = ? "
                 + "WHERE " + COL_ID + " = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setDate(1, rental.getStartDate());
-            stmt.setDate(2, rental.getExpectedReturnDate());
-            stmt.setInt(3, rental.getRentalId());
+
+            stmt.setInt(1, rental.getCustomerId());
+            stmt.setInt(2, rental.getCarId());
+            stmt.setDate(3, rental.getStartDate());
+            stmt.setDate(4, rental.getExpectedReturnDate());
+            stmt.setInt(5, rental.getRentalId());
 
             return stmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
-            Message.error("Error editing rental dates:\n" + e.getMessage());
+            Message.error("Error updating rental:\n" + e.getMessage());
             return false;
         }
     }
@@ -135,6 +140,26 @@ public class RentalDAOImpl implements RentalDAO {
             Message.error("Error retrieving rental info:\n" + e.getMessage());
         }
         return null;
+    }
+
+    // Change rental status for tracking purposes.
+    @Override
+    public boolean updateRentalStatus(int rentalId, String rentalStatus) {
+        String sql = "UPDATE " + TABLE_NAME
+                + " SET " + COL_STATUS + " = ?"
+                + " WHERE " + COL_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, rentalStatus);
+            stmt.setInt(2, rentalId);
+
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            Message.error("Error updating rental status:\n" + e.getMessage());
+            return false;
+        }
     }
 
 }

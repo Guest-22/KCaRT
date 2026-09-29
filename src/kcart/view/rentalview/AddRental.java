@@ -19,12 +19,15 @@ public class AddRental extends javax.swing.JFrame {
 
     public AddRental() {
         initComponents();
+                initializeStartDate();
     }
 
     public AddRental(int carId) {
         initComponents();
 
         this.carId = carId;
+
+        initializeStartDate();
         loadCarDetails();
     }
 
@@ -44,7 +47,7 @@ public class AddRental extends javax.swing.JFrame {
             Message.error("Car details not found for ID: " + carId);
         }
     }
-    
+
     // Retrieve car info. based on the inputted Car ID.
     private void loadCarDetails(int carId) {
         CarDAO carDao = new CarDAOImpl();
@@ -82,6 +85,14 @@ public class AddRental extends javax.swing.JFrame {
         }
     }
 
+    // Set default selectable start date to current day.
+    private void initializeStartDate() {
+        Date today = new Date();
+
+        txtStartDate.setDate(today);
+        txtStartDate.setMinSelectableDate(today);
+    }
+
     // Uses start and return date to calculate total no. of days.
     private long calculateDaysBetween(Date startDate, Date returnDate) {
         if (startDate == null || returnDate == null) {
@@ -114,8 +125,16 @@ public class AddRental extends javax.swing.JFrame {
     // Calculate total cost based on no. of days and daily rate of Car reference.
     private void calculateTotalCost() {
         try {
-            double dailyRate = Double.parseDouble(txtDailyRate.getText());
-            int days = Integer.parseInt(txtNoOfDays.getText());
+            String rateText = txtDailyRate.getText().trim();
+            String daysText = txtNoOfDays.getText().trim();
+
+            if (rateText.isEmpty() || daysText.isEmpty()) {
+                txtCost.setText("0");
+                return;
+            }
+
+            double dailyRate = Double.parseDouble(rateText);
+            int days = Integer.parseInt(daysText);
             double totalCost = dailyRate * days;
             txtCost.setText(String.valueOf(totalCost));
         } catch (NumberFormatException e) {
@@ -227,7 +246,7 @@ public class AddRental extends javax.swing.JFrame {
 
         lblCost.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblCost.setForeground(new java.awt.Color(255, 255, 255));
-        lblCost.setText("Cost:");
+        lblCost.setText("Total Cost:");
         lblCost.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblRentalDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -505,20 +524,22 @@ public class AddRental extends javax.swing.JFrame {
                                     .addComponent(txtYear)
                                     .addComponent(cmbType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContent2Layout.createSequentialGroup()
-                                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblFullName)
-                                    .addComponent(lblCustomerId))
+                                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblCustomerId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblFullName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(24, 24, 24)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtCustomerId)
                                     .addComponent(txtCustomerName))
-                                .addGap(18, 18, 18)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlContent2Layout.createSequentialGroup()
-                                        .addComponent(lblContact, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(37, 37, 37)
+                                        .addGap(17, 17, 17)
+                                        .addComponent(lblContact, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(29, 29, 29)
                                         .addComponent(txtContact))
-                                    .addComponent(lblExtraPad2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addGroup(pnlContent2Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblExtraPad2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addGap(47, 47, 47))))
         );
         pnlContent2Layout.setVerticalGroup(
@@ -687,7 +708,7 @@ public class AddRental extends javax.swing.JFrame {
             try {
                 int carId = Integer.parseInt(txtCarId.getText());
                 // Get the inputted Car ID in textfield and retrieve the necessary details.
-                loadCarDetails(carId); 
+                loadCarDetails(carId);
             } catch (NumberFormatException e) {
                 Message.error("Invalid Car ID format.");
             }
@@ -724,7 +745,7 @@ public class AddRental extends javax.swing.JFrame {
             java.sql.Date startDate = new java.sql.Date(txtStartDate.getDate().getTime());
             java.sql.Date returnDate = new java.sql.Date(txtReturnDate.getDate().getTime());
             int processedBy = ActiveSession.loggedInUserId;
-            String rentalStatus = "Active";
+            String rentalStatus = "Pending";
 
             // Build Rental object using constructor.
             Rental rental = new Rental(

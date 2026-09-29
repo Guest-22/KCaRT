@@ -643,10 +643,20 @@ public class RentalMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditRentalActionPerformed
 
     private void btnProcessPickupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessPickupActionPerformed
-        new ProcessPickup().setVisible(true);
+        if (selectedRentalId <= 0) { // No row selected.
+            Message.error("Please select a rental record first.");
+            return;
+        }
+
+        // If valid, open Process Pickup form and pass rentalId, customerId, and carId as arguments.
+        new ProcessPickup(selectedRentalId, selectedCustomerId, selectedCarId).setVisible(true);
     }//GEN-LAST:event_btnProcessPickupActionPerformed
 
     private void btnProcessReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessReturnActionPerformed
+        if (selectedRentalId <= 0) { // No row selected.
+            Message.error("Please select a rental record first.");
+            return;
+        }
         new ProcessReturn().setVisible(true);
     }//GEN-LAST:event_btnProcessReturnActionPerformed
 

@@ -1,6 +1,5 @@
 package kcart.daoimpl;
 
-import java.sql.Connection;
 import kcart.dao.CustomerDAO;
 import kcart.model.Customer;
 import java.sql.*;

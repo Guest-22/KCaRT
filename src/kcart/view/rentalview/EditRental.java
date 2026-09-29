@@ -35,7 +35,7 @@ public class EditRental extends javax.swing.JFrame {
         loadRentalDetails();
     }
 
-    // Retrieves two editable fields for rental.
+    // Retrieves rental info.
     private void loadRentalDetails() {
         RentalDAO rentalDao = new RentalDAOImpl();
         Rental rental = rentalDao.getRentalInfo(rentalId);
@@ -74,7 +74,7 @@ public class EditRental extends javax.swing.JFrame {
         }
     }
 
-    // Retrieves Car info.
+    // Retrieves car info.
     private void loadCarDetails() {
         CarDAO carDao = new CarDAOImpl();
         Car car = carDao.getCarInfo(carId);
@@ -149,15 +149,6 @@ public class EditRental extends javax.swing.JFrame {
         }
     }
 
-    private boolean isDouble(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -183,27 +174,27 @@ public class EditRental extends javax.swing.JFrame {
         txtStartDate = new com.toedter.calendar.JDateChooser();
         txtReturnDate = new com.toedter.calendar.JDateChooser();
         pnlContent2 = new javax.swing.JPanel();
-        lblContact = new javax.swing.JLabel();
-        lblFullName = new javax.swing.JLabel();
-        lblCustomerDetails = new javax.swing.JLabel();
-        lblCustomerId = new javax.swing.JLabel();
-        txtCustomerId = new javax.swing.JTextField();
-        txtCustomerName = new javax.swing.JTextField();
-        txtContact = new javax.swing.JTextField();
-        lblExtraPad2 = new javax.swing.JLabel();
-        txtDailyRate = new javax.swing.JTextField();
-        lblCarDetails = new javax.swing.JLabel();
-        lblBrand = new javax.swing.JLabel();
         lblYear = new javax.swing.JLabel();
+        lblFullName = new javax.swing.JLabel();
         lblModel = new javax.swing.JLabel();
+        lblCustomerDetails = new javax.swing.JLabel();
         lblDailyRate = new javax.swing.JLabel();
+        lblCustomerId = new javax.swing.JLabel();
         txtCarId = new javax.swing.JTextField();
+        txtCustomerId = new javax.swing.JTextField();
         txtBrand = new javax.swing.JTextField();
+        txtCustomerName = new javax.swing.JTextField();
         txtYear = new javax.swing.JTextField();
+        txtContact = new javax.swing.JTextField();
         txtModel = new javax.swing.JTextField();
+        lblExtraPad2 = new javax.swing.JLabel();
         lblCarId = new javax.swing.JLabel();
+        txtDailyRate = new javax.swing.JTextField();
         lblType = new javax.swing.JLabel();
+        lblCarDetails = new javax.swing.JLabel();
         cmbType = new javax.swing.JComboBox<>();
+        lblBrand = new javax.swing.JLabel();
+        lblContact = new javax.swing.JLabel();
         pnlContent3 = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
@@ -243,7 +234,7 @@ public class EditRental extends javax.swing.JFrame {
 
         lblCost.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblCost.setForeground(new java.awt.Color(255, 255, 255));
-        lblCost.setText("Cost:");
+        lblCost.setText("Total Cost:");
         lblCost.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblRentalDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -372,82 +363,37 @@ public class EditRental extends javax.swing.JFrame {
 
         pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
 
-        lblContact.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblContact.setForeground(new java.awt.Color(255, 255, 255));
-        lblContact.setText("Contact:");
-        lblContact.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblYear.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblYear.setForeground(new java.awt.Color(255, 255, 255));
+        lblYear.setText("Year:");
+        lblYear.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblFullName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblFullName.setForeground(new java.awt.Color(255, 255, 255));
         lblFullName.setText("Name:");
         lblFullName.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblCustomerDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblCustomerDetails.setForeground(new java.awt.Color(255, 255, 255));
-        lblCustomerDetails.setText("Customer Details:");
-        lblCustomerDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        lblCustomerId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblCustomerId.setForeground(new java.awt.Color(255, 255, 255));
-        lblCustomerId.setText("Customer ID:");
-        lblCustomerId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        txtCustomerId.setEditable(false);
-        txtCustomerId.setBackground(new java.awt.Color(204, 204, 204));
-        txtCustomerId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtCustomerId.setForeground(new java.awt.Color(0, 0, 0));
-        txtCustomerId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCustomerIdActionPerformed(evt);
-            }
-        });
-
-        txtCustomerName.setEditable(false);
-        txtCustomerName.setBackground(new java.awt.Color(204, 204, 204));
-        txtCustomerName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtCustomerName.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtContact.setEditable(false);
-        txtContact.setBackground(new java.awt.Color(204, 204, 204));
-        txtContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtContact.setForeground(new java.awt.Color(0, 0, 0));
-
-        lblExtraPad2.setBackground(new java.awt.Color(255, 255, 255));
-        lblExtraPad2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lblExtraPad2.setForeground(new java.awt.Color(255, 255, 255));
-
-        txtDailyRate.setEditable(false);
-        txtDailyRate.setBackground(new java.awt.Color(204, 204, 204));
-        txtDailyRate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtDailyRate.setForeground(new java.awt.Color(0, 0, 0));
-
-        lblCarDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblCarDetails.setForeground(new java.awt.Color(255, 255, 255));
-        lblCarDetails.setText("Car Details:");
-        lblCarDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        lblBrand.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblBrand.setForeground(new java.awt.Color(255, 255, 255));
-        lblBrand.setText("Brand:");
-        lblBrand.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        lblYear.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblYear.setForeground(new java.awt.Color(255, 255, 255));
-        lblYear.setText("Year:");
-        lblYear.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
         lblModel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblModel.setForeground(new java.awt.Color(255, 255, 255));
         lblModel.setText("Model:");
         lblModel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblCustomerDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblCustomerDetails.setForeground(new java.awt.Color(255, 255, 255));
+        lblCustomerDetails.setText("Customer Details:");
+        lblCustomerDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblDailyRate.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblDailyRate.setForeground(new java.awt.Color(255, 255, 255));
         lblDailyRate.setText("Daily Rate:");
         lblDailyRate.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtCarId.setEditable(false);
-        txtCarId.setBackground(new java.awt.Color(204, 204, 204));
+        lblCustomerId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblCustomerId.setForeground(new java.awt.Color(255, 255, 255));
+        lblCustomerId.setText("Customer ID:");
+        lblCustomerId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        txtCarId.setBackground(new java.awt.Color(255, 255, 255));
         txtCarId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCarId.setForeground(new java.awt.Color(0, 0, 0));
         txtCarId.addActionListener(new java.awt.event.ActionListener() {
@@ -456,35 +402,78 @@ public class EditRental extends javax.swing.JFrame {
             }
         });
 
+        txtCustomerId.setBackground(new java.awt.Color(255, 255, 255));
+        txtCustomerId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerId.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCustomerIdActionPerformed(evt);
+            }
+        });
+
         txtBrand.setEditable(false);
         txtBrand.setBackground(new java.awt.Color(204, 204, 204));
         txtBrand.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtBrand.setForeground(new java.awt.Color(0, 0, 0));
+
+        txtCustomerName.setEditable(false);
+        txtCustomerName.setBackground(new java.awt.Color(204, 204, 204));
+        txtCustomerName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerName.setForeground(new java.awt.Color(0, 0, 0));
 
         txtYear.setEditable(false);
         txtYear.setBackground(new java.awt.Color(204, 204, 204));
         txtYear.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtYear.setForeground(new java.awt.Color(0, 0, 0));
 
+        txtContact.setEditable(false);
+        txtContact.setBackground(new java.awt.Color(204, 204, 204));
+        txtContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtContact.setForeground(new java.awt.Color(0, 0, 0));
+
         txtModel.setEditable(false);
         txtModel.setBackground(new java.awt.Color(204, 204, 204));
         txtModel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtModel.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblExtraPad2.setBackground(new java.awt.Color(255, 255, 255));
+        lblExtraPad2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblExtraPad2.setForeground(new java.awt.Color(255, 255, 255));
 
         lblCarId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblCarId.setForeground(new java.awt.Color(255, 255, 255));
         lblCarId.setText("Car ID:");
         lblCarId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        txtDailyRate.setEditable(false);
+        txtDailyRate.setBackground(new java.awt.Color(204, 204, 204));
+        txtDailyRate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDailyRate.setForeground(new java.awt.Color(0, 0, 0));
+
         lblType.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblType.setForeground(new java.awt.Color(255, 255, 255));
         lblType.setText("Type:");
         lblType.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
+        lblCarDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblCarDetails.setForeground(new java.awt.Color(255, 255, 255));
+        lblCarDetails.setText("Car Details:");
+        lblCarDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
         cmbType.setBackground(new java.awt.Color(204, 204, 204));
         cmbType.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cmbType.setForeground(new java.awt.Color(0, 0, 0));
         cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sedan", "SUV", "Hatchback", "MPV", "Van", "Pickup" }));
+
+        lblBrand.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblBrand.setForeground(new java.awt.Color(255, 255, 255));
+        lblBrand.setText("Brand:");
+        lblBrand.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblContact.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblContact.setForeground(new java.awt.Color(255, 255, 255));
+        lblContact.setText("Contact:");
+        lblContact.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout pnlContent2Layout = new javax.swing.GroupLayout(pnlContent2);
         pnlContent2.setLayout(pnlContent2Layout);
@@ -523,20 +512,22 @@ public class EditRental extends javax.swing.JFrame {
                                     .addComponent(txtYear)
                                     .addComponent(cmbType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContent2Layout.createSequentialGroup()
-                                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblFullName)
-                                    .addComponent(lblCustomerId))
+                                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblCustomerId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblFullName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(24, 24, 24)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCustomerName)
-                                    .addComponent(txtCustomerId))
-                                .addGap(18, 18, 18)
+                                    .addComponent(txtCustomerId)
+                                    .addComponent(txtCustomerName))
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlContent2Layout.createSequentialGroup()
-                                        .addComponent(lblContact, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(37, 37, 37)
-                                        .addComponent(txtContact))
-                                    .addComponent(lblExtraPad2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addGap(26, 26, 26)
+                                        .addComponent(lblExtraPad2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(pnlContent2Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblContact, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(29, 29, 29)
+                                        .addComponent(txtContact)))))
                         .addGap(47, 47, 47))))
         );
         pnlContent2Layout.setVerticalGroup(
@@ -689,43 +680,107 @@ public class EditRental extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtReturnDatePropertyChange
 
-    private void txtCustomerIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerIdActionPerformed
-
-    }//GEN-LAST:event_txtCustomerIdActionPerformed
-
-    private void txtCarIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCarIdActionPerformed
-
-    }//GEN-LAST:event_txtCarIdActionPerformed
-
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
-            if (txtStartDate.getDate() == null || txtReturnDate.getDate() == null) {
-                Message.error("Please fill in both dates.");
+            // Validate required fields.
+            if (txtCustomerId.getText().trim().isEmpty()
+                    || txtCarId.getText().trim().isEmpty()
+                    || txtStartDate.getDate() == null
+                    || txtReturnDate.getDate() == null) {
+
+                Message.error("Please fill in all required fields.");
                 return;
             }
 
-            java.sql.Date startDate = new java.sql.Date(txtStartDate.getDate().getTime());
-            java.sql.Date returnDate = new java.sql.Date(txtReturnDate.getDate().getTime());
+            // Verify ID references if they are integer data types.
+            if (!isInteger(txtCustomerId.getText().trim())) {
+                Message.error("Customer ID must be a whole number.");
+                return;
+            }
 
-            Rental rental = new Rental(rentalId, startDate, returnDate);
+            if (!isInteger(txtCarId.getText().trim())) {
+                Message.error("Car ID must be a whole number.");
+                return;
+            }
+
+            // Gets the inputted values.
+            int customerId
+                    = Integer.parseInt(txtCustomerId.getText().trim());
+
+            int carId
+                    = Integer.parseInt(txtCarId.getText().trim());
+
+            java.sql.Date startDate
+                    = new java.sql.Date(txtStartDate.getDate().getTime());
+
+            java.sql.Date expectedReturnDate
+                    = new java.sql.Date(txtReturnDate.getDate().getTime());
+
+            // Build Rental object.
+            Rental rental = new Rental(
+                    rentalId,
+                    customerId,
+                    carId,
+                    startDate,
+                    expectedReturnDate
+            );
 
             RentalDAO rentalDao = new RentalDAOImpl();
+
             boolean success = rentalDao.editRental(rental);
 
             if (success) {
-                Message.show("Rental dates updated successfully!", "Success");
+                Message.show("Rental updated successfully!", "Success");
                 this.dispose();
             } else {
-                Message.error("Failed to update rental dates.");
+                Message.error("Failed to update rental.");
             }
+
         } catch (Exception e) {
             // Message.error("Error updating rental:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void txtCarIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCarIdActionPerformed
+        if (!txtCarId.getText().trim().isEmpty()) {
+            try {
+                if (!isInteger(txtCarId.getText().trim())) {
+                    Message.error("Car ID must be a whole number.");
+                    return;
+                }
+
+                carId = Integer.parseInt(txtCarId.getText().trim());
+
+                CarDAO carDao = new CarDAOImpl();
+
+                if (!carDao.isCarAvailable(carId)) {
+                    Message.error("Car is not available or invalid.");
+                    return;
+                }
+
+                loadCarDetails();
+                calculateTotalCost();
+
+            } catch (Exception e) {
+                // Message.error("Error checking car availability:\n" + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_txtCarIdActionPerformed
+
+    private void txtCustomerIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerIdActionPerformed
+        if (!txtCustomerId.getText().isEmpty()) {
+            try {
+                customerId = Integer.parseInt(txtCustomerId.getText());
+                loadCustomerDetails(); // Reload using new customerId.
+            } catch (NumberFormatException e) {
+                Message.error("Invalid Customer ID format.");
+            }
+        }
+    }//GEN-LAST:event_txtCustomerIdActionPerformed
 
     /**
      * @param args the command line arguments

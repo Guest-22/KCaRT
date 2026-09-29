@@ -37,6 +37,14 @@ public class Rental {
         this.expectedReturnDate = expectedReturnDate;
     }
 
+    public Rental(int rentalId, int customerId, int carId, Date startDate, Date expectedReturnDate) {
+        this.rentalId = rentalId;
+        this.customerId = customerId;
+        this.carId = carId;
+        this.startDate = startDate;
+        this.expectedReturnDate = expectedReturnDate;
+    }
+
     // Model for retrieving all the necessary rental info. for Rental Menu.
     public Rental(int rentalId, int customerId, String customerName,
             int carId, String carInfo, int processedBy, String processedByName,

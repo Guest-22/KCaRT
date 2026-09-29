@@ -10,4 +10,6 @@ public interface CarDAO {
     byte[] getCarPhotoById(int carId);
     Car getCarById(int carId);
     Car getCarInfo(int carId);
+    boolean updateCarStatus(int carId, String carStatus);
+    boolean isCarAvailable(int carId);
 }

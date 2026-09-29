@@ -1,12 +1,156 @@
 package kcart.view.rentalview;
 
+import java.util.Date;
+import kcart.dao.BillingDAO;
+import kcart.daoimpl.BillingDAOImpl;
+import kcart.dao.CarDAO;
+import kcart.dao.CustomerDAO;
+import kcart.dao.RentalDAO;
+import kcart.daoimpl.CarDAOImpl;
+import kcart.daoimpl.CustomerDAOImpl;
+import kcart.daoimpl.RentalDAOImpl;
+import kcart.model.Billing;
+import kcart.model.Car;
+import kcart.model.Customer;
+import kcart.model.Rental;
+import kcart.util.Message;
+import kcart.util.ActiveSession;
+
 public class ProcessPickup extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ProcessPickup
-     */
+    private int rentalId;
+    private int customerId;
+    private int carId;
+
     public ProcessPickup() {
+
+    }
+
+    public ProcessPickup(int rentalId, int customerId, int carId) {
         initComponents();
+
+        this.rentalId = rentalId;
+        this.customerId = customerId;
+        this.carId = carId;
+
+        loadCarDetails();
+        loadCustomerDetails();
+        loadRentalDetails();
+    }
+
+    private void loadRentalDetails() {
+        RentalDAO rentalDao = new RentalDAOImpl();
+        Rental rental = rentalDao.getRentalInfo(rentalId);
+
+        if (rental != null) {
+            // Fill the textfields with rental dates.
+            txtRentalId.setText(String.valueOf(rentalId));
+            txtStartDate.setDate(rental.getStartDate());
+            txtReturnDate.setDate(rental.getExpectedReturnDate());
+            // Updates no. of days and cost after the data is retrieved.
+            updateRentalDays();
+            calculateTotalCost();
+        } else {
+            Message.error("Rental not found for ID: " + rentalId);
+        }
+    }
+
+    // Retrieves customer info.
+    private void loadCustomerDetails() {
+        CustomerDAO customerDao = new CustomerDAOImpl();
+        Customer customer = customerDao.getCustomerInfo(customerId);
+
+        if (customer != null) {
+            txtCustomerId.setText(String.valueOf(customerId));
+            // Name format: LastName, FirstName M.I.
+            String middleInitial = (customer.getMiddleName() != null && !customer.getMiddleName().isEmpty())
+                    ? customer.getMiddleName().substring(0, 1) + "."
+                    : "";
+
+            String formattedName = customer.getLastName() + ", " + customer.getFirstName() + " " + middleInitial;
+
+            txtCustomerName.setText(formattedName);
+            txtContact.setText(customer.getContactNo());
+        } else {
+            Message.error("Customer not found for ID: " + customerId);
+        }
+    }
+
+    // Retrieves Car info.
+    private void loadCarDetails() {
+        CarDAO carDao = new CarDAOImpl();
+        Car car = carDao.getCarInfo(carId);
+
+        if (car != null) {
+            txtCarId.setText(String.valueOf(car.getCarId()));
+            txtBrand.setText(car.getBrand());
+            txtModel.setText(car.getModel());
+            cmbType.setSelectedItem(car.getCarType());
+            txtYear.setText(String.valueOf(car.getYear()));
+            txtDailyRate.setText(String.valueOf(car.getDailyRate()));
+        } else {
+            Message.error("Car details not found for ID: " + carId);
+        }
+    }
+
+    // Uses start and return date to calculate total no. of days.
+    private long calculateDaysBetween(Date startDate, Date returnDate) {
+        if (startDate == null || returnDate == null) {
+            return 0;
+        }
+        long diffInMillis = returnDate.getTime() - startDate.getTime();
+        return diffInMillis / (1000 * 60 * 60 * 24);
+    }
+
+    // Update rental days; verifies if dates are valid.
+    private void updateRentalDays() {
+        Date startDate = txtStartDate.getDate();
+        Date returnDate = txtReturnDate.getDate();
+
+        long days = calculateDaysBetween(startDate, returnDate);
+
+        if (days > 0) {
+            txtNoOfDays.setText(String.valueOf(days));
+            calculateTotalCost(); // Updates cost.
+        } else {
+            txtNoOfDays.setText("0");
+            txtCost.setText("0");
+            if (startDate != null && returnDate != null) {
+                txtReturnDate.setDate(null); // Clear invalid (past) return date.
+                Message.error("Return date must be after start date.");
+            }
+        }
+    }
+
+    // Calculate total cost based on no. of days and daily rate of Car reference.
+    private void calculateTotalCost() {
+        try {
+            String rateText = txtDailyRate.getText().trim();
+            String daysText = txtNoOfDays.getText().trim();
+
+            if (rateText.isEmpty() || daysText.isEmpty()) {
+                txtCost.setText("0");
+                return;
+            }
+
+            double dailyRate = Double.parseDouble(rateText);
+            int days = Integer.parseInt(daysText);
+            double totalCost = dailyRate * days;
+            txtCost.setText(String.valueOf(totalCost));
+            txtInvoiceAmount.setText(String.valueOf(totalCost));
+        } catch (NumberFormatException e) {
+            Message.error("Invalid number format for daily rate or days.");
+        }
+    }
+
+    // Validate input for double.
+    private boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
@@ -27,19 +171,19 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblReturnDate = new javax.swing.JLabel();
         lblTotalCost = new javax.swing.JLabel();
         lblRentalDetails = new javax.swing.JLabel();
-        txtRentalID = new javax.swing.JTextField();
-        txtStartDate = new javax.swing.JTextField();
+        txtRentalId = new javax.swing.JTextField();
         txtNoOfDays = new javax.swing.JTextField();
-        txtReturnDate = new javax.swing.JTextField();
-        txtTotalCost = new javax.swing.JTextField();
+        txtCost = new javax.swing.JTextField();
         lblExtraPad1 = new javax.swing.JLabel();
+        txtStartDate = new com.toedter.calendar.JDateChooser();
+        txtReturnDate = new com.toedter.calendar.JDateChooser();
         pnlContent2 = new javax.swing.JPanel();
         lblContact = new javax.swing.JLabel();
         lblFullName = new javax.swing.JLabel();
         lblCustomerDetails = new javax.swing.JLabel();
         lblCustomerID = new javax.swing.JLabel();
-        txtCustomerID = new javax.swing.JTextField();
-        txtFullName = new javax.swing.JTextField();
+        txtCustomerId = new javax.swing.JTextField();
+        txtCustomerName = new javax.swing.JTextField();
         txtContact = new javax.swing.JTextField();
         lblExtraPad2 = new javax.swing.JLabel();
         txtDailyRate = new javax.swing.JTextField();
@@ -48,7 +192,7 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblYear = new javax.swing.JLabel();
         lblModel = new javax.swing.JLabel();
         lblDailyRate = new javax.swing.JLabel();
-        txtCarID = new javax.swing.JTextField();
+        txtCarId = new javax.swing.JTextField();
         txtBrand = new javax.swing.JTextField();
         txtYear = new javax.swing.JTextField();
         txtModel = new javax.swing.JTextField();
@@ -62,10 +206,10 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblPaymentDetails = new javax.swing.JLabel();
         txtDescription = new javax.swing.JTextField();
         lblDescription = new javax.swing.JLabel();
-        txtMethod = new javax.swing.JTextField();
         lblMethod = new javax.swing.JLabel();
         txtInvoiceAmount = new javax.swing.JTextField();
         txtPayAmount = new javax.swing.JTextField();
+        cmbMethod = new javax.swing.JComboBox<>();
         pnlContent4 = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnConfirm = new javax.swing.JButton();
@@ -112,29 +256,42 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblRentalDetails.setText("Rental Details:");
         lblRentalDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtRentalID.setBackground(new java.awt.Color(255, 255, 255));
-        txtRentalID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtRentalID.setForeground(new java.awt.Color(0, 0, 0));
+        txtRentalId.setEditable(false);
+        txtRentalId.setBackground(new java.awt.Color(204, 204, 204));
+        txtRentalId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtRentalId.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtStartDate.setBackground(new java.awt.Color(255, 255, 255));
-        txtStartDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtStartDate.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtNoOfDays.setBackground(new java.awt.Color(255, 255, 255));
+        txtNoOfDays.setEditable(false);
+        txtNoOfDays.setBackground(new java.awt.Color(204, 204, 204));
         txtNoOfDays.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNoOfDays.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtReturnDate.setBackground(new java.awt.Color(255, 255, 255));
-        txtReturnDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtReturnDate.setForeground(new java.awt.Color(0, 0, 0));
-
-        txtTotalCost.setBackground(new java.awt.Color(255, 255, 255));
-        txtTotalCost.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtTotalCost.setForeground(new java.awt.Color(0, 0, 0));
+        txtCost.setEditable(false);
+        txtCost.setBackground(new java.awt.Color(204, 204, 204));
+        txtCost.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCost.setForeground(new java.awt.Color(0, 0, 0));
 
         lblExtraPad1.setBackground(new java.awt.Color(255, 255, 255));
         lblExtraPad1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblExtraPad1.setForeground(new java.awt.Color(255, 255, 255));
+
+        txtStartDate.setBackground(new java.awt.Color(255, 255, 255));
+        txtStartDate.setForeground(new java.awt.Color(0, 0, 0));
+        txtStartDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtStartDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtStartDatePropertyChange(evt);
+            }
+        });
+
+        txtReturnDate.setBackground(new java.awt.Color(255, 255, 255));
+        txtReturnDate.setForeground(new java.awt.Color(0, 0, 0));
+        txtReturnDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtReturnDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtReturnDatePropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
         pnlContent1.setLayout(pnlContent1Layout);
@@ -155,10 +312,10 @@ public class ProcessPickup extends javax.swing.JFrame {
                                     .addComponent(lblReturnDate)
                                     .addComponent(lblRentalID))
                                 .addGap(22, 22, 22)
-                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
-                                    .addComponent(txtRentalID, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtReturnDate))))
+                                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtRentalId, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                                    .addComponent(txtStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtReturnDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(18, 18, 18)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent1Layout.createSequentialGroup()
@@ -168,7 +325,7 @@ public class ProcessPickup extends javax.swing.JFrame {
                                 .addGap(15, 15, 15)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNoOfDays, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
-                                    .addComponent(txtTotalCost)))
+                                    .addComponent(txtCost)))
                             .addComponent(lblExtraPad1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(39, 39, 39))))
         );
@@ -183,31 +340,31 @@ public class ProcessPickup extends javax.swing.JFrame {
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtRentalID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRentalId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblRentalID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContent1Layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblStartDate)))
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addComponent(lblStartDate)
+                                .addGap(3, 3, 3))
+                            .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addComponent(txtNoOfDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4)
-                        .addComponent(txtTotalCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblTotalCost)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addComponent(lblNoOfDays)
                         .addGap(28, 28, 28)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblReturnDate)
-                    .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblExtraPad1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(1, 1, 1)))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(lblReturnDate)
+                        .addGroup(pnlContent1Layout.createSequentialGroup()
+                            .addComponent(lblExtraPad1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(1, 1, 1)))
+                    .addComponent(txtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
@@ -219,7 +376,7 @@ public class ProcessPickup extends javax.swing.JFrame {
 
         lblFullName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblFullName.setForeground(new java.awt.Color(255, 255, 255));
-        lblFullName.setText("Full Name:");
+        lblFullName.setText("Name:");
         lblFullName.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblCustomerDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -232,15 +389,23 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblCustomerID.setText("Customer ID:");
         lblCustomerID.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtCustomerID.setBackground(new java.awt.Color(255, 255, 255));
-        txtCustomerID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtCustomerID.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerId.setEditable(false);
+        txtCustomerId.setBackground(new java.awt.Color(204, 204, 204));
+        txtCustomerId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerId.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtFullName.setBackground(new java.awt.Color(255, 255, 255));
-        txtFullName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtFullName.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerName.setEditable(false);
+        txtCustomerName.setBackground(new java.awt.Color(204, 204, 204));
+        txtCustomerName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerName.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCustomerNameActionPerformed(evt);
+            }
+        });
 
-        txtContact.setBackground(new java.awt.Color(255, 255, 255));
+        txtContact.setEditable(false);
+        txtContact.setBackground(new java.awt.Color(204, 204, 204));
         txtContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtContact.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -248,7 +413,8 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblExtraPad2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblExtraPad2.setForeground(new java.awt.Color(255, 255, 255));
 
-        txtDailyRate.setBackground(new java.awt.Color(255, 255, 255));
+        txtDailyRate.setEditable(false);
+        txtDailyRate.setBackground(new java.awt.Color(204, 204, 204));
         txtDailyRate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtDailyRate.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -277,19 +443,23 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblDailyRate.setText("Daily Rate:");
         lblDailyRate.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtCarID.setBackground(new java.awt.Color(255, 255, 255));
-        txtCarID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtCarID.setForeground(new java.awt.Color(0, 0, 0));
+        txtCarId.setEditable(false);
+        txtCarId.setBackground(new java.awt.Color(204, 204, 204));
+        txtCarId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCarId.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtBrand.setBackground(new java.awt.Color(255, 255, 255));
+        txtBrand.setEditable(false);
+        txtBrand.setBackground(new java.awt.Color(204, 204, 204));
         txtBrand.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtBrand.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtYear.setBackground(new java.awt.Color(255, 255, 255));
+        txtYear.setEditable(false);
+        txtYear.setBackground(new java.awt.Color(204, 204, 204));
         txtYear.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtYear.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtModel.setBackground(new java.awt.Color(255, 255, 255));
+        txtModel.setEditable(false);
+        txtModel.setBackground(new java.awt.Color(204, 204, 204));
         txtModel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtModel.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -303,7 +473,7 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblType.setText("Type:");
         lblType.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        cmbType.setBackground(new java.awt.Color(255, 255, 255));
+        cmbType.setBackground(new java.awt.Color(204, 204, 204));
         cmbType.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cmbType.setForeground(new java.awt.Color(0, 0, 0));
         cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sedan", "SUV", "Hatchback", "MPV", "Van", "Pickup" }));
@@ -330,7 +500,7 @@ public class ProcessPickup extends javax.swing.JFrame {
                                     .addComponent(lblModel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(25, 25, 25)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtCarID, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtCarId, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtBrand, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtModel, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
@@ -350,8 +520,8 @@ public class ProcessPickup extends javax.swing.JFrame {
                                     .addComponent(lblCustomerID))
                                 .addGap(24, 24, 24)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFullName)
-                                    .addComponent(txtCustomerID))
+                                    .addComponent(txtCustomerName)
+                                    .addComponent(txtCustomerId))
                                 .addGap(18, 18, 18)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlContent2Layout.createSequentialGroup()
@@ -368,14 +538,14 @@ public class ProcessPickup extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCustomerId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblContact)
                     .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFullName)
-                        .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblExtraPad2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCarDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -390,7 +560,7 @@ public class ProcessPickup extends javax.swing.JFrame {
                             .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(lblType)
                                 .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCarID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtCarId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(pnlContent2Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -443,22 +613,24 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblDescription.setText("Description:");
         lblDescription.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtMethod.setBackground(new java.awt.Color(255, 255, 255));
-        txtMethod.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtMethod.setForeground(new java.awt.Color(0, 0, 0));
-
         lblMethod.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblMethod.setForeground(new java.awt.Color(255, 255, 255));
         lblMethod.setText("Method:");
         lblMethod.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtInvoiceAmount.setBackground(new java.awt.Color(255, 255, 255));
+        txtInvoiceAmount.setEditable(false);
+        txtInvoiceAmount.setBackground(new java.awt.Color(204, 204, 204));
         txtInvoiceAmount.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtInvoiceAmount.setForeground(new java.awt.Color(0, 0, 0));
 
         txtPayAmount.setBackground(new java.awt.Color(255, 255, 255));
         txtPayAmount.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtPayAmount.setForeground(new java.awt.Color(0, 0, 0));
+
+        cmbMethod.setBackground(new java.awt.Color(255, 255, 255));
+        cmbMethod.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cmbMethod.setForeground(new java.awt.Color(0, 0, 0));
+        cmbMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash" }));
 
         javax.swing.GroupLayout pnlContent3Layout = new javax.swing.GroupLayout(pnlContent3);
         pnlContent3.setLayout(pnlContent3Layout);
@@ -475,7 +647,7 @@ public class ProcessPickup extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtInvoiceAmount)
-                            .addComponent(txtDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))))
+                            .addComponent(txtDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))))
                 .addGap(18, 18, 18)
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPaymentDetails)
@@ -483,10 +655,10 @@ public class ProcessPickup extends javax.swing.JFrame {
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblMethod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblPayAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPayAmount)
-                            .addComponent(txtMethod, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))))
+                            .addComponent(txtPayAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                            .addComponent(cmbMethod, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(45, 45, 45))
         );
         pnlContent3Layout.setVerticalGroup(
@@ -498,8 +670,8 @@ public class ProcessPickup extends javax.swing.JFrame {
                         .addComponent(lblPaymentDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPayAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -561,7 +733,7 @@ public class ProcessPickup extends javax.swing.JFrame {
                 .addGroup(pnlContent4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -604,8 +776,125 @@ public class ProcessPickup extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        try {
+            // Validate required fields.
+            if (txtInvoiceAmount.getText().trim().isEmpty()
+                    || txtDescription.getText().trim().isEmpty()
+                    || cmbMethod.getSelectedItem() == null
+                    || cmbMethod.getSelectedItem().toString().trim().isEmpty()
+                    || txtPayAmount.getText().trim().isEmpty()) {
 
+                Message.error("Please fill in all required fields.");
+                return;
+            }
+
+            // Verify amount inputs if they are double data types.
+            if (!isDouble(txtInvoiceAmount.getText().trim())) {
+                Message.error("Invoice amount must be a valid number.");
+                return;
+            }
+
+            if (!isDouble(txtPayAmount.getText().trim())) {
+                Message.error("Payment amount must be a valid number.");
+                return;
+            }
+
+            // Gets the inputted values.
+            double invoiceAmount
+                    = Double.parseDouble(txtInvoiceAmount.getText().trim());
+
+            double payAmount
+                    = Double.parseDouble(txtPayAmount.getText().trim());
+
+            int processedBy = ActiveSession.loggedInUserId;
+
+            String description = txtDescription.getText().trim();
+            String payMethod = cmbMethod.getSelectedItem().toString().trim();
+            String invoiceStatus = "Paid";
+
+            // Verify payment amount matches invoice amount.
+            if (payAmount != invoiceAmount) {
+                Message.error("Payment amount must match the invoice amount.");
+                return;
+            }
+
+            // Build Billing object.
+            Billing billing = new Billing();
+
+            billing.setRentalId(rentalId);
+            billing.setReturnId(null);
+            billing.setDescription(description);
+            billing.setInvoiceAmount(invoiceAmount);
+            billing.setInvoiceStatus(invoiceStatus);
+            billing.setProcessedBy(processedBy);
+            billing.setPayMethod(payMethod);
+            billing.setPayAmount(payAmount);
+
+            // Add invoice.
+            BillingDAO billingDao = new BillingDAOImpl();
+
+            int invoiceId = billingDao.addInvoice(billing);
+
+            if (invoiceId == -1) {
+                Message.error("Failed to add invoice.");
+                return;
+            }
+
+            // Add payment referencing the newly inserted invoice.
+            boolean paymentSuccess
+                    = billingDao.addPayment(billing, invoiceId);
+
+            if (!paymentSuccess) {
+                Message.error("Failed to add payment.");
+                return;
+            }
+
+            // Update rental status to Active.
+            RentalDAO rentalDao = new RentalDAOImpl();
+
+            boolean rentalSuccess
+                    = rentalDao.updateRentalStatus(rentalId, "Active");
+
+            if (!rentalSuccess) {
+                Message.error("Failed to activate rental.");
+                return;
+            }
+
+            // Update car status to Rented.
+            CarDAO carDao = new CarDAOImpl();
+
+            boolean carSuccess
+                    = carDao.updateCarStatus(carId, "Rented");
+
+            if (!carSuccess) {
+                Message.error("Failed to update car status.");
+                return;
+            }
+
+            // Pickup completed successfully.
+            Message.show("Pickup processed successfully!", "Success");
+            this.dispose();
+
+        } catch (Exception e) {
+            // Message.error("Error processing pickup:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void txtCustomerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerNameActionPerformed
+
+    }//GEN-LAST:event_txtCustomerNameActionPerformed
+
+    private void txtStartDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtStartDatePropertyChange
+        if ("date".equals(evt.getPropertyName())) {
+            updateRentalDays();
+        }
+    }//GEN-LAST:event_txtStartDatePropertyChange
+
+    private void txtReturnDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtReturnDatePropertyChange
+        if ("date".equals(evt.getPropertyName())) {
+            updateRentalDays();
+        }
+    }//GEN-LAST:event_txtReturnDatePropertyChange
 
     /**
      * @param args the command line arguments
@@ -645,6 +934,7 @@ public class ProcessPickup extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnConfirm;
+    private javax.swing.JComboBox<String> cmbMethod;
     private javax.swing.JComboBox<String> cmbType;
     private javax.swing.JLabel lblBrand;
     private javax.swing.JLabel lblCarDetails;
@@ -678,21 +968,20 @@ public class ProcessPickup extends javax.swing.JFrame {
     private javax.swing.JPanel pnlContent4;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JTextField txtBrand;
-    private javax.swing.JTextField txtCarID;
+    private javax.swing.JTextField txtCarId;
     private javax.swing.JTextField txtContact;
-    private javax.swing.JTextField txtCustomerID;
+    private javax.swing.JTextField txtCost;
+    private javax.swing.JTextField txtCustomerId;
+    private javax.swing.JTextField txtCustomerName;
     private javax.swing.JTextField txtDailyRate;
     private javax.swing.JTextField txtDescription;
-    private javax.swing.JTextField txtFullName;
     private javax.swing.JTextField txtInvoiceAmount;
-    private javax.swing.JTextField txtMethod;
     private javax.swing.JTextField txtModel;
     private javax.swing.JTextField txtNoOfDays;
     private javax.swing.JTextField txtPayAmount;
-    private javax.swing.JTextField txtRentalID;
-    private javax.swing.JTextField txtReturnDate;
-    private javax.swing.JTextField txtStartDate;
-    private javax.swing.JTextField txtTotalCost;
+    private javax.swing.JTextField txtRentalId;
+    private com.toedter.calendar.JDateChooser txtReturnDate;
+    private com.toedter.calendar.JDateChooser txtStartDate;
     private javax.swing.JTextField txtYear;
     // End of variables declaration//GEN-END:variables
 }

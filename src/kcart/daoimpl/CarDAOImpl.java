@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import kcart.util.Message;
 
 public class CarDAOImpl implements CarDAO {
+
     private static final String TABLE_NAME = "tbl_car";
     private static final String COL_ID = "car_id";
     private static final String COL_PLATE_NO = "plate_no";
@@ -199,7 +200,7 @@ public class CarDAOImpl implements CarDAO {
     // Retrieve basic car info. for rental reservations.
     @Override
     public Car getCarInfo(int carId) {
-        String sql = "SELECT " 
+        String sql = "SELECT "
                 + COL_ID + ", "
                 + COL_BRAND + ", "
                 + COL_MODEL + ", "
@@ -214,12 +215,12 @@ public class CarDAOImpl implements CarDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return new Car(
-                        rs.getInt(COL_ID),
-                        rs.getString(COL_BRAND),
-                        rs.getString(COL_MODEL),
-                        rs.getString(COL_TYPE),   // carType
-                        rs.getInt(COL_YEAR),
-                        rs.getDouble(COL_DAILY_RATE)
+                            rs.getInt(COL_ID),
+                            rs.getString(COL_BRAND),
+                            rs.getString(COL_MODEL),
+                            rs.getString(COL_TYPE), // carType
+                            rs.getInt(COL_YEAR),
+                            rs.getDouble(COL_DAILY_RATE)
                     );
                 }
             }
@@ -227,5 +228,49 @@ public class CarDAOImpl implements CarDAO {
             Message.error("Error retrieving car info:\n" + e.getMessage());
         }
         return null;
+    }
+
+    // Change car status for tracking purposes.
+    @Override
+    public boolean updateCarStatus(int carId, String carStatus) {
+        String sql = "UPDATE " + TABLE_NAME
+                + " SET " + COL_STATUS + " = ?"
+                + " WHERE " + COL_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, carStatus);
+            stmt.setInt(2, carId);
+
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            Message.error("Error updating car status:\n" + e.getMessage());
+            return false;
+        }
+    }
+
+    // Checks car availability.
+    @Override
+    public boolean isCarAvailable(int carId) {
+        String sql = "SELECT " + COL_STATUS
+                + " FROM " + TABLE_NAME
+                + " WHERE " + COL_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, carId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return "Available".equals(rs.getString(COL_STATUS));
+                }
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error checking car availability:\n" + e.getMessage());
+        }
+
+        return false;
     }
 }

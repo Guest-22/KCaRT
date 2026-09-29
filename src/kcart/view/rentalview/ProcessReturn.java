@@ -218,7 +218,7 @@ public class ProcessReturn extends javax.swing.JFrame {
 
         lblFullName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblFullName.setForeground(new java.awt.Color(255, 255, 255));
-        lblFullName.setText("Full Name:");
+        lblFullName.setText("Name:");
         lblFullName.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblCustomerDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
