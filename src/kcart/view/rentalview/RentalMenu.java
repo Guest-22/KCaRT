@@ -657,7 +657,9 @@ public class RentalMenu extends javax.swing.JFrame {
             Message.error("Please select a rental record first.");
             return;
         }
-        new ProcessReturn().setVisible(true);
+        
+        // Opens process return form referencing the rental id.
+        new ProcessReturn(selectedRentalId).setVisible(true);
     }//GEN-LAST:event_btnProcessReturnActionPerformed
 
     private void tblRecordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRecordMouseClicked

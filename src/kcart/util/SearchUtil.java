@@ -8,7 +8,7 @@ import kcart.model.Rental;
 
 public class SearchUtil {
 
-    // Linear Search: accepts a list of cars and the keyword; returns matched brand/model.
+    // Linear Search: accepts a list of cars and the keyword; returns matched cars.
     public static List<Car> searchCarsByKeyword(List<Car> carList, String keyword) {
         keyword = keyword.toLowerCase();
         List<Car> results = new ArrayList<>();
@@ -16,8 +16,13 @@ public class SearchUtil {
         for (Car c : carList) {
             String brand = c.getBrand().toLowerCase();
             String model = c.getModel().toLowerCase();
+            String carType = c.getCarType().toLowerCase();
+            String transmissionType = c.getTransmissionType().toLowerCase();
+            String fuelType = c.getFuelType().toLowerCase();
+            String carStatus = c.getCarStatus();
 
-            if (brand.contains(keyword) || model.contains(keyword)) {
+            if (brand.contains(keyword) || model.contains(keyword) || carType.contains(keyword) 
+                    || transmissionType.contains(keyword) || fuelType.contains(keyword) || carStatus.contains(keyword)) {
                 results.add(c);
             }
         }

@@ -1,16 +1,25 @@
 package kcart.model;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class Return {
+
     private int returnId;
     private int rentalId;
     private int processedBy;
-    private java.sql.Date returnDate;
+    private Date returnDate;
+    private String condition;
     private String remarks;
-    private java.sql.Timestamp createdAt;
-    
+    private Timestamp createdAt;
+
+    public Return(int rentalId, int processedBy, Date returnDate, String condition, String remarks) {
+        this.rentalId = rentalId;
+        this.processedBy = processedBy;
+        this.returnDate = returnDate;
+        this.condition = condition;
+        this.remarks = remarks;
+    }
+
     // Getter/Setter method
     public int getReturnId() {
         return returnId;
@@ -42,6 +51,14 @@ public class Return {
 
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 
     public String getRemarks() {

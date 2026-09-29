@@ -1,12 +1,153 @@
 package kcart.view.rentalview;
 
+import java.util.Date;
+import kcart.dao.CarDAO;
+import kcart.dao.RentalDAO;
+import kcart.daoimpl.CarDAOImpl;
+import kcart.daoimpl.RentalDAOImpl;
+import kcart.model.Car;
+import kcart.model.Rental;
+import kcart.util.Message;
+import java.text.SimpleDateFormat;
+import kcart.dao.CustomerDAO;
+import kcart.dao.ReturnDAO;
+import kcart.daoimpl.CustomerDAOImpl;
+import kcart.daoimpl.ReturnDAOImpl;
+import kcart.model.Customer;
+import kcart.model.Return;
+import kcart.util.ActiveSession;
+
 public class ProcessReturn extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ProcessReturn
-     */
+    private int rentalId;
+    private int carId;
+    private int customerId;
+
     public ProcessReturn() {
+    }
+
+    public ProcessReturn(int rentalId) {
         initComponents();
+
+        this.rentalId = rentalId;
+
+        initializeStartDate();
+        loadRentalDetails();
+        loadCustomerDetails();
+        loadCarDetails();
+    }
+
+    // Retrieves rental info.
+    private void loadRentalDetails() {
+        RentalDAO rentalDao = new RentalDAOImpl();
+        Rental rental = rentalDao.getRentalInfo(rentalId);
+
+        if (rental != null) {
+            SimpleDateFormat dateFormat
+                    = new SimpleDateFormat("MMM d, yyyy");
+
+            txtRentalId.setText(String.valueOf(rentalId));
+
+            txtStartDate.setText(
+                    dateFormat.format(rental.getStartDate())
+            );
+
+            txtReturnDate.setText(
+                    dateFormat.format(rental.getExpectedReturnDate())
+            );
+
+            // Calculate number of rental days.
+            long difference = rental.getExpectedReturnDate().getTime()
+                    - rental.getStartDate().getTime();
+
+            long noOfDays = difference
+                    / (1000 * 60 * 60 * 24);
+
+            txtNoOfDays.setText(String.valueOf(noOfDays));
+
+        } else {
+            Message.error("Rental not found for ID: " + rentalId);
+        }
+    }
+
+    // Retrieves car info.
+    private void loadCarDetails() {
+        RentalDAO rentalDao = new RentalDAOImpl();
+
+        carId = rentalDao.getCarIdByRentalId(rentalId);
+
+        if (carId == -1) {
+            Message.error("Car ID not found for Rental ID: " + rentalId);
+            return;
+        }
+
+        CarDAO carDao = new CarDAOImpl();
+        Car car = carDao.getCarInfo(carId);
+
+        if (car != null) {
+            txtCarId.setText(String.valueOf(car.getCarId()));
+            txtBrand.setText(car.getBrand());
+            txtModel.setText(car.getModel());
+            cmbType.setSelectedItem(car.getCarType());
+            txtYear.setText(String.valueOf(car.getYear()));
+            txtDailyRate.setText(String.valueOf(car.getDailyRate()));
+
+            // Calculate total cost after daily rate is loaded.
+            double dailyRate = car.getDailyRate();
+            int noOfDays = Integer.parseInt(txtNoOfDays.getText());
+
+            double totalCost = dailyRate * noOfDays;
+
+            txtCost.setText(String.format("%.2f", totalCost));
+
+        } else {
+            Message.error("Car details not found for ID: " + carId);
+        }
+    }
+
+    // Retrieves customer info.
+    private void loadCustomerDetails() {
+        RentalDAO rentalDao = new RentalDAOImpl();
+
+        // Get Customer ID using Rental ID.
+        customerId = rentalDao.getCustomerIdByRentalId(rentalId);
+
+        if (customerId == -1) {
+            Message.error("Customer ID not found for Rental ID: " + rentalId);
+            return;
+        }
+
+        // Get customer info. using Customer ID.
+        CustomerDAO customerDao = new CustomerDAOImpl();
+        Customer customer = customerDao.getCustomerInfo(customerId);
+
+        if (customer != null) {
+            txtCustomerId.setText(String.valueOf(customer.getCustomerId()));
+
+            // Name format: LastName, FirstName M.I.
+            String middleInitial = (customer.getMiddleName() != null
+                    && !customer.getMiddleName().isEmpty())
+                    ? customer.getMiddleName().substring(0, 1) + "."
+                    : "";
+
+            String formattedName = customer.getLastName() + ", "
+                    + customer.getFirstName() + " "
+                    + middleInitial;
+
+            txtCustomerName.setText(formattedName);
+            txtContact.setText(customer.getContactNo());
+
+        } else {
+            Message.error("Customer not found for ID: " + customerId);
+        }
+    }
+
+    // Sets mins default value for actual return date to today.
+    private void initializeStartDate() {
+        Date today = new Date();
+
+        txtActualReturnDate.setDate(today);
+        txtActualReturnDate.setMinSelectableDate(today);
     }
 
     /**
@@ -27,19 +168,19 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblReturnDate = new javax.swing.JLabel();
         lblTotalCost = new javax.swing.JLabel();
         lblRentalDetails = new javax.swing.JLabel();
-        txtRentalID = new javax.swing.JTextField();
+        txtRentalId = new javax.swing.JTextField();
         txtStartDate = new javax.swing.JTextField();
         txtNoOfDays = new javax.swing.JTextField();
         txtReturnDate = new javax.swing.JTextField();
-        txtTotalCost = new javax.swing.JTextField();
+        txtCost = new javax.swing.JTextField();
         lblExtraPad1 = new javax.swing.JLabel();
         pnlContent2 = new javax.swing.JPanel();
         lblContact = new javax.swing.JLabel();
         lblFullName = new javax.swing.JLabel();
         lblCustomerDetails = new javax.swing.JLabel();
         lblCustomerID = new javax.swing.JLabel();
-        txtCustomerID = new javax.swing.JTextField();
-        txtFullName = new javax.swing.JTextField();
+        txtCustomerId = new javax.swing.JTextField();
+        txtCustomerName = new javax.swing.JTextField();
         txtContact = new javax.swing.JTextField();
         lblExtraPad2 = new javax.swing.JLabel();
         txtDailyRate = new javax.swing.JTextField();
@@ -48,7 +189,7 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblYear = new javax.swing.JLabel();
         lblModel = new javax.swing.JLabel();
         lblDailyRate = new javax.swing.JLabel();
-        txtCarID = new javax.swing.JTextField();
+        txtCarId = new javax.swing.JTextField();
         txtBrand = new javax.swing.JTextField();
         txtYear = new javax.swing.JTextField();
         txtModel = new javax.swing.JTextField();
@@ -61,9 +202,9 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblReturnDetails = new javax.swing.JLabel();
         lblRemark = new javax.swing.JLabel();
         lblCondition = new javax.swing.JLabel();
-        txtActualReturnDate = new javax.swing.JTextField();
         lblActualReturnDate = new javax.swing.JLabel();
         cmbCondition = new javax.swing.JComboBox<>();
+        txtActualReturnDate = new com.toedter.calendar.JDateChooser();
         pnlContent4 = new javax.swing.JPanel();
         btnAdditionalBilling = new javax.swing.JButton();
         btnCompleteReturn = new javax.swing.JButton();
@@ -111,25 +252,30 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblRentalDetails.setText("Rental Details:");
         lblRentalDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtRentalID.setBackground(new java.awt.Color(255, 255, 255));
-        txtRentalID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtRentalID.setForeground(new java.awt.Color(0, 0, 0));
+        txtRentalId.setEditable(false);
+        txtRentalId.setBackground(new java.awt.Color(204, 204, 204));
+        txtRentalId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtRentalId.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtStartDate.setBackground(new java.awt.Color(255, 255, 255));
+        txtStartDate.setEditable(false);
+        txtStartDate.setBackground(new java.awt.Color(204, 204, 204));
         txtStartDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtStartDate.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtNoOfDays.setBackground(new java.awt.Color(255, 255, 255));
+        txtNoOfDays.setEditable(false);
+        txtNoOfDays.setBackground(new java.awt.Color(204, 204, 204));
         txtNoOfDays.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNoOfDays.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtReturnDate.setBackground(new java.awt.Color(255, 255, 255));
+        txtReturnDate.setEditable(false);
+        txtReturnDate.setBackground(new java.awt.Color(204, 204, 204));
         txtReturnDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtReturnDate.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtTotalCost.setBackground(new java.awt.Color(255, 255, 255));
-        txtTotalCost.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtTotalCost.setForeground(new java.awt.Color(0, 0, 0));
+        txtCost.setEditable(false);
+        txtCost.setBackground(new java.awt.Color(204, 204, 204));
+        txtCost.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCost.setForeground(new java.awt.Color(0, 0, 0));
 
         lblExtraPad1.setBackground(new java.awt.Color(255, 255, 255));
         lblExtraPad1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -156,7 +302,7 @@ public class ProcessReturn extends javax.swing.JFrame {
                                 .addGap(22, 22, 22)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtStartDate, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtRentalID, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtRentalId, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtReturnDate))))
                         .addGap(18, 18, 18)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,7 +313,7 @@ public class ProcessReturn extends javax.swing.JFrame {
                                 .addGap(15, 15, 15)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNoOfDays)
-                                    .addComponent(txtTotalCost)))
+                                    .addComponent(txtCost)))
                             .addComponent(lblExtraPad1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(39, 39, 39))))
         );
@@ -182,7 +328,7 @@ public class ProcessReturn extends javax.swing.JFrame {
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtRentalID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRentalId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblRentalID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +339,7 @@ public class ProcessReturn extends javax.swing.JFrame {
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addComponent(txtNoOfDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4)
-                        .addComponent(txtTotalCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblTotalCost)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addComponent(lblNoOfDays)
@@ -231,15 +377,18 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblCustomerID.setText("Customer ID:");
         lblCustomerID.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtCustomerID.setBackground(new java.awt.Color(255, 255, 255));
-        txtCustomerID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtCustomerID.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerId.setEditable(false);
+        txtCustomerId.setBackground(new java.awt.Color(204, 204, 204));
+        txtCustomerId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerId.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtFullName.setBackground(new java.awt.Color(255, 255, 255));
-        txtFullName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtFullName.setForeground(new java.awt.Color(0, 0, 0));
+        txtCustomerName.setEditable(false);
+        txtCustomerName.setBackground(new java.awt.Color(204, 204, 204));
+        txtCustomerName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCustomerName.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtContact.setBackground(new java.awt.Color(255, 255, 255));
+        txtContact.setEditable(false);
+        txtContact.setBackground(new java.awt.Color(204, 204, 204));
         txtContact.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtContact.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -247,7 +396,8 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblExtraPad2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblExtraPad2.setForeground(new java.awt.Color(255, 255, 255));
 
-        txtDailyRate.setBackground(new java.awt.Color(255, 255, 255));
+        txtDailyRate.setEditable(false);
+        txtDailyRate.setBackground(new java.awt.Color(204, 204, 204));
         txtDailyRate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtDailyRate.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -276,19 +426,23 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblDailyRate.setText("Daily Rate:");
         lblDailyRate.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtCarID.setBackground(new java.awt.Color(255, 255, 255));
-        txtCarID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtCarID.setForeground(new java.awt.Color(0, 0, 0));
+        txtCarId.setEditable(false);
+        txtCarId.setBackground(new java.awt.Color(204, 204, 204));
+        txtCarId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCarId.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtBrand.setBackground(new java.awt.Color(255, 255, 255));
+        txtBrand.setEditable(false);
+        txtBrand.setBackground(new java.awt.Color(204, 204, 204));
         txtBrand.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtBrand.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtYear.setBackground(new java.awt.Color(255, 255, 255));
+        txtYear.setEditable(false);
+        txtYear.setBackground(new java.awt.Color(204, 204, 204));
         txtYear.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtYear.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtModel.setBackground(new java.awt.Color(255, 255, 255));
+        txtModel.setEditable(false);
+        txtModel.setBackground(new java.awt.Color(204, 204, 204));
         txtModel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtModel.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -302,7 +456,7 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblType.setText("Type:");
         lblType.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        cmbType.setBackground(new java.awt.Color(255, 255, 255));
+        cmbType.setBackground(new java.awt.Color(204, 204, 204));
         cmbType.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cmbType.setForeground(new java.awt.Color(0, 0, 0));
         cmbType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sedan", "SUV", "Hatchback", "MPV", "Van", "Pickup" }));
@@ -329,7 +483,7 @@ public class ProcessReturn extends javax.swing.JFrame {
                                     .addComponent(lblModel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(25, 25, 25)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtCarID, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+                                    .addComponent(txtCarId, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
                                     .addComponent(txtBrand, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtModel))
                                 .addGap(18, 18, 18)
@@ -349,8 +503,8 @@ public class ProcessReturn extends javax.swing.JFrame {
                                     .addComponent(lblCustomerID))
                                 .addGap(24, 24, 24)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFullName)
-                                    .addComponent(txtCustomerID))
+                                    .addComponent(txtCustomerName)
+                                    .addComponent(txtCustomerId))
                                 .addGap(18, 18, 18)
                                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlContent2Layout.createSequentialGroup()
@@ -367,14 +521,14 @@ public class ProcessReturn extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCustomerId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblContact)
                     .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblFullName)
-                        .addComponent(txtFullName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblExtraPad2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCarDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -389,7 +543,7 @@ public class ProcessReturn extends javax.swing.JFrame {
                             .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(lblType)
                                 .addComponent(cmbType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtCarID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtCarId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(pnlContent2Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -435,10 +589,6 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblCondition.setText("Condition");
         lblCondition.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtActualReturnDate.setBackground(new java.awt.Color(255, 255, 255));
-        txtActualReturnDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtActualReturnDate.setForeground(new java.awt.Color(0, 0, 0));
-
         lblActualReturnDate.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         lblActualReturnDate.setForeground(new java.awt.Color(255, 255, 255));
         lblActualReturnDate.setText("Actual Return Date:");
@@ -448,6 +598,15 @@ public class ProcessReturn extends javax.swing.JFrame {
         cmbCondition.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cmbCondition.setForeground(new java.awt.Color(0, 0, 0));
         cmbCondition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Good", "Damaged" }));
+
+        txtActualReturnDate.setBackground(new java.awt.Color(255, 255, 255));
+        txtActualReturnDate.setForeground(new java.awt.Color(0, 0, 0));
+        txtActualReturnDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtActualReturnDate.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtActualReturnDatePropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlContent3Layout = new javax.swing.GroupLayout(pnlContent3);
         pnlContent3.setLayout(pnlContent3Layout);
@@ -464,12 +623,11 @@ public class ProcessReturn extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent3Layout.createSequentialGroup()
-                                .addComponent(txtActualReturnDate, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cmbCondition, 0, 347, Short.MAX_VALUE)
-                                .addGap(1, 1, 1))
+                                .addComponent(txtActualReturnDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(26, 26, 26)
+                                .addComponent(lblCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmbCondition, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(scrlRemark))))
                 .addGap(46, 46, 46))
         );
@@ -479,11 +637,12 @@ public class ProcessReturn extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblReturnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblActualReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtActualReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblActualReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtActualReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblRemark, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -590,16 +749,95 @@ public class ProcessReturn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdditionalBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdditionalBillingActionPerformed
-        // TODO add your handling code here:
+        // Get basic rental info.
+        String carType = cmbType.getSelectedItem().toString();
+        String carBrand = txtBrand.getText().trim();
+        String carModel = txtModel.getText().trim();
+        String customerName = txtCustomerName.getText().trim();
+
+        // Get return info.
+        java.sql.Date returnDate = new java.sql.Date(txtActualReturnDate.getDate().getTime());
+        String condition = cmbCondition.getSelectedItem().toString().trim();
+        String remark = txtaRemark.getText().trim();
+
+        new AdditionalBilling(rentalId, carType, carBrand, carModel, customerName,
+                returnDate, condition, remark).setVisible(true);
     }//GEN-LAST:event_btnAdditionalBillingActionPerformed
 
     private void btnCompleteReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompleteReturnActionPerformed
+        try {
+            // Validate required field.
+            if (txtActualReturnDate.getDate() == null) {
+                Message.error("Please select the actual return date.");
+                return;
+            }
 
+            // Get actual return date.
+            java.sql.Date returnDate = new java.sql.Date(txtActualReturnDate.getDate().getTime());
+
+            // Get condition and remarks.
+            String condition = cmbCondition.getSelectedItem().toString().trim();
+
+            String remarks = txtaRemark.getText().trim();
+
+            int processedBy = ActiveSession.loggedInUserId;
+
+            // Build Return object.
+            Return returnInfo = new Return(
+                    rentalId,
+                    processedBy,
+                    returnDate,
+                    condition,
+                    remarks
+            );
+
+            // Record return.
+            ReturnDAO returnDao = new ReturnDAOImpl();
+
+            int returnId = returnDao.addReturn(returnInfo);
+
+            if (returnId == -1) {
+                Message.error("Failed to record return.");
+                return;
+            }
+
+            // Mark rental as Completed.
+            RentalDAO rentalDao = new RentalDAOImpl();
+
+            boolean rentalSuccess
+                    = rentalDao.updateRentalStatus(rentalId, "Completed");
+
+            if (!rentalSuccess) {
+                Message.error("Failed to complete rental.");
+                return;
+            }
+
+            // Mark car as Available.
+            CarDAO carDao = new CarDAOImpl();
+
+            boolean carSuccess
+                    = carDao.updateCarStatus(carId, "Available");
+
+            if (!carSuccess) {
+                Message.error("Failed to update car status.");
+                return;
+            }
+
+            Message.show("Return completed successfully!", "Success");
+            this.dispose();
+
+        } catch (Exception e) {
+            Message.error("Error completing return:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnCompleteReturnActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void txtActualReturnDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtActualReturnDatePropertyChange
+
+    }//GEN-LAST:event_txtActualReturnDatePropertyChange
 
     /**
      * @param args the command line arguments
@@ -672,19 +910,19 @@ public class ProcessReturn extends javax.swing.JFrame {
     private javax.swing.JPanel pnlContent4;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JScrollPane scrlRemark;
-    private javax.swing.JTextField txtActualReturnDate;
+    private com.toedter.calendar.JDateChooser txtActualReturnDate;
     private javax.swing.JTextField txtBrand;
-    private javax.swing.JTextField txtCarID;
+    private javax.swing.JTextField txtCarId;
     private javax.swing.JTextField txtContact;
-    private javax.swing.JTextField txtCustomerID;
+    private javax.swing.JTextField txtCost;
+    private javax.swing.JTextField txtCustomerId;
+    private javax.swing.JTextField txtCustomerName;
     private javax.swing.JTextField txtDailyRate;
-    private javax.swing.JTextField txtFullName;
     private javax.swing.JTextField txtModel;
     private javax.swing.JTextField txtNoOfDays;
-    private javax.swing.JTextField txtRentalID;
+    private javax.swing.JTextField txtRentalId;
     private javax.swing.JTextField txtReturnDate;
     private javax.swing.JTextField txtStartDate;
-    private javax.swing.JTextField txtTotalCost;
     private javax.swing.JTextField txtYear;
     private javax.swing.JTextArea txtaRemark;
     // End of variables declaration//GEN-END:variables

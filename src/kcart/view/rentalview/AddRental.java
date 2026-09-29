@@ -19,7 +19,7 @@ public class AddRental extends javax.swing.JFrame {
 
     public AddRental() {
         initComponents();
-                initializeStartDate();
+        initializeStartDate();
     }
 
     public AddRental(int carId) {

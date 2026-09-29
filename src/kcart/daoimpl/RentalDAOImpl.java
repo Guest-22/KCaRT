@@ -162,4 +162,52 @@ public class RentalDAOImpl implements RentalDAO {
         }
     }
 
+    // Retrieves car id for reference.
+    @Override
+    public int getCarIdByRentalId(int rentalId) {
+        String sql = "SELECT " + COL_CAR_ID
+                + " FROM " + TABLE_NAME
+                + " WHERE " + COL_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, rentalId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(COL_CAR_ID);
+                }
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving car ID:\n" + e.getMessage());
+        }
+
+        return -1;
+    }
+
+    // Retrieves customer id for reference.
+    @Override
+    public int getCustomerIdByRentalId(int rentalId) {
+        String sql = "SELECT " + COL_CUSTOMER_ID
+                + " FROM " + TABLE_NAME
+                + " WHERE " + COL_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, rentalId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(COL_CUSTOMER_ID);
+                }
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving customer ID:\n" + e.getMessage());
+        }
+
+        return -1;
+    }
+
 }

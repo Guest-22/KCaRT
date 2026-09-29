@@ -1,20 +1,52 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package kcart.view.rentalview;
 
-/**
- *
- * @author Erickson Miguel
- */
+import java.sql.*;
+import kcart.dao.BillingDAO;
+import kcart.dao.RentalDAO;
+import kcart.model.Return;
+import kcart.dao.ReturnDAO;
+import kcart.daoimpl.BillingDAOImpl;
+import kcart.daoimpl.RentalDAOImpl;
+import kcart.daoimpl.ReturnDAOImpl;
+import kcart.model.Billing;
+import kcart.dao.CarDAO;
+import kcart.daoimpl.CarDAOImpl;
+import kcart.util.ActiveSession;
+import kcart.util.Message;
+
 public class AdditionalBilling extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AdditionalBilling
-     */
+    private int rentalId;
+    private String carType, carBrand, carModel;
+    private String customerName;
+    private Date returnDate;
+    private String condition, remark;
+
     public AdditionalBilling() {
+
+    }
+
+    public AdditionalBilling(int rentalId, String carType, String carBrand, String carModel, String customerName, Date returnDate, String condition, String remark) {
         initComponents();
+
+        this.rentalId = rentalId;
+        this.carType = carType;
+        this.carBrand = carBrand;
+        this.carModel = carModel;
+        this.customerName = customerName;
+        this.returnDate = returnDate;
+        this.condition = condition;
+        this.remark = remark;
+
+        loadRentalDetails();
+    }
+
+    private void loadRentalDetails() {
+        txtRentalId.setText(String.valueOf(rentalId));
+        txtCustomerName.setText(customerName);
+        cmbCarType.setSelectedItem(carType);
+        txtCarBrand.setText(carBrand);
+        txtCarModel.setText(carModel);
     }
 
     /**
@@ -34,23 +66,23 @@ public class AdditionalBilling extends javax.swing.JFrame {
         lblCustomerName = new javax.swing.JLabel();
         lblCarModel = new javax.swing.JLabel();
         lblReturnDetails = new javax.swing.JLabel();
-        txtRentalID = new javax.swing.JTextField();
+        txtRentalId = new javax.swing.JTextField();
         txtCarBrand = new javax.swing.JTextField();
         txtCarModel = new javax.swing.JTextField();
         txtCustomerName = new javax.swing.JTextField();
         cmbCarType = new javax.swing.JComboBox<>();
         lblRentalID = new javax.swing.JLabel();
         pnlContent2 = new javax.swing.JPanel();
-        txtMethod = new javax.swing.JTextField();
-        lblInvoiceAmount = new javax.swing.JLabel();
-        txtInvoiceAmount = new javax.swing.JTextField();
-        lblPaymentDetails = new javax.swing.JLabel();
         lblInvoiceDetails = new javax.swing.JLabel();
         lblPayAmount = new javax.swing.JLabel();
-        lblDescription = new javax.swing.JLabel();
+        lblInvoiceAmount = new javax.swing.JLabel();
+        cmbMethod = new javax.swing.JComboBox<>();
         txtPayAmount = new javax.swing.JTextField();
-        txtDescription = new javax.swing.JTextField();
+        txtInvoiceAmount = new javax.swing.JTextField();
         lblMethod = new javax.swing.JLabel();
+        lblDescription = new javax.swing.JLabel();
+        txtDescription = new javax.swing.JTextField();
+        lblPaymentDetails = new javax.swing.JLabel();
         pnlContent3 = new javax.swing.JPanel();
         btnConfirm = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
@@ -92,23 +124,27 @@ public class AdditionalBilling extends javax.swing.JFrame {
         lblReturnDetails.setText("Return Details:");
         lblReturnDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtRentalID.setBackground(new java.awt.Color(255, 255, 255));
-        txtRentalID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtRentalID.setForeground(new java.awt.Color(0, 0, 0));
+        txtRentalId.setEditable(false);
+        txtRentalId.setBackground(new java.awt.Color(204, 204, 204));
+        txtRentalId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtRentalId.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtCarBrand.setBackground(new java.awt.Color(255, 255, 255));
+        txtCarBrand.setEditable(false);
+        txtCarBrand.setBackground(new java.awt.Color(204, 204, 204));
         txtCarBrand.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCarBrand.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtCarModel.setBackground(new java.awt.Color(255, 255, 255));
+        txtCarModel.setEditable(false);
+        txtCarModel.setBackground(new java.awt.Color(204, 204, 204));
         txtCarModel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCarModel.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtCustomerName.setBackground(new java.awt.Color(255, 255, 255));
+        txtCustomerName.setEditable(false);
+        txtCustomerName.setBackground(new java.awt.Color(204, 204, 204));
         txtCustomerName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCustomerName.setForeground(new java.awt.Color(0, 0, 0));
 
-        cmbCarType.setBackground(new java.awt.Color(255, 255, 255));
+        cmbCarType.setBackground(new java.awt.Color(204, 204, 204));
         cmbCarType.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cmbCarType.setForeground(new java.awt.Color(0, 0, 0));
         cmbCarType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sedan", "SUV", "Hatchback", "MPV", "Van", "Pickup" }));
@@ -141,7 +177,7 @@ public class AdditionalBilling extends javax.swing.JFrame {
                                     .addGroup(pnlContent1Layout.createSequentialGroup()
                                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(cmbCarType, 0, 324, Short.MAX_VALUE)
-                                            .addComponent(txtRentalID))
+                                            .addComponent(txtRentalId))
                                         .addGap(18, 18, 18)
                                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lblCarBrand)
@@ -164,7 +200,7 @@ public class AdditionalBilling extends javax.swing.JFrame {
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtRentalID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRentalId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblRentalID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)
                         .addComponent(lblCarType)
@@ -187,24 +223,6 @@ public class AdditionalBilling extends javax.swing.JFrame {
 
         pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
 
-        txtMethod.setBackground(new java.awt.Color(255, 255, 255));
-        txtMethod.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtMethod.setForeground(new java.awt.Color(0, 0, 0));
-
-        lblInvoiceAmount.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
-        lblInvoiceAmount.setForeground(new java.awt.Color(255, 255, 255));
-        lblInvoiceAmount.setText("Invoice Amount:");
-        lblInvoiceAmount.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        txtInvoiceAmount.setBackground(new java.awt.Color(255, 255, 255));
-        txtInvoiceAmount.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtInvoiceAmount.setForeground(new java.awt.Color(0, 0, 0));
-
-        lblPaymentDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        lblPaymentDetails.setForeground(new java.awt.Color(255, 255, 255));
-        lblPaymentDetails.setText("Payment Details:");
-        lblPaymentDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
         lblInvoiceDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblInvoiceDetails.setForeground(new java.awt.Color(255, 255, 255));
         lblInvoiceDetails.setText("Invoice Details:");
@@ -215,23 +233,42 @@ public class AdditionalBilling extends javax.swing.JFrame {
         lblPayAmount.setText("Pay Amount:");
         lblPayAmount.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblDescription.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblDescription.setForeground(new java.awt.Color(255, 255, 255));
-        lblDescription.setText("Description:");
-        lblDescription.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblInvoiceAmount.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        lblInvoiceAmount.setForeground(new java.awt.Color(255, 255, 255));
+        lblInvoiceAmount.setText("Invoice Amount:");
+        lblInvoiceAmount.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        cmbMethod.setBackground(new java.awt.Color(255, 255, 255));
+        cmbMethod.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cmbMethod.setForeground(new java.awt.Color(0, 0, 0));
+        cmbMethod.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash" }));
 
         txtPayAmount.setBackground(new java.awt.Color(255, 255, 255));
         txtPayAmount.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtPayAmount.setForeground(new java.awt.Color(0, 0, 0));
 
-        txtDescription.setBackground(new java.awt.Color(255, 255, 255));
-        txtDescription.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtDescription.setForeground(new java.awt.Color(0, 0, 0));
+        txtInvoiceAmount.setBackground(new java.awt.Color(255, 255, 255));
+        txtInvoiceAmount.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtInvoiceAmount.setForeground(new java.awt.Color(0, 0, 0));
 
         lblMethod.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblMethod.setForeground(new java.awt.Color(255, 255, 255));
         lblMethod.setText("Method:");
         lblMethod.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblDescription.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblDescription.setForeground(new java.awt.Color(255, 255, 255));
+        lblDescription.setText("Description:");
+        lblDescription.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        txtDescription.setBackground(new java.awt.Color(255, 255, 255));
+        txtDescription.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtDescription.setForeground(new java.awt.Color(0, 0, 0));
+
+        lblPaymentDetails.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblPaymentDetails.setForeground(new java.awt.Color(255, 255, 255));
+        lblPaymentDetails.setText("Payment Details:");
+        lblPaymentDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout pnlContent2Layout = new javax.swing.GroupLayout(pnlContent2);
         pnlContent2.setLayout(pnlContent2Layout);
@@ -243,12 +280,12 @@ public class AdditionalBilling extends javax.swing.JFrame {
                     .addComponent(lblInvoiceDetails)
                     .addGroup(pnlContent2Layout.createSequentialGroup()
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblInvoiceAmount)
-                            .addComponent(lblDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblDescription)
+                            .addComponent(lblInvoiceAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDescription)
-                            .addComponent(txtInvoiceAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))))
+                            .addComponent(txtInvoiceAmount)
+                            .addComponent(txtDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))))
                 .addGap(18, 18, 18)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPaymentDetails)
@@ -256,10 +293,10 @@ public class AdditionalBilling extends javax.swing.JFrame {
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblMethod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblPayAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPayAmount)
-                            .addComponent(txtMethod, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))))
+                            .addComponent(txtPayAmount, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                            .addComponent(cmbMethod, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(45, 45, 45))
         );
         pnlContent2Layout.setVerticalGroup(
@@ -271,8 +308,8 @@ public class AdditionalBilling extends javax.swing.JFrame {
                         .addComponent(lblPaymentDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPayAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -281,13 +318,13 @@ public class AdditionalBilling extends javax.swing.JFrame {
                         .addComponent(lblInvoiceDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblInvoiceAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtInvoiceAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblInvoiceAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtInvoiceAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(144, 144, 144))
+                            .addComponent(lblDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
 
         pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
@@ -334,7 +371,7 @@ public class AdditionalBilling extends javax.swing.JFrame {
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(287, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -353,7 +390,7 @@ public class AdditionalBilling extends javax.swing.JFrame {
             .addGroup(pnlMainLayout.createSequentialGroup()
                 .addComponent(pnlContent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContent2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlContent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlContent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -373,7 +410,130 @@ public class AdditionalBilling extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        // Get invoice info.
+        String invoiceDescription = txtDescription.getText().trim();
+        String invoiceAmountText = txtInvoiceAmount.getText().trim();
 
+        // Get payment info.
+        String payMethod = cmbMethod.getSelectedItem().toString();
+        String payAmountText = txtPayAmount.getText().trim();
+
+        // Validate required fields.
+        if (invoiceDescription.isEmpty()) {
+            Message.error("Please enter the invoice description.");
+            return;
+        }
+
+        if (invoiceAmountText.isEmpty()) {
+            Message.error("Please enter the invoice amount.");
+            return;
+        }
+
+        if (payAmountText.isEmpty()) {
+            Message.error("Please enter the payment amount.");
+            return;
+        }
+
+        try {
+            // Convert amounts.
+            double invoiceAmount = Double.parseDouble(invoiceAmountText);
+            double payAmount = Double.parseDouble(payAmountText);
+
+            // Payment must match the invoice amount.
+            if (payAmount != invoiceAmount) {
+                Message.error("Payment amount must match the invoice amount.");
+                return;
+            }
+
+            // Get logged-in user.
+            int processedBy = ActiveSession.loggedInUserId;
+
+            // Build Return object.
+            Return returnInfo = new Return(
+                    rentalId,
+                    processedBy,
+                    returnDate,
+                    condition,
+                    remark
+            );
+
+            // Record return.
+            ReturnDAO returnDao = new ReturnDAOImpl();
+
+            int returnId = returnDao.addReturn(returnInfo);
+
+            if (returnId == -1) {
+                Message.error("Failed to record return.");
+                return;
+            }
+
+            // Build Billing object.
+            Billing billing = new Billing();
+
+            billing.setRentalId(rentalId);
+            billing.setReturnId(returnId);
+            billing.setDescription(invoiceDescription);
+            billing.setInvoiceAmount(invoiceAmount);
+            billing.setInvoiceStatus("Paid");
+            billing.setProcessedBy(processedBy);
+            billing.setPayMethod(payMethod);
+            billing.setPayAmount(payAmount);
+
+            // Record invoice.
+            BillingDAO billingDao = new BillingDAOImpl();
+
+            int invoiceId = billingDao.addInvoice(billing);
+
+            if (invoiceId == -1) {
+                Message.error("Failed to record invoice.");
+                return;
+            }
+
+            // Record payment.
+            boolean paymentSuccess
+                    = billingDao.addPayment(billing, invoiceId);
+
+            if (!paymentSuccess) {
+                Message.error("Failed to record payment.");
+                return;
+            }
+
+            // Mark rental as Completed.
+            RentalDAO rentalDao = new RentalDAOImpl();
+
+            boolean rentalSuccess
+                    = rentalDao.updateRentalStatus(rentalId, "Completed");
+
+            if (!rentalSuccess) {
+                Message.error("Failed to complete rental.");
+                return;
+            }
+
+            // Get car ID from rental.
+            int carId = rentalDao.getCarIdByRentalId(rentalId);
+
+            if (carId == -1) {
+                Message.error("Car ID not found for rental.");
+                return;
+            }
+
+            // Mark car as Available.
+            CarDAO carDao = new CarDAOImpl();
+
+            boolean carSuccess
+                    = carDao.updateCarStatus(carId, "Available");
+
+            if (!carSuccess) {
+                Message.error("Failed to update car status.");
+                return;
+            }
+
+            Message.show("Additional billing completed successfully!", "Success");
+            
+            this.dispose();
+        } catch (NumberFormatException e) {
+            Message.error("Please enter a valid amount.");
+        }
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -419,6 +579,7 @@ public class AdditionalBilling extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnConfirm;
     private javax.swing.JComboBox<String> cmbCarType;
+    private javax.swing.JComboBox<String> cmbMethod;
     private javax.swing.JLabel lblCarBrand;
     private javax.swing.JLabel lblCarModel;
     private javax.swing.JLabel lblCarType;
@@ -441,8 +602,7 @@ public class AdditionalBilling extends javax.swing.JFrame {
     private javax.swing.JTextField txtCustomerName;
     private javax.swing.JTextField txtDescription;
     private javax.swing.JTextField txtInvoiceAmount;
-    private javax.swing.JTextField txtMethod;
     private javax.swing.JTextField txtPayAmount;
-    private javax.swing.JTextField txtRentalID;
+    private javax.swing.JTextField txtRentalId;
     // End of variables declaration//GEN-END:variables
 }
