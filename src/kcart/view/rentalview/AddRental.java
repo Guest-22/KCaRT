@@ -27,6 +27,7 @@ public class AddRental extends javax.swing.JFrame {
 
         this.carId = carId;
 
+        this.setLocationRelativeTo(null);
         initializeStartDate();
         loadCarDetails();
     }
@@ -211,6 +212,7 @@ public class AddRental extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("KCaRT | Add Reservation");
         setMaximumSize(new java.awt.Dimension(1000, 600));
         setMinimumSize(new java.awt.Dimension(1000, 600));
 

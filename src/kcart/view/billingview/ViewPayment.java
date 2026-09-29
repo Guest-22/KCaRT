@@ -7,6 +7,8 @@ public class ViewPayment extends javax.swing.JFrame {
      */
     public ViewPayment() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     /**

@@ -29,6 +29,8 @@ public class RentalMenu extends javax.swing.JFrame {
     public RentalMenu() {
         initComponents();
 
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         setDefaultTglSort();
         populateRentalRecord("");
     }
@@ -155,6 +157,7 @@ public class RentalMenu extends javax.swing.JFrame {
         btnProcessReturn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("KCaRT | Rental");
         setMinimumSize(new java.awt.Dimension(1200, 700));
         setSize(new java.awt.Dimension(1200, 700));
 

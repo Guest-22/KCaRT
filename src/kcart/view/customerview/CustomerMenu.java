@@ -27,6 +27,8 @@ public class CustomerMenu extends javax.swing.JFrame {
     public CustomerMenu() {
         initComponents();
 
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         setDefaultTglSort();
         populateCustomerRecord("");
     }
@@ -140,9 +142,8 @@ public class CustomerMenu extends javax.swing.JFrame {
         btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1200, 600));
+        setTitle("KCaRT | Customer");
         setMinimumSize(new java.awt.Dimension(1200, 600));
-        setPreferredSize(new java.awt.Dimension(1200, 600));
         setSize(new java.awt.Dimension(1200, 700));
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));

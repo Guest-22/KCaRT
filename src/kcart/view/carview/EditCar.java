@@ -21,6 +21,8 @@ public class EditCar extends javax.swing.JFrame {
     public EditCar(int carId) {
         this.carId = carId;
         initComponents();
+        
+        this.setLocationRelativeTo(null);
         loadCarDetails();
     }
 
@@ -99,6 +101,7 @@ public class EditCar extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("KCaRT | Edit Car");
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
@@ -249,9 +252,7 @@ public class EditCar extends javax.swing.JFrame {
             .addGroup(pnlContent1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addComponent(lblHeader)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblHeader)
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent1Layout.createSequentialGroup()

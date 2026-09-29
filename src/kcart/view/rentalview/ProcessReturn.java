@@ -31,6 +31,7 @@ public class ProcessReturn extends javax.swing.JFrame {
 
         this.rentalId = rentalId;
 
+        this.setLocationRelativeTo(null);
         initializeStartDate();
         loadRentalDetails();
         loadCustomerDetails();
@@ -211,6 +212,7 @@ public class ProcessReturn extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("KCaRT | Process Return");
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));

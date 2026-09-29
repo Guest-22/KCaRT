@@ -12,6 +12,8 @@ public class AddCar extends javax.swing.JFrame {
 
     public AddCar() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -58,6 +60,7 @@ public class AddCar extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("KCaRT | Add Car");
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));

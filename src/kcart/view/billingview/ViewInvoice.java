@@ -7,6 +7,8 @@ public class ViewInvoice extends javax.swing.JFrame {
      */
     public ViewInvoice() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     /**

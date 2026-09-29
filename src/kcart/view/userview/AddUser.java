@@ -6,6 +6,8 @@ public class AddUser extends javax.swing.JFrame {
 
     public AddUser() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -43,6 +45,7 @@ public class AddUser extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("KCaRT | Add User");
         setMaximumSize(new java.awt.Dimension(1000, 600));
         setMinimumSize(new java.awt.Dimension(1000, 600));
 

@@ -18,8 +18,10 @@ public class EditCustomer extends javax.swing.JFrame {
     }
 
     public EditCustomer(int customerId) {
-        this.customerId = customerId;
         initComponents();
+        
+        this.customerId = customerId;
+        this.setLocationRelativeTo(null);
         loadCustomerDetails();
     }
 
@@ -113,6 +115,7 @@ public class EditCustomer extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("KCaRT | Edit Customer");
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));

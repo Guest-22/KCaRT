@@ -11,9 +11,10 @@ import kcart.view.userview.UserMenu;
 
 public class BillingMenu extends javax.swing.JFrame {
 
-    
     public BillingMenu() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -51,6 +52,7 @@ public class BillingMenu extends javax.swing.JFrame {
         btnViewPayment = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("KCaRT | Billing");
         setMinimumSize(new java.awt.Dimension(1200, 700));
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));

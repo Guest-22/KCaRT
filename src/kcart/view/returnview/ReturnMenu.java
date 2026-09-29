@@ -11,11 +11,11 @@ import kcart.view.userview.UserMenu;
 
 public class ReturnMenu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ReturnMenu
-     */
     public ReturnMenu() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -51,6 +51,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         pnlAction = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("KCaRT | Return");
         setMinimumSize(new java.awt.Dimension(1200, 700));
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));

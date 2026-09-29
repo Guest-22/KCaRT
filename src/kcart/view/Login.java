@@ -13,6 +13,8 @@ public class Login extends javax.swing.JFrame {
     
     public Login() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -34,6 +36,7 @@ public class Login extends javax.swing.JFrame {
         txtUsername = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("KCaRT | Login");
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
         pnlMain.setMaximumSize(new java.awt.Dimension(850, 450));

@@ -10,11 +10,11 @@ import kcart.view.userview.UserMenu;
 
 public class AdminDashboard extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AdminDashboard
-     */
     public AdminDashboard() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -41,9 +41,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         pnlContent = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1200, 700));
+        setTitle("KCaRT | Dashboard");
         setMinimumSize(new java.awt.Dimension(1200, 700));
-        setPreferredSize(new java.awt.Dimension(1200, 700));
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));
         pnlMain.setPreferredSize(new java.awt.Dimension(1200, 600));

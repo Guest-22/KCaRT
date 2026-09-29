@@ -15,6 +15,8 @@ public class UserMenu extends javax.swing.JFrame {
     public UserMenu() {
         initComponents();
         
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         setDefaultTglSort();
     }
 
@@ -62,6 +64,7 @@ public class UserMenu extends javax.swing.JFrame {
         btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("KCaRT | User");
         setMinimumSize(new java.awt.Dimension(1200, 700));
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));

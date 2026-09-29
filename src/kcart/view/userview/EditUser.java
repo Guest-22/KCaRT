@@ -2,11 +2,10 @@ package kcart.view.userview;
 
 public class EditUser extends javax.swing.JFrame {
 
-    /**
-     * Creates new form EditUser
-     */
     public EditUser() {
         initComponents();
+        
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -44,6 +43,7 @@ public class EditUser extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("KCaRT | Edit User");
         setMaximumSize(new java.awt.Dimension(1000, 600));
         setMinimumSize(new java.awt.Dimension(1000, 600));
 

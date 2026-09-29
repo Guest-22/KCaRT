@@ -28,6 +28,8 @@ public class CarMenu extends javax.swing.JFrame {
     public CarMenu() {
         initComponents();
 
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         setDefaultTglSort();
         populateCarRecord("");
     }
@@ -165,9 +167,9 @@ public class CarMenu extends javax.swing.JFrame {
         lblCarId = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1200, 750));
+        setTitle("KCaRT | Car");
+        setExtendedState(6);
         setMinimumSize(new java.awt.Dimension(1200, 750));
-        setPreferredSize(new java.awt.Dimension(1200, 750));
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));
         pnlMain.setMaximumSize(new java.awt.Dimension(1200, 750));

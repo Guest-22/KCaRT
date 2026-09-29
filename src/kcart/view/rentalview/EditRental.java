@@ -30,6 +30,7 @@ public class EditRental extends javax.swing.JFrame {
         this.customerId = customerId;
         this.carId = carId;
 
+        this.setLocationRelativeTo(null);
         loadCarDetails();
         loadCustomerDetails();
         loadRentalDetails();
@@ -200,6 +201,7 @@ public class EditRental extends javax.swing.JFrame {
         btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("KCaRT | Edit Rental");
         setMinimumSize(new java.awt.Dimension(1000, 600));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
