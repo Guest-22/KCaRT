@@ -1,5 +1,8 @@
 package kcart.view.returnview;
 
+import java.awt.Color;
+import java.util.Collections;
+import javax.swing.table.DefaultTableModel;
 import kcart.view.dashboardview.AdminDashboard;
 import kcart.view.dashboardview.StaffDashboard;
 import kcart.view.Login;
@@ -8,14 +11,99 @@ import kcart.view.carview.CarMenu;
 import kcart.view.rentalview.RentalMenu;
 import kcart.view.billingview.BillingMenu;
 import kcart.view.userview.UserMenu;
+import kcart.model.Return;
+import kcart.dao.ReturnDAO;
+import kcart.daoimpl.ReturnDAOImpl;
+import kcart.util.SearchUtil;
+import kcart.util.SortUtil;
+import java.util.List;
+import kcart.util.Message;
+import kcart.util.SearchUtil;
 
 public class ReturnMenu extends javax.swing.JFrame {
 
+    private int selectedReturnId;
+
     public ReturnMenu() {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+
+        setDefaultTglSort();
+        populateReturnRecord("");
+    }
+
+    // Sets the default toggle button style.
+    private void setDefaultTglSort() {
+        tglSort.setFocusPainted(false);
+        tglSort.setContentAreaFilled(false);
+        tglSort.setBorderPainted(false);
+        tglSort.setOpaque(true);
+        tglSort.setBackground(Color.BLACK);
+        tglSort.setForeground(Color.WHITE);
+    }
+
+    private void populateReturnRecord(String keyword) {
+        DefaultTableModel returnModel = (DefaultTableModel) tblRecord.getModel();
+
+        returnModel.setRowCount(0); // Clear existing rows.
+
+        try {
+            ReturnDAO returnDao = new ReturnDAOImpl();
+            List<Return> returns = returnDao.getAllReturns();
+
+            // Optional: filter by keyword.
+            returns = SearchUtil.searchReturnsByKeyword(returns, keyword);
+
+            // Sorting
+            String selectedSort = cmbSort.getSelectedItem().toString();
+            String selectedOrder = tglSort.isSelected() ? "DESC" : "ASC";
+
+            switch (selectedSort) {
+                case "Sort by Date":
+                    SortUtil.sortReturnByDate(returns);
+                    break;
+                case "Sort by Condition":
+                    SortUtil.sortReturnByCondition(returns);
+                    break;
+                
+            }
+
+            // Reverse if DESC.
+            if (selectedOrder.equals("DESC")) {
+                Collections.reverse(returns);
+            }
+
+            // Populate table with return records.
+            for (Return r : returns) {
+                Object[] row = {
+                    r.getReturnId(),
+                    r.getRentalId(),
+                    r.getProcessedBy(),
+                    r.getProcessedByName(),
+                    r.getReturnDate(),
+                    r.getCondition(),
+                    r.getRemarks(),
+                    r.getCreatedAt()
+                };
+
+                returnModel.addRow(row);
+            }
+
+            // Hidden cols.
+            tblRecord.getColumnModel().getColumn(2).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(2).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(2).setWidth(0);
+            
+            tblRecord.getColumnModel().getColumn(7).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(7).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(7).setWidth(0);
+
+
+        } catch (Exception e) {
+            // Message.error("Error loading return table:\n" + e.getMessage());
+        }
     }
 
     /**
@@ -222,15 +310,23 @@ public class ReturnMenu extends javax.swing.JFrame {
         tblRecord.setForeground(new java.awt.Color(255, 255, 255));
         tblRecord.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Return ID", "Rental ID", "Processed By ID", "Processed By", "Returned Date", "Condition", "Remarks", "Created At"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         scrlRecord.setViewportView(tblRecord);
 
         txtSearch.setBackground(new java.awt.Color(0, 0, 0));
@@ -262,7 +358,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         cmbSort.setBackground(new java.awt.Color(0, 0, 0));
         cmbSort.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         cmbSort.setForeground(new java.awt.Color(255, 255, 255));
-        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by " }));
+        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by Date", "Sort by Condition" }));
         cmbSort.setFocusable(false);
         cmbSort.setMinimumSize(new java.awt.Dimension(147, 24));
         cmbSort.setPreferredSize(new java.awt.Dimension(147, 24));
@@ -407,7 +503,7 @@ public class ReturnMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRentalActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        
+
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBillingActionPerformed
@@ -430,15 +526,26 @@ public class ReturnMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-
+        String keyword = txtSearch.getText().trim();
+        if (keyword.isEmpty()) {
+            Message.error("Please enter a brand or model to search.");
+            return;
+        }
+        populateReturnRecord(keyword);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void cmbSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSortActionPerformed
-
+        String sortQuery = txtSearch.getText().trim();
+        populateReturnRecord(sortQuery);
     }//GEN-LAST:event_cmbSortActionPerformed
 
     private void tglSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSortActionPerformed
-
+        if (tglSort.isSelected()) {
+            tglSort.setText("DESC");
+        } else {
+            tglSort.setText("ASC");
+        }
+        populateReturnRecord(txtSearch.getText().trim());
     }//GEN-LAST:event_tglSortActionPerformed
 
     /**

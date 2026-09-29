@@ -5,6 +5,7 @@ import java.util.List;
 import kcart.model.Car;
 import kcart.model.Customer;
 import kcart.model.Rental;
+import kcart.model.Return;
 
 public class SearchUtil {
 
@@ -21,7 +22,7 @@ public class SearchUtil {
             String fuelType = c.getFuelType().toLowerCase();
             String carStatus = c.getCarStatus();
 
-            if (brand.contains(keyword) || model.contains(keyword) || carType.contains(keyword) 
+            if (brand.contains(keyword) || model.contains(keyword) || carType.contains(keyword)
                     || transmissionType.contains(keyword) || fuelType.contains(keyword) || carStatus.contains(keyword)) {
                 results.add(c);
             }
@@ -70,4 +71,28 @@ public class SearchUtil {
         }
         return filtered;
     }
+
+    // Receives list of Returns and a keyword; returns matched details below.
+    public static List<Return> searchReturnsByKeyword(List<Return> returns, String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return returns;
+        }
+
+        keyword = keyword.toLowerCase();
+        List<Return> filtered = new ArrayList<>();
+
+        for (Return r : returns) {
+            if (String.valueOf(r.getReturnId()).contains(keyword)
+                    || String.valueOf(r.getRentalId()).contains(keyword)
+                    || (r.getProcessedByName() != null
+                    && r.getProcessedByName().toLowerCase().contains(keyword))
+                    || (r.getCondition() != null
+                    && r.getCondition().toLowerCase().contains(keyword))) {
+                filtered.add(r);
+            }
+        }
+
+        return filtered;
+    }
+    
 }

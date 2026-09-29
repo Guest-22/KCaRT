@@ -416,11 +416,15 @@
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
                         </Property>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="4">
-                            <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                          <Table columnCount="8" rowCount="4">
+                            <Column editable="false" title="Return ID" type="java.lang.Object"/>
+                            <Column editable="false" title="Rental ID" type="java.lang.Object"/>
+                            <Column editable="false" title="Processed By ID" type="java.lang.Object"/>
+                            <Column editable="false" title="Processed By" type="java.lang.Object"/>
+                            <Column editable="false" title="Returned Date" type="java.lang.Object"/>
+                            <Column editable="false" title="Condition" type="java.lang.Object"/>
+                            <Column editable="false" title="Remarks" type="java.lang.Object"/>
+                            <Column editable="false" title="Created At" type="java.lang.Object"/>
                           </Table>
                         </Property>
                       </Properties>
@@ -491,8 +495,9 @@
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="1">
-                        <StringItem index="0" value="Sort by "/>
+                      <StringArray count="2">
+                        <StringItem index="0" value="Sort by Date"/>
+                        <StringItem index="1" value="Sort by Condition"/>
                       </StringArray>
                     </Property>
                     <Property name="focusable" type="boolean" value="false"/>

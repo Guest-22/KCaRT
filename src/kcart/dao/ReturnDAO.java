@@ -6,4 +6,5 @@ import kcart.model.Return;
 public interface ReturnDAO {
 
     int addReturn(Return returnInfo);
+    List<Return> getAllReturns();
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import kcart.model.Car;
 import kcart.model.Customer;
 import kcart.model.Rental;
+import kcart.model.Return;
 
 public class SortUtil {
 
@@ -175,6 +176,43 @@ public class SortUtil {
             Rental temp = rentals.get(minIndex);
             rentals.set(minIndex, rentals.get(i));
             rentals.set(i, temp);
+        }
+    }
+
+    // Sort returns by createdAt timestamp, newest first
+    public static void sortReturnByDate(List<Return> returns) {
+        for (int i = 0; i < returns.size() - 1; i++) {
+            int maxIndex = i;
+
+            for (int j = i + 1; j < returns.size(); j++) {
+                // Compare by createdAt timestamp, newest first.
+                if (returns.get(j).getCreatedAt().after(returns.get(maxIndex).getCreatedAt())) {
+                    maxIndex = j;
+                }
+            }
+
+            Return temp = returns.get(maxIndex);
+            returns.set(maxIndex, returns.get(i));
+            returns.set(i, temp);
+        }
+    }
+
+    // Sort returns by condition, alphabetical order.
+    public static void sortReturnByCondition(List<Return> returns) {
+        for (int i = 0; i < returns.size() - 1; i++) {
+            int maxIndex = i;
+
+            for (int j = i + 1; j < returns.size(); j++) {
+                // Compare by condition, alphabetical order.
+                if (returns.get(j).getCondition().compareToIgnoreCase(
+                        returns.get(maxIndex).getCondition()) > 0) {
+                    maxIndex = j;
+                }
+            }
+
+            Return temp = returns.get(maxIndex);
+            returns.set(maxIndex, returns.get(i));
+            returns.set(i, temp);
         }
     }
 }

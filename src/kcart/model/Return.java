@@ -7,11 +7,26 @@ public class Return {
     private int returnId;
     private int rentalId;
     private int processedBy;
+    private String processedByName;
     private Date returnDate;
     private String condition;
     private String remarks;
     private Timestamp createdAt;
 
+    // Model for populating Return Menu table.
+    public Return(int returnId, int rentalId, int processedBy, String processedByName, Date returnDate,
+            String condition, String remarks, Timestamp createdAt) {
+        this.returnId = returnId;
+        this.rentalId = rentalId;
+        this.processedBy = processedBy;
+        this.processedByName = processedByName;
+        this.returnDate = returnDate;
+        this.condition = condition;
+        this.remarks = remarks;
+        this.createdAt = createdAt;
+    }
+    
+    // Model for inserting return record.
     public Return(int rentalId, int processedBy, Date returnDate, String condition, String remarks) {
         this.rentalId = rentalId;
         this.processedBy = processedBy;
@@ -43,6 +58,14 @@ public class Return {
 
     public void setProcessedBy(int processedBy) {
         this.processedBy = processedBy;
+    }
+
+    public String getProcessedByName() {
+        return processedByName;
+    }
+
+    public void setProcessedByName(String processedByName) {
+        this.processedByName = processedByName;
     }
 
     public Date getReturnDate() {
