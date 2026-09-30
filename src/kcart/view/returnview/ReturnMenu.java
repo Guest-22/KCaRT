@@ -17,6 +17,7 @@ import kcart.daoimpl.ReturnDAOImpl;
 import kcart.util.SearchUtil;
 import kcart.util.SortUtil;
 import java.util.List;
+import kcart.util.ActiveSession;
 import kcart.util.Message;
 import kcart.util.SearchUtil;
 
@@ -29,6 +30,7 @@ public class ReturnMenu extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        lblWelcome.setText("Welcome, " + ActiveSession.loggedInUsername);
 
         setDefaultTglSort();
         populateReturnRecord("");
@@ -156,7 +158,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         pnlMenu.setBackground(new java.awt.Color(0, 0, 0));
 
         btnDashboard.setBackground(new java.awt.Color(0, 0, 0));
-        btnDashboard.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnDashboard.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnDashboard.setForeground(new java.awt.Color(255, 255, 255));
         btnDashboard.setText("Dashboard");
         btnDashboard.setFocusable(false);
@@ -167,7 +169,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         });
 
         btnCustomer.setBackground(new java.awt.Color(0, 0, 0));
-        btnCustomer.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnCustomer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnCustomer.setForeground(new java.awt.Color(255, 255, 255));
         btnCustomer.setText("Customer");
         btnCustomer.setFocusable(false);
@@ -178,7 +180,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         });
 
         btnCar.setBackground(new java.awt.Color(0, 0, 0));
-        btnCar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnCar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnCar.setForeground(new java.awt.Color(255, 255, 255));
         btnCar.setText("Car");
         btnCar.setFocusable(false);
@@ -189,7 +191,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         });
 
         btnRental.setBackground(new java.awt.Color(0, 0, 0));
-        btnRental.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnRental.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnRental.setForeground(new java.awt.Color(255, 255, 255));
         btnRental.setText("Rental");
         btnRental.setFocusable(false);
@@ -200,7 +202,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         });
 
         btnReturn.setBackground(new java.awt.Color(0, 0, 0));
-        btnReturn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnReturn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnReturn.setForeground(new java.awt.Color(255, 255, 255));
         btnReturn.setText("Return");
         btnReturn.setFocusable(false);
@@ -211,7 +213,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         });
 
         btnBilling.setBackground(new java.awt.Color(0, 0, 0));
-        btnBilling.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnBilling.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnBilling.setForeground(new java.awt.Color(255, 255, 255));
         btnBilling.setText("Biilling");
         btnBilling.setFocusable(false);
@@ -222,7 +224,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         });
 
         btnUser.setBackground(new java.awt.Color(0, 0, 0));
-        btnUser.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnUser.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnUser.setForeground(new java.awt.Color(255, 255, 255));
         btnUser.setText("User");
         btnUser.setFocusable(false);
@@ -233,7 +235,7 @@ public class ReturnMenu extends javax.swing.JFrame {
         });
 
         btnLogout.setBackground(new java.awt.Color(0, 0, 0));
-        btnLogout.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnLogout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 255, 255));
         btnLogout.setText("Logout");
         btnLogout.setFocusable(false);
@@ -518,6 +520,7 @@ public class ReturnMenu extends javax.swing.JFrame {
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         new Login().setVisible(true);
+        ActiveSession.clearSession();
         this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
 

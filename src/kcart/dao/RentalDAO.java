@@ -11,4 +11,6 @@ public interface RentalDAO {
     boolean updateRentalStatus(int rentalId, String rentalStatus);
     int getCarIdByRentalId(int rentalId);
     int getCustomerIdByRentalId(int rentalId);
+    Rental getRentalDetails(int rentalId);
+    
 }

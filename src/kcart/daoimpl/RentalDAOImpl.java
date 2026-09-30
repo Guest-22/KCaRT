@@ -210,4 +210,42 @@ public class RentalDAOImpl implements RentalDAO {
         return -1;
     }
 
+    // For viewing purposes in View Invoice frame.
+    @Override
+    public Rental getRentalDetails(int rentalId) {
+        String sql = "SELECT "
+                + "CONCAT(c.last_name, ', ', c.first_name) AS customer_name, "
+                + "car.brand, "
+                + "car.model "
+                + "FROM " + TABLE_NAME + " r "
+                + "INNER JOIN tbl_customer c "
+                + "ON r." + COL_CUSTOMER_ID + " = c.customer_id "
+                + "INNER JOIN tbl_car car "
+                + "ON r." + COL_CAR_ID + " = car.car_id "
+                + "WHERE r." + COL_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, rentalId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+                    Rental rental = new Rental(
+                            rs.getString("customer_name"),
+                            rs.getString("brand"),
+                            rs.getString("model")
+                    );
+
+                    return rental;
+                }
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving rental details:\n" + e.getMessage());
+        }
+
+        return null;
+    }
+
 }

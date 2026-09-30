@@ -10,12 +10,21 @@ public class Rental {
     private String customerName; // Fetch using customer_id.
     private int carId;
     private String carInfo; // Fetch using car_id.
+    private String carBrand;
+    private String carModel;
     private int processedBy; // Fetch using ActiveSession.
     private String processedByName;
     private Date startDate;
     private Date expectedReturnDate;
     private String rentalStatus;
     private Timestamp createdAt;
+
+    // Model for viewing invoice in billing module.
+    public Rental(String customerName, String carBrand, String carModel) {
+        this.customerName = customerName;
+        this.carBrand = carBrand;
+        this.carModel = carModel;
+    }
 
     // Model for adding new rental entry to DB; Used by Add Rental/Reservation form.
     public Rental(int customerId, int carId, int processedBy, Date startDate, Date expectedReturnDate, String rentalStatus) {
@@ -67,6 +76,22 @@ public class Rental {
         this.rentalId = rentalId;
         this.startDate = startDate;
         this.expectedReturnDate = expectedReturnDate;
+    }
+
+    public String getCarBrand() {
+        return carBrand;
+    }
+
+    public void setCarBrand(String carBrand) {
+        this.carBrand = carBrand;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
     }
 
     // Getter/Setter method.

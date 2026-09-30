@@ -8,4 +8,5 @@ public interface BillingDAO {
     int addInvoice(Billing billing); // Returns invoice id to process payment.
     boolean addPayment(Billing billing, int invoiceId);
     List<Billing> getAllBillings();
+    Billing getInvoiceDetails(int invoiceId);
 }

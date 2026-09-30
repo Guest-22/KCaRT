@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import kcart.dao.CarDAO;
 import kcart.daoimpl.CarDAOImpl;
 import kcart.model.Car;
+import kcart.util.ActiveSession;
 import kcart.util.Message;
 import kcart.view.dashboardview.AdminDashboard;
 import kcart.view.dashboardview.StaffDashboard;
@@ -23,6 +24,7 @@ import kcart.util.SortUtil;
 import kcart.view.rentalview.AddRental;
 
 public class CarMenu extends javax.swing.JFrame {
+
     private int selectedCarId = -1;
 
     public CarMenu() {
@@ -30,8 +32,20 @@ public class CarMenu extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        lblWelcome.setText("Welcome, " + ActiveSession.loggedInUsername);
+        applyRoleRestrictions();
         setDefaultTglSort();
         populateCarRecord("");
+    }
+
+    private void applyRoleRestrictions() {
+        // Hide Admin-only buttons for Staff.
+        if ("Staff".equalsIgnoreCase(ActiveSession.role)) {
+            btnAdd.setVisible(false);
+            btnEdit.setVisible(false);
+            btnReturn.setVisible(false);
+            btnUser.setVisible(false);
+        }
     }
 
     // Sets the default toggle button style.
@@ -187,7 +201,7 @@ public class CarMenu extends javax.swing.JFrame {
         pnlMenu.setBackground(new java.awt.Color(0, 0, 0));
 
         btnDashboard.setBackground(new java.awt.Color(0, 0, 0));
-        btnDashboard.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnDashboard.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnDashboard.setForeground(new java.awt.Color(255, 255, 255));
         btnDashboard.setText("Dashboard");
         btnDashboard.setFocusable(false);
@@ -198,7 +212,7 @@ public class CarMenu extends javax.swing.JFrame {
         });
 
         btnCustomer.setBackground(new java.awt.Color(0, 0, 0));
-        btnCustomer.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnCustomer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnCustomer.setForeground(new java.awt.Color(255, 255, 255));
         btnCustomer.setText("Customer");
         btnCustomer.setFocusable(false);
@@ -209,7 +223,7 @@ public class CarMenu extends javax.swing.JFrame {
         });
 
         btnCar.setBackground(new java.awt.Color(0, 0, 0));
-        btnCar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnCar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnCar.setForeground(new java.awt.Color(255, 255, 255));
         btnCar.setText("Car");
         btnCar.setFocusable(false);
@@ -220,7 +234,7 @@ public class CarMenu extends javax.swing.JFrame {
         });
 
         btnRental.setBackground(new java.awt.Color(0, 0, 0));
-        btnRental.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnRental.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnRental.setForeground(new java.awt.Color(255, 255, 255));
         btnRental.setText("Rental");
         btnRental.setFocusable(false);
@@ -231,7 +245,7 @@ public class CarMenu extends javax.swing.JFrame {
         });
 
         btnReturn.setBackground(new java.awt.Color(0, 0, 0));
-        btnReturn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnReturn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnReturn.setForeground(new java.awt.Color(255, 255, 255));
         btnReturn.setText("Return");
         btnReturn.setFocusable(false);
@@ -242,7 +256,7 @@ public class CarMenu extends javax.swing.JFrame {
         });
 
         btnBilling.setBackground(new java.awt.Color(0, 0, 0));
-        btnBilling.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnBilling.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnBilling.setForeground(new java.awt.Color(255, 255, 255));
         btnBilling.setText("Biilling");
         btnBilling.setFocusable(false);
@@ -253,7 +267,7 @@ public class CarMenu extends javax.swing.JFrame {
         });
 
         btnUser.setBackground(new java.awt.Color(0, 0, 0));
-        btnUser.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnUser.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnUser.setForeground(new java.awt.Color(255, 255, 255));
         btnUser.setText("User");
         btnUser.setFocusable(false);
@@ -264,7 +278,7 @@ public class CarMenu extends javax.swing.JFrame {
         });
 
         btnLogout.setBackground(new java.awt.Color(0, 0, 0));
-        btnLogout.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnLogout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 255, 255));
         btnLogout.setText("Logout");
         btnLogout.setFocusable(false);
@@ -278,14 +292,14 @@ public class CarMenu extends javax.swing.JFrame {
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnCar, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnRental, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnBilling, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnUser, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnCar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnRental, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnReturn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnBilling, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlMenuLayout.setVerticalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,7 +331,7 @@ public class CarMenu extends javax.swing.JFrame {
             .addGroup(pnlSideNavLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         pnlSideNavLayout.setVerticalGroup(
             pnlSideNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -746,46 +760,8 @@ public class CarMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-
-    }//GEN-LAST:event_btnDashboardActionPerformed
-
-    private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
-        new CustomerMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnCustomerActionPerformed
-
-    private void btnCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarActionPerformed
-        
-    }//GEN-LAST:event_btnCarActionPerformed
-
-    private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
-        new RentalMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnRentalActionPerformed
-
-    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        new ReturnMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnReturnActionPerformed
-
-    private void btnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBillingActionPerformed
-        new BillingMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnBillingActionPerformed
-
-    private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
-        new UserMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnUserActionPerformed
-
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        new Login().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnLogoutActionPerformed
-
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-        
+
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -876,6 +852,45 @@ public class CarMenu extends javax.swing.JFrame {
         // If valid, open AddRental form and pass the selected car ID as reference.
         new AddRental(selectedCarId).setVisible(true);
     }//GEN-LAST:event_btnAddReservationActionPerformed
+
+    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
+
+    }//GEN-LAST:event_btnDashboardActionPerformed
+
+    private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
+        new CustomerMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCustomerActionPerformed
+
+    private void btnCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarActionPerformed
+       
+    }//GEN-LAST:event_btnCarActionPerformed
+
+    private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
+        new RentalMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRentalActionPerformed
+
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        new ReturnMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void btnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBillingActionPerformed
+        new BillingMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnBillingActionPerformed
+
+    private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
+        new UserMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnUserActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        new Login().setVisible(true);
+        ActiveSession.clearSession();
+        this.dispose();
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
      * @param args the command line arguments

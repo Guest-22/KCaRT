@@ -2,12 +2,15 @@ package kcart.view.billingview;
 
 public class ViewPayment extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ViewPayment
-     */
+    private int invoiceId;
+
     public ViewPayment() {
+
+    }
+
+    public ViewPayment(int invoiceId) {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
     }
 
@@ -20,21 +23,251 @@ public class ViewPayment extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        pnlMain = new javax.swing.JPanel();
+        pnlContent1 = new javax.swing.JPanel();
+        lblHeader = new javax.swing.JLabel();
+        pnlContent2 = new javax.swing.JPanel();
+        lblPaymentId = new javax.swing.JLabel();
+        lblInvoiceId = new javax.swing.JLabel();
+        lblMethod = new javax.swing.JLabel();
+        lblAmount = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
+        lblProcessedBy = new javax.swing.JLabel();
+        lblCreatedAt = new javax.swing.JLabel();
+        lblPaymentId1 = new javax.swing.JLabel();
+        lblInvoiceId1 = new javax.swing.JLabel();
+        lblMethod1 = new javax.swing.JLabel();
+        lblAmount1 = new javax.swing.JLabel();
+        lblStatus1 = new javax.swing.JLabel();
+        lblProcessedBy1 = new javax.swing.JLabel();
+        lblCreatedBy1 = new javax.swing.JLabel();
+        pnlContent3 = new javax.swing.JPanel();
+        btnClose = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("KCaRT | Payment Details");
+        setMinimumSize(new java.awt.Dimension(410, 350));
+
+        pnlMain.setBackground(new java.awt.Color(0, 0, 0));
+        pnlMain.setMaximumSize(new java.awt.Dimension(410, 520));
+        pnlMain.setMinimumSize(new java.awt.Dimension(410, 520));
+
+        pnlContent1.setBackground(new java.awt.Color(0, 0, 0));
+
+        lblHeader.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        lblHeader.setForeground(new java.awt.Color(255, 255, 255));
+        lblHeader.setText("Payment Details");
+        lblHeader.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
+        pnlContent1.setLayout(pnlContent1Layout);
+        pnlContent1Layout.setHorizontalGroup(
+            pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlContent1Layout.setVerticalGroup(
+            pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent1Layout.createSequentialGroup()
+                .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
+
+        lblPaymentId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblPaymentId.setForeground(new java.awt.Color(255, 255, 255));
+        lblPaymentId.setText("Payment ID:");
+        lblPaymentId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblInvoiceId.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblInvoiceId.setForeground(new java.awt.Color(255, 255, 255));
+        lblInvoiceId.setText("Invoice ID:");
+        lblInvoiceId.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblMethod.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblMethod.setForeground(new java.awt.Color(255, 255, 255));
+        lblMethod.setText("Method:");
+        lblMethod.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblAmount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblAmount.setForeground(new java.awt.Color(255, 255, 255));
+        lblAmount.setText("Amount:");
+        lblAmount.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblStatus.setForeground(new java.awt.Color(255, 255, 255));
+        lblStatus.setText("Status:");
+        lblStatus.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblProcessedBy.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblProcessedBy.setForeground(new java.awt.Color(255, 255, 255));
+        lblProcessedBy.setText("Processed By:");
+        lblProcessedBy.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblCreatedAt.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblCreatedAt.setForeground(new java.awt.Color(255, 255, 255));
+        lblCreatedAt.setText("CreatedAt:");
+        lblCreatedAt.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblPaymentId1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblPaymentId1.setForeground(new java.awt.Color(255, 255, 255));
+        lblPaymentId1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblInvoiceId1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblInvoiceId1.setForeground(new java.awt.Color(255, 255, 255));
+        lblInvoiceId1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblMethod1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblMethod1.setForeground(new java.awt.Color(255, 255, 255));
+        lblMethod1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblAmount1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblAmount1.setForeground(new java.awt.Color(255, 255, 255));
+        lblAmount1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblStatus1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblStatus1.setForeground(new java.awt.Color(255, 255, 255));
+        lblStatus1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblProcessedBy1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblProcessedBy1.setForeground(new java.awt.Color(255, 255, 255));
+        lblProcessedBy1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        lblCreatedBy1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblCreatedBy1.setForeground(new java.awt.Color(255, 255, 255));
+        lblCreatedBy1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        javax.swing.GroupLayout pnlContent2Layout = new javax.swing.GroupLayout(pnlContent2);
+        pnlContent2.setLayout(pnlContent2Layout);
+        pnlContent2Layout.setHorizontalGroup(
+            pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPaymentId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblInvoiceId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMethod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblProcessedBy, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                    .addComponent(lblCreatedAt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPaymentId1, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                    .addComponent(lblInvoiceId1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMethod1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblAmount1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblStatus1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblProcessedBy1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblCreatedBy1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(47, 47, 47))
+        );
+        pnlContent2Layout.setVerticalGroup(
+            pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPaymentId, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPaymentId1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblInvoiceId, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblInvoiceId1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblMethod1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAmount1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblStatus1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProcessedBy, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblProcessedBy1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCreatedAt, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCreatedBy1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
+
+        btnClose.setBackground(new java.awt.Color(255, 255, 255));
+        btnClose.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnClose.setForeground(new java.awt.Color(0, 0, 0));
+        btnClose.setText("Close");
+        btnClose.setBorder(null);
+        btnClose.setFocusable(false);
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlContent3Layout = new javax.swing.GroupLayout(pnlContent3);
+        pnlContent3.setLayout(pnlContent3Layout);
+        pnlContent3Layout.setHorizontalGroup(
+            pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlContent3Layout.setVerticalGroup(
+            pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlContent3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(46, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
+        pnlMain.setLayout(pnlMainLayout);
+        pnlMainLayout.setHorizontalGroup(
+            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlContent2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(3, 3, 3))
+            .addComponent(pnlContent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        pnlMainLayout.setVerticalGroup(
+            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMainLayout.createSequentialGroup()
+                .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlContent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlContent3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCloseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -72,5 +305,25 @@ public class ViewPayment extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClose;
+    private javax.swing.JLabel lblAmount;
+    private javax.swing.JLabel lblAmount1;
+    private javax.swing.JLabel lblCreatedAt;
+    private javax.swing.JLabel lblCreatedBy1;
+    private javax.swing.JLabel lblHeader;
+    private javax.swing.JLabel lblInvoiceId;
+    private javax.swing.JLabel lblInvoiceId1;
+    private javax.swing.JLabel lblMethod;
+    private javax.swing.JLabel lblMethod1;
+    private javax.swing.JLabel lblPaymentId;
+    private javax.swing.JLabel lblPaymentId1;
+    private javax.swing.JLabel lblProcessedBy;
+    private javax.swing.JLabel lblProcessedBy1;
+    private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblStatus1;
+    private javax.swing.JPanel pnlContent1;
+    private javax.swing.JPanel pnlContent2;
+    private javax.swing.JPanel pnlContent3;
+    private javax.swing.JPanel pnlMain;
     // End of variables declaration//GEN-END:variables
 }

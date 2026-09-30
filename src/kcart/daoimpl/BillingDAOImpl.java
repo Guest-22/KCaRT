@@ -18,7 +18,7 @@ public class BillingDAOImpl implements BillingDAO {
     private static final String COL_DESCRIPTION = "description";
     private static final String COL_INVOICE_AMOUNT = "invoice_amount";
     private static final String COL_INVOICE_STATUS = "invoice_status";
-    private static final String COL_INVOICE_DATE = "createdA_at";
+    private static final String COL_INVOICE_DATE = "created_at";
 
     // Payment table.
     private static final String TABLE_PAYMENT = "tbl_payment";
@@ -138,5 +138,49 @@ public class BillingDAOImpl implements BillingDAO {
         }
 
         return list;
+    }
+
+    // Retrieve invoice details for viewing purposes.
+    @Override
+    public Billing getInvoiceDetails(int invoiceId) {
+        String sql = "SELECT "
+                + COL_DESCRIPTION + ", "
+                + COL_INVOICE_AMOUNT + ", "
+                + COL_INVOICE_STATUS + ", "
+                + COL_INVOICE_DATE
+                + " FROM " + TABLE_INVOICE
+                + " WHERE " + COL_INVOICE_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, invoiceId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    Billing billing = new Billing();
+
+                    billing.setDescription(
+                            rs.getString(COL_DESCRIPTION));
+
+                    billing.setInvoiceAmount(
+                            rs.getDouble(COL_INVOICE_AMOUNT));
+
+                    billing.setInvoiceStatus(
+                            rs.getString(COL_INVOICE_STATUS));
+
+                    billing.setInvoiceDate(
+                            rs.getTimestamp(COL_INVOICE_DATE));
+
+                    return billing;
+                }
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving invoice details:\n" + e.getMessage());
+        }
+
+        return null;
     }
 }
