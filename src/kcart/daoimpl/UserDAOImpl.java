@@ -3,10 +3,13 @@ package kcart.daoimpl;
 import kcart.dao.UserDAO;
 import kcart.model.User;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import kcart.util.DBConnection;
 import kcart.util.Message;
 
 public class UserDAOImpl implements UserDAO {
+
     private static final String TABLE_NAME = "tbl_user";
     private static final String COL_USER_ID = "user_id";
     private static final String COL_FIRST_NAME = "first_name";
@@ -20,13 +23,15 @@ public class UserDAOImpl implements UserDAO {
     private static final String COL_CREATED_AT = "created_at";
 
     private Connection conn;
-     public UserDAOImpl() {
+
+    public UserDAOImpl() {
         this.conn = DBConnection.getConnection(); // Establish connection.
     }
 
+    // Searches for existing username.
     @Override
     public User findByUsername(String username) {
-       User user = null;
+        User user = null;
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL_USERNAME + " = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -35,15 +40,15 @@ public class UserDAOImpl implements UserDAO {
 
             if (rs.next()) {
                 user = new User(
-                    rs.getInt(COL_USER_ID),
-                    rs.getString(COL_FIRST_NAME),
-                    rs.getString(COL_MIDDLE_NAME),
-                    rs.getString(COL_LAST_NAME),
-                    rs.getString(COL_CONTACT_NO),
-                    rs.getString(COL_ROLE),
-                    rs.getString(COL_USERNAME),
-                    rs.getString(COL_PASSWORD),
-                    rs.getString(COL_USER_STATUS)
+                        rs.getInt(COL_USER_ID),
+                        rs.getString(COL_FIRST_NAME),
+                        rs.getString(COL_MIDDLE_NAME),
+                        rs.getString(COL_LAST_NAME),
+                        rs.getString(COL_CONTACT_NO),
+                        rs.getString(COL_ROLE),
+                        rs.getString(COL_USERNAME),
+                        rs.getString(COL_PASSWORD),
+                        rs.getString(COL_USER_STATUS)
                 );
                 user.setCreatedAt(rs.getTimestamp(COL_CREATED_AT));
             }
@@ -56,16 +61,16 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean addUser(User user) {
-        String sql = "INSERT INTO " + TABLE_NAME + " (" +
-                COL_FIRST_NAME + ", " +
-                COL_MIDDLE_NAME + ", " +
-                COL_LAST_NAME + ", " +
-                COL_CONTACT_NO + ", " +
-                COL_ROLE + ", " +
-                COL_USERNAME + ", " +
-                COL_PASSWORD + ", " +
-                COL_USER_STATUS + ") " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + TABLE_NAME + " ("
+                + COL_FIRST_NAME + ", "
+                + COL_MIDDLE_NAME + ", "
+                + COL_LAST_NAME + ", "
+                + COL_CONTACT_NO + ", "
+                + COL_ROLE + ", "
+                + COL_USERNAME + ", "
+                + COL_PASSWORD + ", "
+                + COL_USER_STATUS + ") "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, user.getFirstName());
@@ -84,4 +89,83 @@ public class UserDAOImpl implements UserDAO {
             return false;
         }
     }
+
+    // Retrieve all user info. for populating User Menu table.
+    @Override
+    public List<User> getAllUsers() {
+        List<User> list = new ArrayList<>();
+
+        String sql = "SELECT "
+                + COL_USER_ID + ", "
+                + COL_LAST_NAME + ", "
+                + COL_FIRST_NAME + ", "
+                + COL_MIDDLE_NAME + ", "
+                + COL_CONTACT_NO + ", "
+                + COL_ROLE + ", "
+                + COL_USERNAME + ", "
+                + COL_USER_STATUS + ", "
+                + COL_CREATED_AT
+                + " FROM " + TABLE_NAME;
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                User u = new User(
+                        rs.getInt(COL_USER_ID),
+                        rs.getString(COL_LAST_NAME),
+                        rs.getString(COL_FIRST_NAME),
+                        rs.getString(COL_MIDDLE_NAME),
+                        rs.getString(COL_CONTACT_NO),
+                        rs.getString(COL_ROLE),
+                        rs.getString(COL_USERNAME),
+                        rs.getString(COL_USER_STATUS),
+                        rs.getTimestamp(COL_CREATED_AT)
+                );
+
+                list.add(u);
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving all users:\n" + e.getMessage());
+        }
+
+        return list;
+    }
+
+    // Update existing user data w/ new values.
+    @Override
+    public boolean editUser(User user) {
+        String sql = "UPDATE " + TABLE_NAME + " SET "
+                + COL_FIRST_NAME + " = ?, "
+                + COL_MIDDLE_NAME + " = ?, "
+                + COL_LAST_NAME + " = ?, "
+                + COL_CONTACT_NO + " = ?, "
+                + COL_ROLE + " = ?, "
+                + COL_USERNAME + " = ?, "
+                + COL_PASSWORD + " = ?, "
+                + COL_USER_STATUS + " = ? "
+                + "WHERE " + COL_USER_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getFirstName());
+            stmt.setString(2, user.getMiddleName());
+            stmt.setString(3, user.getLastName());
+            stmt.setString(4, user.getContactNo());
+            stmt.setString(5, user.getRole());
+            stmt.setString(6, user.getUsername());
+            stmt.setString(7, user.getPassword());
+            stmt.setString(8, user.getUserStatus());
+            stmt.setInt(9, user.getUserId());
+
+            int rows = stmt.executeUpdate();
+
+            return rows > 0;
+
+        } catch (SQLException e) {
+            Message.error("Database error while editing user: " + e.getMessage());
+            return false;
+        }
+    }
+    
 }

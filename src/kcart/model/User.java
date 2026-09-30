@@ -1,8 +1,9 @@
 package kcart.model;
 
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class User {
+
     private int userId;
     private String firstName;
     private String middleName;
@@ -12,7 +13,23 @@ public class User {
     private String username;
     private String password;
     private String userStatus;
-    private java.sql.Timestamp createdAt;
+    private Timestamp createdAt;
+
+    // Model for populating user table.
+    public User(
+            int userId, String lastName, String firstName, String middleName, 
+            String contactNo, String role, String username, String userStatus, Timestamp createdAt) {
+
+        this.userId = userId;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.contactNo = contactNo;
+        this.role = role;
+        this.username = username;
+        this.userStatus = userStatus;
+        this.createdAt = createdAt;
+    }
 
     public User(int userId, String firstName, String middleName,
             String lastName, String contactNo, String role,
@@ -27,7 +44,7 @@ public class User {
         this.password = password;
         this.userStatus = userStatus;
     }
-    
+
     public User(String firstName, String middleName,
             String lastName, String contactNo, String role,
             String username, String password, String userStatus) {
@@ -41,7 +58,7 @@ public class User {
         this.password = password;
         this.userStatus = userStatus;
     }
-    
+
     public int getUserId() {
         return userId;
     }
@@ -81,7 +98,7 @@ public class User {
     public void setContactNo(String contactNo) {
         this.contactNo = contactNo;
     }
-    
+
     public String getRole() {
         return role;
     }
@@ -89,7 +106,7 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
-    
+
     public String getUsername() {
         return username;
     }

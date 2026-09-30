@@ -5,6 +5,8 @@ import kcart.model.Billing;
 import kcart.util.DBConnection;
 import kcart.util.Message;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BillingDAOImpl implements BillingDAO {
 
@@ -25,7 +27,6 @@ public class BillingDAOImpl implements BillingDAO {
     private static final String COL_PROCESSED_BY = "processed_by";
     private static final String COL_PAY_METHOD = "pay_method";
     private static final String COL_PAY_AMOUNT = "pay_amount";
-    private static final String COL_PAY_STATUS = "pay_status";
     private static final String COL_PAY_DATE = "created_at";
 
     private Connection conn;
@@ -98,5 +99,44 @@ public class BillingDAOImpl implements BillingDAO {
             Message.error("Error adding payment:\n" + e.getMessage());
             return false;
         }
+    }
+
+    // Retrieve billing info for populating Billing Menu table.
+    @Override
+    public List<Billing> getAllBillings() {
+        List<Billing> list = new ArrayList<>();
+
+        String sql = "SELECT "
+                + "i." + COL_INVOICE_ID + ", "
+                + "i." + COL_RENTAL_ID + ", "
+                + "i." + COL_DESCRIPTION + ", "
+                + "i." + COL_INVOICE_AMOUNT + ", "
+                + "i." + COL_INVOICE_STATUS + ", "
+                + "p." + COL_PAY_DATE + " AS payment_date "
+                + "FROM " + TABLE_INVOICE + " i "
+                + "LEFT JOIN " + TABLE_PAYMENT + " p "
+                + "ON i." + COL_INVOICE_ID + " = p." + COL_PAYMENT_INVOICE_ID;
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+
+                Billing b = new Billing(
+                        rs.getInt(COL_INVOICE_ID),
+                        rs.getInt(COL_RENTAL_ID),
+                        rs.getString(COL_DESCRIPTION),
+                        rs.getDouble(COL_INVOICE_AMOUNT),
+                        rs.getString(COL_INVOICE_STATUS),
+                        rs.getTimestamp("payment_date")
+                );
+
+                list.add(b);
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving all billings:\n" + e.getMessage());
+        }
+
+        return list;
     }
 }

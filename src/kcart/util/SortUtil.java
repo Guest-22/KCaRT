@@ -1,10 +1,12 @@
 package kcart.util;
 
 import java.util.List;
+import kcart.model.Billing;
 import kcart.model.Car;
 import kcart.model.Customer;
 import kcart.model.Rental;
 import kcart.model.Return;
+import kcart.model.User;
 
 public class SortUtil {
 
@@ -214,5 +216,121 @@ public class SortUtil {
             returns.set(maxIndex, returns.get(i));
             returns.set(i, temp);
         }
+    }
+
+    // Sort users by createdAt timestamp, newest first.
+    public static void sortUserByDate(List<User> users) {
+        for (int i = 0; i < users.size() - 1; i++) {
+            int maxIndex = i;
+
+            for (int j = i + 1; j < users.size(); j++) {
+                // Compare by createdAt timestamp, newest first,
+                if (users.get(j).getCreatedAt().after(users.get(maxIndex).getCreatedAt())) {
+                    maxIndex = j;
+                }
+            }
+
+            User temp = users.get(maxIndex);
+            users.set(maxIndex, users.get(i));
+            users.set(i, temp);
+        }
+    }
+
+    // Sort users by role, alphabetical order
+    public static void sortUserByRole(List<User> users) {
+        for (int i = 0; i < users.size() - 1; i++) {
+            int maxIndex = i;
+
+            for (int j = i + 1; j < users.size(); j++) {
+                // Compare by role, alphabetical order
+                if (users.get(j).getRole().compareToIgnoreCase(
+                        users.get(maxIndex).getRole()) > 0) {
+                    maxIndex = j;
+                }
+            }
+
+            User temp = users.get(maxIndex);
+            users.set(maxIndex, users.get(i));
+            users.set(i, temp);
+        }
+    }
+
+    // Sort users by status, alphabetical order
+    public static void sortUserByStatus(List<User> users) {
+        for (int i = 0; i < users.size() - 1; i++) {
+            int maxIndex = i;
+
+            for (int j = i + 1; j < users.size(); j++) {
+                // Compare by user status, alphabetical order
+                if (users.get(j).getUserStatus().compareToIgnoreCase(
+                        users.get(maxIndex).getUserStatus()) > 0) {
+                    maxIndex = j;
+                }
+            }
+
+            User temp = users.get(maxIndex);
+            users.set(maxIndex, users.get(i));
+            users.set(i, temp);
+        }
+    }
+
+    // Sort billings by payment date, newest first.
+    public static void sortBillingByDate(List<Billing> billings) {
+        for (int i = 0; i < billings.size() - 1; i++) {
+            int maxIndex = i;
+
+            for (int j = i + 1; j < billings.size(); j++) {
+                // Compare by payment date, newest first.
+                if (billings.get(j).getPaymentDate() != null
+                        && (billings.get(maxIndex).getPaymentDate() == null
+                        || billings.get(j).getPaymentDate().after(
+                                billings.get(maxIndex).getPaymentDate()))) {
+                    maxIndex = j;
+                }
+            }
+
+            Billing temp = billings.get(maxIndex);
+            billings.set(maxIndex, billings.get(i));
+            billings.set(i, temp);
+        }
+    }
+
+    // Sort billings by invoice amount, ascending order.
+    public static void sortBillingByInvoiceAmount(List<Billing> billings) {
+        for (int i = 0; i < billings.size() - 1; i++) {
+            int maxIndex = i;
+
+            for (int j = i + 1; j < billings.size(); j++) {
+                // Compare by invoice amount, ascending order.
+                if (billings.get(j).getInvoiceAmount()
+                        > billings.get(maxIndex).getInvoiceAmount()) {
+                    maxIndex = j;
+                }
+            }
+
+            Billing temp = billings.get(maxIndex);
+            billings.set(maxIndex, billings.get(i));
+            billings.set(i, temp);
+        }
+    }
+
+    // Sort billings by invoice status, alphabetical order.
+    public static void sortBillingByStatus(List<Billing> billings) {
+        for (int i = 0; i < billings.size() - 1; i++) {
+            int maxIndex = i;
+
+            for (int j = i + 1; j < billings.size(); j++) {
+                // Compare by invoice status, alphabetical order.
+                if (billings.get(j).getInvoiceStatus().compareToIgnoreCase(
+                        billings.get(maxIndex).getInvoiceStatus()) > 0) {
+                    maxIndex = j;
+                }
+            }
+
+            Billing temp = billings.get(maxIndex);
+            billings.set(maxIndex, billings.get(i));
+            billings.set(i, temp);
+        }
+
     }
 }

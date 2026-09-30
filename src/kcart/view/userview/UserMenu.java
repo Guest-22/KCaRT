@@ -1,6 +1,8 @@
 package kcart.view.userview;
 
 import java.awt.Color;
+import java.util.Collections;
+import java.util.List;
 import kcart.view.dashboardview.AdminDashboard;
 import kcart.view.dashboardview.StaffDashboard;
 import kcart.view.Login;
@@ -9,15 +11,27 @@ import kcart.view.carview.CarMenu;
 import kcart.view.rentalview.RentalMenu;
 import kcart.view.returnview.ReturnMenu;
 import kcart.view.billingview.BillingMenu;
+import kcart.dao.UserDAO;
+import kcart.daoimpl.UserDAOImpl;
+import kcart.model.User;
+import kcart.util.SearchUtil;
+import kcart.util.SortUtil;
+import javax.swing.table.DefaultTableModel;
+import kcart.util.Message;
+import kcart.view.customerview.EditCustomer;
 
 public class UserMenu extends javax.swing.JFrame {
 
+    private int selectedUserId;
+
     public UserMenu() {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         setDefaultTglSort();
+        
+        populateUserRecord("");
     }
 
     private void setDefaultTglSort() {
@@ -28,7 +42,77 @@ public class UserMenu extends javax.swing.JFrame {
         tglSort.setBackground(Color.BLACK);
         tglSort.setForeground(Color.WHITE);
     }
+
+    private void populateUserRecord(String keyword) {
+        DefaultTableModel userModel = (DefaultTableModel) tblRecord.getModel();
+        userModel.setRowCount(0); // Clear existing rows.
+
+        try {
+            UserDAO userDao = new UserDAOImpl();
+            List<User> users = userDao.getAllUsers();
+
+            // Optional: filter by keyword.
+            users = SearchUtil.searchUsersByKeyword(users, keyword);
+
+            // Sorting
+            String selectedSort = cmbSort.getSelectedItem().toString();
+            String selectedOrder = tglSort.isSelected() ? "DESC" : "ASC";
+
+            switch (selectedSort) {
+                case "Sort by Date":
+                    SortUtil.sortUserByDate(users);
+                    break;
+                case "Sort by Role":
+                    SortUtil.sortUserByRole(users);
+                    break;
+                case "Sort by Status":
+                    SortUtil.sortUserByStatus(users);
+                    break;
+            }
+
+            // Reverse if DESC.
+            if (selectedOrder.equals("DESC")) {
+                Collections.reverse(users);
+            }
+
+            // Populate table with user records.
+            for (User u : users) {
+                Object[] row = {
+                    u.getUserId(),
+                    u.getLastName(),
+                    u.getFirstName(),
+                    u.getMiddleName(),
+                    u.getContactNo(),
+                    u.getRole(),
+                    u.getUsername(),
+                    u.getUserStatus(),
+                    (u.getCreatedAt() != null) ? u.getCreatedAt().toString() : "—"
+                };
+
+                userModel.addRow(row);
+            }
+
+            // Hide user_id.
+            tblRecord.getColumnModel().getColumn(0).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(0).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(0).setWidth(0);
+
+            // Hide middle_name.
+            tblRecord.getColumnModel().getColumn(3).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(3).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(3).setWidth(0);
+
+            // Hide created_at.
+            tblRecord.getColumnModel().getColumn(8).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(8).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(8).setWidth(0);
+
+        } catch (Exception e) {
+            // Message.error("Error loading user table:\n" + e.getMessage());
+        }
+    }
     
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -235,15 +319,28 @@ public class UserMenu extends javax.swing.JFrame {
         tblRecord.setForeground(new java.awt.Color(255, 255, 255));
         tblRecord.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "User ID", "Last Name", "First Name", "Middle Name", "Contact", "Role", "Username", "Status", "Created At"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblRecord.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRecordMouseClicked(evt);
+            }
+        });
         scrlRecord.setViewportView(tblRecord);
 
         txtSearch.setBackground(new java.awt.Color(0, 0, 0));
@@ -275,7 +372,7 @@ public class UserMenu extends javax.swing.JFrame {
         cmbSort.setBackground(new java.awt.Color(0, 0, 0));
         cmbSort.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         cmbSort.setForeground(new java.awt.Color(255, 255, 255));
-        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by " }));
+        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by Date", "Sort by Role", "Sort by Status" }));
         cmbSort.setFocusable(false);
         cmbSort.setMinimumSize(new java.awt.Dimension(147, 24));
         cmbSort.setPreferredSize(new java.awt.Dimension(147, 24));
@@ -461,7 +558,7 @@ public class UserMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBillingActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
-        
+
     }//GEN-LAST:event_btnUserActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -474,15 +571,26 @@ public class UserMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-
+        String keyword = txtSearch.getText().trim();
+        if (keyword.isEmpty()) {
+            Message.error("Please enter a valid keyword to search");
+            return;
+        }
+        populateUserRecord(keyword);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void cmbSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSortActionPerformed
-
+        String sortQuery = txtSearch.getText().trim();
+        populateUserRecord(sortQuery);
     }//GEN-LAST:event_cmbSortActionPerformed
 
     private void tglSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSortActionPerformed
-
+        if (tglSort.isSelected()) {
+            tglSort.setText("DESC");
+        } else {
+            tglSort.setText("ASC");
+        }
+        populateUserRecord(txtSearch.getText().trim());
     }//GEN-LAST:event_tglSortActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -490,8 +598,26 @@ public class UserMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
+        if (selectedUserId <= 0) { // No row selected.
+            Message.error("Please select a user record first.");
+            return;
+        }
+
+        // If valid, open EditCar form.
+        new EditUser(selectedUserId).setVisible(true);
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void tblRecordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRecordMouseClicked
+        try {
+            int row = tblRecord.getSelectedRow();
+            if (row >= 0) {
+                // Store selected ID.
+                selectedUserId = Integer.parseInt(tblRecord.getValueAt(row, 0).toString());
+            }
+        } catch (Exception e) {
+            // Message.error("Something went wrong: " + e.getMessage());
+        }
+    }//GEN-LAST:event_tblRecordMouseClicked
 
     /**
      * @param args the command line arguments

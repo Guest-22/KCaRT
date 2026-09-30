@@ -1,11 +1,58 @@
 package kcart.view.userview;
 
+import kcart.dao.UserDAO;
+import kcart.daoimpl.UserDAOImpl;
+import kcart.model.User;
+import java.util.List;
+import kcart.util.Message;
+import kcart.util.PasswordHasher;
+
 public class EditUser extends javax.swing.JFrame {
 
+    private int userId;
+
     public EditUser() {
+
+    }
+
+    public EditUser(int userId) {
         initComponents();
-        
+
+        this.userId = userId;
         this.setLocationRelativeTo(null);
+
+        loadUserRecord();
+    }
+
+    // Populates textfields and comboboxes with their respective user info.
+    private void loadUserRecord() {
+        try {
+            UserDAO userDao = new UserDAOImpl();
+
+            List<User> users = userDao.getAllUsers();
+
+            for (User u : users) {
+
+                if (u.getUserId() == userId) {
+
+                    // Populate text fields.
+                    txtFirstName.setText(u.getFirstName());
+                    txtMiddleName.setText(u.getMiddleName());
+                    txtLastName.setText(u.getLastName());
+                    txtContact.setText(u.getContactNo());
+                    txtUsername.setText(u.getUsername());
+
+                    // Populate combo boxes.
+                    cmbRole.setSelectedItem(u.getRole());
+                    cmbStatus.setSelectedItem(u.getUserStatus());
+
+                    break;
+                }
+            }
+
+        } catch (Exception e) {
+            Message.error("Error loading user:\n" + e.getMessage());
+        }
     }
 
     /**
@@ -313,7 +360,67 @@ public class EditUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        try {
+            // Validation: ensure required fields are not empty.
+            if (txtFirstName.getText().trim().isEmpty()
+                    || txtLastName.getText().trim().isEmpty()
+                    || txtContact.getText().trim().isEmpty()
+                    || txtUsername.getText().trim().isEmpty()
+                    || txtPassword.getPassword().length == 0
+                    || txtConfirmPassword.getPassword().length == 0) {
 
+                Message.error("Please fill in all required fields before editing.");
+                return;
+            }
+
+            // Get password values.
+            String password = String.valueOf(txtPassword.getPassword());
+            String confirmPassword = String.valueOf(txtConfirmPassword.getPassword());
+
+            // Check if passwords match.
+            if (!password.equals(confirmPassword)) {
+                Message.error("Passwords do not match.");
+                return;
+            }
+
+            // Collect values.
+            String firstName = txtFirstName.getText().trim();
+            String middleName = txtMiddleName.getText().trim();
+            String lastName = txtLastName.getText().trim();
+            String contactNo = txtContact.getText().trim();
+            String role = cmbRole.getSelectedItem().toString();
+            String username = txtUsername.getText().trim();
+            String status = cmbStatus.getSelectedItem().toString();
+
+            // Hash password.
+            String hashedPassword = PasswordHasher.hashPassword(password);
+
+            // Build User object with userId.
+            User user = new User(
+                    userId,
+                    firstName,
+                    middleName,
+                    lastName,
+                    contactNo,
+                    role,
+                    username,
+                    hashedPassword,
+                    status
+            );
+
+            UserDAO userDao = new UserDAOImpl();
+            boolean success = userDao.editUser(user);
+
+            if (success) {
+                Message.show("User updated successfully!", "Success");
+                this.dispose(); // close Edit User UI.
+            } else {
+                Message.error("Failed to update user.");
+            }
+
+        } catch (Exception e) {
+            // Message.error("Error editing user:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

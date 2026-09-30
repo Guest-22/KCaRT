@@ -1,6 +1,6 @@
 package kcart.model;
 
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class Billing {
 
@@ -18,8 +18,22 @@ public class Billing {
     private int processedBy;
     private String payMethod;
     private double payAmount;
-    private String payStatus;
     private Timestamp paymentDate;
+
+    public Billing(){
+        
+    }
+    
+    // Model for populating billing table.
+    public Billing(int invoiceId, int rentalId, String description, double invoiceAmount, 
+            String invoiceStatus, Timestamp paymentDate) {
+        this.invoiceId = invoiceId;
+        this.rentalId = rentalId;
+        this.description = description;
+        this.invoiceAmount = invoiceAmount;
+        this.invoiceStatus = invoiceStatus;
+        this.paymentDate = paymentDate;
+    }
 
     // Getter/Setter method.
     public int getInvoiceId() {
@@ -100,6 +114,22 @@ public class Billing {
 
     public void setPayAmount(double payAmount) {
         this.payAmount = payAmount;
+    }
+
+    public Timestamp getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(Timestamp invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
+
+    public Timestamp getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Timestamp paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
 }

@@ -1,5 +1,9 @@
 package kcart.view.billingview;
 
+import javax.swing.table.DefaultTableModel;
+import kcart.util.SearchUtil;
+import kcart.util.SortUtil;
+import java.util.Collections;
 import kcart.view.dashboardview.AdminDashboard;
 import kcart.view.dashboardview.StaffDashboard;
 import kcart.view.Login;
@@ -8,6 +12,10 @@ import kcart.view.carview.CarMenu;
 import kcart.view.rentalview.RentalMenu;
 import kcart.view.returnview.ReturnMenu;
 import kcart.view.userview.UserMenu;
+import java.util.List;
+import kcart.dao.BillingDAO;
+import kcart.daoimpl.BillingDAOImpl;
+import kcart.model.Billing;
 
 public class BillingMenu extends javax.swing.JFrame {
 
@@ -15,6 +23,64 @@ public class BillingMenu extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+    }
+
+    private void populateBillingRecord(String keyword) {
+        DefaultTableModel billingModel = (DefaultTableModel) tblRecord.getModel();
+        billingModel.setRowCount(0); // Clear existing rows.
+
+        try {
+            BillingDAO billingDao = new BillingDAOImpl();
+            List<Billing> billings = billingDao.getAllBillings();
+
+            // Optional: filter by keyword.
+            billings = SearchUtil.searchBillingsByKeyword(billings, keyword);
+
+            // Sorting.
+            String selectedSort = cmbSort.getSelectedItem().toString();
+            String selectedOrder = tglSort.isSelected() ? "DESC" : "ASC";
+
+            switch (selectedSort) {
+                case "Sort by Date":
+                    SortUtil.sortBillingByDate(billings);
+                    break;
+                case "Sort by Amount":
+                    SortUtil.sortBillingByInvoiceAmount(billings);
+                    break;
+                case "Sort by Status":
+                    SortUtil.sortBillingByStatus(billings);
+                    break;
+            }
+
+            // Reverse if DESC.
+            if (selectedOrder.equals("DESC")) {
+                Collections.reverse(billings);
+            }
+
+            // Populate table with billing records.
+            for (Billing b : billings) {
+                Object[] row = {
+                    b.getInvoiceId(),
+                    b.getRentalId(),
+                    b.getDescription(),
+                    b.getInvoiceAmount(),
+                    b.getInvoiceStatus(),
+                    (b.getPaymentDate() != null)
+                    ? b.getPaymentDate().toString()
+                    : "—"
+                };
+
+                billingModel.addRow(row);
+            }
+
+            // Hide payment_date.
+            tblRecord.getColumnModel().getColumn(5).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(5).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(5).setWidth(0);
+
+        } catch (Exception e) {
+            // Message.error("Error loading billing table:\n" + e.getMessage());
+        }
     }
 
     /**
@@ -223,15 +289,23 @@ public class BillingMenu extends javax.swing.JFrame {
         tblRecord.setForeground(new java.awt.Color(255, 255, 255));
         tblRecord.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Invoice ID", "Rental ID", "Description", "Amount", "Status", "Payment Date"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         scrlRecord.setViewportView(tblRecord);
 
         txtSearch.setBackground(new java.awt.Color(0, 0, 0));
@@ -263,7 +337,7 @@ public class BillingMenu extends javax.swing.JFrame {
         cmbSort.setBackground(new java.awt.Color(0, 0, 0));
         cmbSort.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         cmbSort.setForeground(new java.awt.Color(255, 255, 255));
-        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by " }));
+        cmbSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sort by Date", "Sort by Amount", "Sort by Status" }));
         cmbSort.setFocusable(false);
         cmbSort.setMinimumSize(new java.awt.Dimension(147, 24));
         cmbSort.setPreferredSize(new java.awt.Dimension(147, 24));
@@ -434,7 +508,7 @@ public class BillingMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCarActionPerformed
 
     private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
-       new RentalMenu().setVisible(true);
+        new RentalMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRentalActionPerformed
 
@@ -444,7 +518,7 @@ public class BillingMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBillingActionPerformed
-        
+
     }//GEN-LAST:event_btnBillingActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed

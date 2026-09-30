@@ -1,12 +1,16 @@
 package kcart.view.userview;
 
+import kcart.dao.UserDAO;
+import kcart.daoimpl.UserDAOImpl;
+import kcart.model.User;
 import kcart.util.Message;
+import kcart.util.PasswordHasher;
 
 public class AddUser extends javax.swing.JFrame {
 
     public AddUser() {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
     }
 
@@ -315,7 +319,7 @@ public class AddUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -325,11 +329,63 @@ public class AddUser extends javax.swing.JFrame {
                 || txtUsername.getText().trim().isEmpty()
                 || txtPassword.getPassword().length == 0
                 || txtConfirmPassword.getPassword().length == 0) {
+
             Message.error("Please fill in all required fields.");
             return;
         }
 
+        // Get password values.
+        String password = String.valueOf(txtPassword.getPassword());
+        String confirmPassword = String.valueOf(txtConfirmPassword.getPassword());
 
+        // Check if passwords match.
+        if (!password.equals(confirmPassword)) {
+            Message.error("Passwords do not match.");
+            return;
+        }
+
+        try {
+            // Get user information.
+            String firstName = txtFirstName.getText().trim();
+            String middleName = txtMiddleName.getText().trim();
+            String lastName = txtLastName.getText().trim();
+            String contactNo = txtContact.getText().trim();
+            String role = cmbRole.getSelectedItem().toString();
+            String username = txtUsername.getText().trim();
+
+            // Hash password.
+            String hashedPassword = PasswordHasher.hashPassword(password);
+
+            // Set default status.
+            String userStatus = "Active";
+
+            // Build User object.
+            User user = new User(
+                    firstName,
+                    middleName,
+                    lastName,
+                    contactNo,
+                    role,
+                    username,
+                    hashedPassword,
+                    userStatus
+            );
+
+            // Add user.
+            UserDAO userDao = new UserDAOImpl();
+
+            boolean success = userDao.addUser(user);
+
+            if (success) {
+                Message.show("User added successfully!", "Success");
+                this.dispose();
+            } else {
+                Message.error("Failed to add user.");
+            }
+
+        } catch (Exception e) {
+            Message.error("Error creating user:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     /**

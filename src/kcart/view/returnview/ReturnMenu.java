@@ -528,7 +528,7 @@ public class ReturnMenu extends javax.swing.JFrame {
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String keyword = txtSearch.getText().trim();
         if (keyword.isEmpty()) {
-            Message.error("Please enter a brand or model to search.");
+            Message.error("Please enter a keyword to search.");
             return;
         }
         populateReturnRecord(keyword);

@@ -2,10 +2,12 @@ package kcart.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import kcart.model.Billing;
 import kcart.model.Car;
 import kcart.model.Customer;
 import kcart.model.Rental;
 import kcart.model.Return;
+import kcart.model.User;
 
 public class SearchUtil {
 
@@ -94,5 +96,61 @@ public class SearchUtil {
 
         return filtered;
     }
-    
+
+    // Receives list of Users and a keyword; returns matched details below.
+    public static List<User> searchUsersByKeyword(List<User> users, String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return users;
+        }
+
+        keyword = keyword.toLowerCase();
+        List<User> filtered = new ArrayList<>();
+
+        for (User u : users) {
+            if (String.valueOf(u.getUserId()).contains(keyword)
+                    || (u.getLastName() != null
+                    && u.getLastName().toLowerCase().contains(keyword))
+                    || (u.getFirstName() != null
+                    && u.getFirstName().toLowerCase().contains(keyword))
+                    || (u.getContactNo() != null
+                    && u.getContactNo().toLowerCase().contains(keyword))
+                    || (u.getRole() != null
+                    && u.getRole().toLowerCase().contains(keyword))
+                    || (u.getUsername() != null
+                    && u.getUsername().toLowerCase().contains(keyword))
+                    || (u.getUserStatus() != null
+                    && u.getUserStatus().toLowerCase().contains(keyword))) {
+                filtered.add(u);
+            }
+        }
+
+        return filtered;
+    }
+
+    // Filter by keyword.
+    public static List<Billing> searchBillingsByKeyword(
+            List<Billing> billings, String keyword) {
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return billings;
+        }
+
+        keyword = keyword.toLowerCase();
+        List<Billing> filtered = new ArrayList<>();
+
+        for (Billing b : billings) {
+            if (String.valueOf(b.getInvoiceId()).contains(keyword)
+                    || String.valueOf(b.getRentalId()).contains(keyword)
+                    || (b.getDescription() != null
+                    && b.getDescription().toLowerCase().contains(keyword))
+                    || (b.getInvoiceStatus() != null
+                    && b.getInvoiceStatus().toLowerCase().contains(keyword))) {
+
+                filtered.add(b);
+            }
+        }
+
+        return filtered;
+    }
+
 }
