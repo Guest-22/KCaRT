@@ -183,7 +183,7 @@ public class CustomerMenu extends javax.swing.JFrame {
             }
         });
 
-        btnCustomer.setBackground(new java.awt.Color(0, 0, 0));
+        btnCustomer.setBackground(new java.awt.Color(51, 51, 51));
         btnCustomer.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnCustomer.setForeground(new java.awt.Color(255, 255, 255));
         btnCustomer.setText("Customer");
@@ -292,7 +292,7 @@ public class CustomerMenu extends javax.swing.JFrame {
                 .addComponent(btnUser, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(493, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlSideNavLayout = new javax.swing.GroupLayout(pnlSideNav);
@@ -310,8 +310,8 @@ public class CustomerMenu extends javax.swing.JFrame {
             .addGroup(pnlSideNavLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlContent.setBackground(new java.awt.Color(255, 255, 255));

@@ -222,7 +222,7 @@ public class CarMenu extends javax.swing.JFrame {
             }
         });
 
-        btnCar.setBackground(new java.awt.Color(0, 0, 0));
+        btnCar.setBackground(new java.awt.Color(51, 51, 51));
         btnCar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnCar.setForeground(new java.awt.Color(255, 255, 255));
         btnCar.setText("Car");
@@ -320,7 +320,7 @@ public class CarMenu extends javax.swing.JFrame {
                 .addComponent(btnUser, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(493, Short.MAX_VALUE))
+                .addContainerGap(460, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlSideNavLayout = new javax.swing.GroupLayout(pnlSideNav);
@@ -338,8 +338,8 @@ public class CarMenu extends javax.swing.JFrame {
             .addGroup(pnlSideNavLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pnlMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlContent.setBackground(new java.awt.Color(255, 255, 255));
@@ -760,36 +760,15 @@ public class CarMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-
-    }//GEN-LAST:event_txtSearchActionPerformed
-
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String keyword = txtSearch.getText().trim();
-        if (keyword.isEmpty()) {
-            Message.error("Please enter a brand or model to search.");
+    private void btnAddReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReservationActionPerformed
+        if (selectedCarId <= 0) { // No row selected.
+            Message.error("Please select a car record first.");
             return;
         }
-        populateCarRecord(keyword);
-    }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void cmbSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSortActionPerformed
-        String sortQuery = txtSearch.getText().trim();
-        populateCarRecord(sortQuery);
-    }//GEN-LAST:event_cmbSortActionPerformed
-
-    private void tglSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSortActionPerformed
-        if (tglSort.isSelected()) {
-            tglSort.setText("DESC");
-        } else {
-            tglSort.setText("ASC");
-        }
-        populateCarRecord(txtSearch.getText().trim());
-    }//GEN-LAST:event_tglSortActionPerformed
-
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        new AddCar().setVisible(true);
-    }//GEN-LAST:event_btnAddActionPerformed
+        // If valid, open AddRental form and pass the selected car ID as reference.
+        new AddRental(selectedCarId).setVisible(true);
+    }//GEN-LAST:event_btnAddReservationActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         if (selectedCarId <= 0) { // No row selected.
@@ -800,6 +779,37 @@ public class CarMenu extends javax.swing.JFrame {
         // If valid, open EditCar form.
         new EditCar(selectedCarId).setVisible(true);
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        new AddCar().setVisible(true);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void tglSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSortActionPerformed
+        if (tglSort.isSelected()) {
+            tglSort.setText("DESC");
+        } else {
+            tglSort.setText("ASC");
+        }
+        populateCarRecord(txtSearch.getText().trim());
+    }//GEN-LAST:event_tglSortActionPerformed
+
+    private void cmbSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSortActionPerformed
+        String sortQuery = txtSearch.getText().trim();
+        populateCarRecord(sortQuery);
+    }//GEN-LAST:event_cmbSortActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String keyword = txtSearch.getText().trim();
+        if (keyword.isEmpty()) {
+            Message.error("Please enter a brand or model to search.");
+            return;
+        }
+        populateCarRecord(keyword);
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+
+    }//GEN-LAST:event_txtSearchActionPerformed
 
     private void tblRecordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRecordMouseClicked
         try {
@@ -829,9 +839,9 @@ public class CarMenu extends javax.swing.JFrame {
                 if (photoBytes != null) {
                     ImageIcon icon = new ImageIcon(photoBytes);
                     Image scaled = icon.getImage().getScaledInstance(
-                            lblCarPhoto.getWidth(),
-                            lblCarPhoto.getHeight(),
-                            Image.SCALE_SMOOTH
+                        lblCarPhoto.getWidth(),
+                        lblCarPhoto.getHeight(),
+                        Image.SCALE_SMOOTH
                     );
                     lblCarPhoto.setIcon(new ImageIcon(scaled));
                 } else {
@@ -843,54 +853,44 @@ public class CarMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblRecordMouseClicked
 
-    private void btnAddReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReservationActionPerformed
-        if (selectedCarId <= 0) { // No row selected.
-            Message.error("Please select a car record first.");
-            return;
-        }
-
-        // If valid, open AddRental form and pass the selected car ID as reference.
-        new AddRental(selectedCarId).setVisible(true);
-    }//GEN-LAST:event_btnAddReservationActionPerformed
-
-    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-
-    }//GEN-LAST:event_btnDashboardActionPerformed
-
-    private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
-        new CustomerMenu().setVisible(true);
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        new Login().setVisible(true);
+        ActiveSession.clearSession();
         this.dispose();
-    }//GEN-LAST:event_btnCustomerActionPerformed
-
-    private void btnCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarActionPerformed
-       
-    }//GEN-LAST:event_btnCarActionPerformed
-
-    private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
-        new RentalMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnRentalActionPerformed
-
-    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
-        new ReturnMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnReturnActionPerformed
-
-    private void btnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBillingActionPerformed
-        new BillingMenu().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnBillingActionPerformed
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
         new UserMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnUserActionPerformed
 
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        new Login().setVisible(true);
-        ActiveSession.clearSession();
+    private void btnBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBillingActionPerformed
+        new BillingMenu().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_btnLogoutActionPerformed
+    }//GEN-LAST:event_btnBillingActionPerformed
+
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+        new ReturnMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void btnRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRentalActionPerformed
+        new RentalMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRentalActionPerformed
+
+    private void btnCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarActionPerformed
+
+    }//GEN-LAST:event_btnCarActionPerformed
+
+    private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
+        new CustomerMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCustomerActionPerformed
+
+    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
+
+    }//GEN-LAST:event_btnDashboardActionPerformed
 
     /**
      * @param args the command line arguments

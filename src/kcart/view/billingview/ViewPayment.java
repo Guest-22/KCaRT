@@ -11,8 +11,15 @@ public class ViewPayment extends javax.swing.JFrame {
     public ViewPayment(int invoiceId) {
         initComponents();
 
+        this.invoiceId = invoiceId;
         this.setLocationRelativeTo(null);
     }
+    
+    private void populatePaymentRecord(){
+        
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
