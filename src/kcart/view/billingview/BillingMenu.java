@@ -330,7 +330,7 @@ public class BillingMenu extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Invoice ID", "Rental ID", "Description", "Amount", "Status", "Payment Date"
+                "Invoice ID", "Rental ID", "Description", "Total Amount", "Status", "Payment Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {

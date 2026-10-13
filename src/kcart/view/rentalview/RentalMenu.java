@@ -73,6 +73,9 @@ public class RentalMenu extends javax.swing.JFrame {
             String selectedOrder = tglSort.isSelected() ? "DESC" : "ASC";
 
             switch (selectedSort) {
+                case "Sort by Date":
+                    SortUtil.sortRentalByDate(rentals);
+                    break;
                 case "Sort by Start Date":
                     SortUtil.sortRentalByStartDate(rentals);
                     break;
@@ -121,6 +124,13 @@ public class RentalMenu extends javax.swing.JFrame {
             tblRecord.getColumnModel().getColumn(5).setMinWidth(0);
             tblRecord.getColumnModel().getColumn(5).setMaxWidth(0);
             tblRecord.getColumnModel().getColumn(5).setWidth(0);
+
+            // Hide Processed By Name if the logged-in user is Staff.
+            if ("Staff".equalsIgnoreCase(ActiveSession.role)) {
+                tblRecord.getColumnModel().getColumn(6).setMinWidth(0);
+                tblRecord.getColumnModel().getColumn(6).setMaxWidth(0);
+                tblRecord.getColumnModel().getColumn(6).setWidth(0);
+            }
         } catch (Exception e) {
             Message.error("Error loading rental table:\n" + e.getMessage());
         }

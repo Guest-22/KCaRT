@@ -12,4 +12,7 @@ public interface CarDAO {
     Car getCarInfo(int carId);
     boolean updateCarStatus(int carId, String carStatus);
     boolean isCarAvailable(int carId);
+    int getAvailableCarCount();
+    int getTotalCarCount();
+    List<Car> getTopRentedCars();
 }

@@ -121,14 +121,18 @@ public class SortUtil {
 
     // Sorting options for Rental Module.
     // Sort by Date Created (latest first)
-    public static void sortRentalByCreatedAt(List<Rental> rentals) {
+    // Sort rentals by createdAt timestamp, newest first.
+    public static void sortRentalByDate(List<Rental> rentals) {
         for (int i = 0; i < rentals.size() - 1; i++) {
             int maxIndex = i;
             for (int j = i + 1; j < rentals.size(); j++) {
-                if (rentals.get(j).getCreatedAt().after(rentals.get(maxIndex).getCreatedAt())) {
+                // Compare by createdAt timestamp, newest first.
+                if (rentals.get(j).getCreatedAt().after(
+                        rentals.get(maxIndex).getCreatedAt())) {
                     maxIndex = j;
                 }
             }
+
             Rental temp = rentals.get(maxIndex);
             rentals.set(maxIndex, rentals.get(i));
             rentals.set(i, temp);

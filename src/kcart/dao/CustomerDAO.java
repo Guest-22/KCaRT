@@ -9,4 +9,5 @@ public interface CustomerDAO {
     Customer getCustomerById(int customerId);
     boolean editCustomer(Customer customer);
     Customer getCustomerInfo(int customerId);
+    int getTotalCustomerCount();
 }

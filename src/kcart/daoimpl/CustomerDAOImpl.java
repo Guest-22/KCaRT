@@ -189,4 +189,21 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         return null;
     }
+
+    // Retrieves the total number of customers
+    @Override
+    public int getTotalCustomerCount() {
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME;
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving total customer count:\n" + e.getMessage());
+        }
+
+        return 0;
+    }
 }

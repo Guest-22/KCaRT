@@ -1,6 +1,22 @@
 package kcart.view.dashboardview;
 
+import java.awt.Image;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
+import kcart.dao.BillingDAO;
+import kcart.dao.CarDAO;
+import kcart.dao.RentalDAO;
+import kcart.daoimpl.CarDAOImpl;
+import kcart.daoimpl.RentalDAOImpl;
+import kcart.dao.CustomerDAO;
+import kcart.daoimpl.BillingDAOImpl;
+import kcart.daoimpl.CustomerDAOImpl;
+import kcart.model.Car;
+import kcart.model.Rental;
 import kcart.util.ActiveSession;
+import kcart.util.Message;
 import kcart.view.Login;
 import kcart.view.customerview.CustomerMenu;
 import kcart.view.carview.CarMenu;
@@ -13,10 +29,120 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     public AdminDashboard() {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         lblWelcome.setText("Welcome, " + ActiveSession.loggedInUsername);
+
+        populateOverview();
+        populateRecentRentals();
+    }
+
+    // Populate the Recent Rentals table.
+    private void populateRecentRentals() {
+        DefaultTableModel model = (DefaultTableModel) tblRecord.getModel();
+
+        model.setRowCount(0);
+
+        try {
+            RentalDAO rentalDAO = new RentalDAOImpl();
+            List<Rental> rentals = rentalDAO.getRecentRentals();
+
+            for (Rental r : rentals) {
+                Object[] row = {
+                    r.getRentalId(),
+                    r.getCustomerName(),
+                    r.getCarInfo(),
+                    r.getStartDate() != null
+                    ? r.getStartDate().toString() : "—",
+                    r.getExpectedReturnDate() != null
+                    ? r.getExpectedReturnDate().toString() : "—",
+                    r.getRentalStatus()
+                };
+
+                model.addRow(row);
+            }
+
+        } catch (Exception e) {
+            Message.error("Error loading recent rentals:\n" + e.getMessage());
+        }
+    }
+
+    private void populateOverview() {
+        CarDAO carDAO = new CarDAOImpl();
+        lblAvailableCarsCount.setText(
+                String.valueOf(carDAO.getAvailableCarCount())
+        );
+        lblTotalCarsCount.setText(
+                String.valueOf(carDAO.getTotalCarCount())
+        );
+
+        RentalDAO rentalDAO = new RentalDAOImpl();
+        lblActiveRentalsCount.setText(
+                String.valueOf(rentalDAO.getActiveRentalCount())
+        );
+        lblPendingRentalsCount.setText(
+                String.valueOf(rentalDAO.getPendingRentalCount())
+        );
+        lblLateRentalsCount.setText(
+                String.valueOf(rentalDAO.getLateRentalCount())
+        );
+
+        CustomerDAO customerDAO = new CustomerDAOImpl();
+        lblTotalCustomerCount.setText(
+                String.valueOf(customerDAO.getTotalCustomerCount())
+        );
+
+        BillingDAO billingDAO = new BillingDAOImpl();
+        lblMonthlyEarningsCount.setText(
+                String.format("₱%,.2f", billingDAO.getMonthlyEarnings())
+        );
+        lblTotalEarningsCount.setText(
+                String.format("₱%,.2f", billingDAO.getTotalEarnings())
+        );
+
+        // Populate Top 4 Rented Cars.
+        List<Car> topCars = carDAO.getTopRentedCars();
+
+        JLabel[] nameLabels = {
+            lblTopCarName1,
+            lblTopCarName2,
+            lblTopCarName3,
+            lblTopCarName4
+        };
+
+        JLabel[] photoLabels = {
+            lblTopCarPhoto1,
+            lblTopCarPhoto2,
+            lblTopCarPhoto3,
+            lblTopCarPhoto4
+        };
+
+        // Reset the four cards.
+        for (int i = 0; i < 4; i++) {
+            nameLabels[i].setText("No car available");
+            photoLabels[i].setIcon(null);
+        }
+
+        // Set car names and photos.
+        for (int i = 0; i < topCars.size() && i < 4; i++) {
+            Car car = topCars.get(i);
+
+            nameLabels[i].setText(car.getBrand());
+
+            byte[] photo = car.getCarPhoto();
+
+            if (photo != null && photo.length > 0) {
+                Image image = new ImageIcon(photo).getImage()
+                        .getScaledInstance(
+                                photoLabels[i].getWidth(),
+                                photoLabels[i].getHeight(),
+                                Image.SCALE_SMOOTH
+                        );
+
+                photoLabels[i].setIcon(new ImageIcon(image));
+            }
+        }
     }
 
     /**
@@ -77,14 +203,14 @@ public class AdminDashboard extends javax.swing.JFrame {
         lblHeader1 = new javax.swing.JLabel();
         pnlTopRentedCars = new javax.swing.JPanel();
         lblHeader2 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        lblTopCarPhoto1 = new javax.swing.JLabel();
+        lblTopCarPhoto2 = new javax.swing.JLabel();
+        lblTopCarPhoto3 = new javax.swing.JLabel();
+        lblTopCarPhoto4 = new javax.swing.JLabel();
+        lblTopCarName1 = new javax.swing.JLabel();
+        lblTopCarName2 = new javax.swing.JLabel();
+        lblTopCarName4 = new javax.swing.JLabel();
+        lblTopCarName3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("KCaRT | Dashboard");
@@ -633,7 +759,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addGroup(pnlRecentRentalsLayout.createSequentialGroup()
                         .addComponent(lblHeader1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(scrlRecord, javax.swing.GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)))
+                    .addComponent(scrlRecord, javax.swing.GroupLayout.DEFAULT_SIZE, 856, Short.MAX_VALUE)))
         );
         pnlRecentRentalsLayout.setVerticalGroup(
             pnlRecentRentalsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -641,7 +767,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addComponent(lblHeader1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrlRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(227, Short.MAX_VALUE))
         );
 
         pnlTopRentedCars.setBackground(new java.awt.Color(255, 255, 255));
@@ -652,77 +778,35 @@ public class AdminDashboard extends javax.swing.JFrame {
         lblHeader2.setText("Top Rented Cars");
         lblHeader2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        lblTopCarPhoto1.setBackground(new java.awt.Color(0, 0, 0));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 138, Short.MAX_VALUE)
-        );
+        lblTopCarPhoto2.setBackground(new java.awt.Color(0, 0, 0));
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        lblTopCarPhoto3.setBackground(new java.awt.Color(0, 0, 0));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        lblTopCarPhoto4.setBackground(new java.awt.Color(0, 0, 0));
 
-        jPanel3.setBackground(new java.awt.Color(204, 204, 204));
+        lblTopCarName1.setBackground(new java.awt.Color(0, 0, 0));
+        lblTopCarName1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblTopCarName1.setForeground(new java.awt.Color(0, 0, 0));
+        lblTopCarName1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTopCarName1.setText("N/A");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 133, Short.MAX_VALUE)
-        );
+        lblTopCarName2.setBackground(new java.awt.Color(0, 0, 0));
+        lblTopCarName2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblTopCarName2.setForeground(new java.awt.Color(0, 0, 0));
+        lblTopCarName2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTopCarName2.setText("N/A");
 
-        jPanel4.setBackground(new java.awt.Color(204, 204, 204));
+        lblTopCarName4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTopCarName4.setForeground(new java.awt.Color(0, 0, 0));
+        lblTopCarName4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTopCarName4.setText("N/A");
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("N/A");
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("N/A");
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("N/A");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("N/A");
+        lblTopCarName3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblTopCarName3.setForeground(new java.awt.Color(0, 0, 0));
+        lblTopCarName3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTopCarName3.setText("N/A");
 
         javax.swing.GroupLayout pnlTopRentedCarsLayout = new javax.swing.GroupLayout(pnlTopRentedCars);
         pnlTopRentedCars.setLayout(pnlTopRentedCarsLayout);
@@ -730,46 +814,49 @@ public class AdminDashboard extends javax.swing.JFrame {
             pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lblHeader2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlTopRentedCarsLayout.createSequentialGroup()
-                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(pnlTopRentedCarsLayout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTopCarName3, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lblTopCarName4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlTopRentedCarsLayout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlTopRentedCarsLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlTopRentedCarsLayout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)))
-                .addGap(11, 11, 11))
+                        .addContainerGap()
+                        .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlTopRentedCarsLayout.createSequentialGroup()
+                                .addComponent(lblTopCarPhoto3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblTopCarPhoto4, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlTopRentedCarsLayout.createSequentialGroup()
+                                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(lblTopCarName1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                                    .addComponent(lblTopCarPhoto1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblTopCarPhoto2, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                                    .addComponent(lblTopCarName2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlTopRentedCarsLayout.setVerticalGroup(
             pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTopRentedCarsLayout.createSequentialGroup()
                 .addComponent(lblHeader2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(147, 147, 147))
+                    .addComponent(lblTopCarPhoto1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTopCarPhoto2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTopCarName1)
+                    .addComponent(lblTopCarName2))
+                .addGap(18, 18, 18)
+                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTopCarPhoto3, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTopCarPhoto4, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTopCarName3)
+                    .addComponent(lblTopCarName4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlRecordLayout = new javax.swing.GroupLayout(pnlRecord);
@@ -882,7 +969,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void tblRecordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRecordMouseClicked
-        
+
     }//GEN-LAST:event_tblRecordMouseClicked
 
     /**
@@ -929,16 +1016,8 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnRental;
     private javax.swing.JButton btnReturn;
     private javax.swing.JButton btnUser;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
@@ -957,6 +1036,14 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel lblPendingRentalsTitle;
     private javax.swing.JLabel lblTodaysReturnCount;
     private javax.swing.JLabel lblTodaysReturnTitle;
+    private javax.swing.JLabel lblTopCarName1;
+    private javax.swing.JLabel lblTopCarName2;
+    private javax.swing.JLabel lblTopCarName3;
+    private javax.swing.JLabel lblTopCarName4;
+    private javax.swing.JLabel lblTopCarPhoto1;
+    private javax.swing.JLabel lblTopCarPhoto2;
+    private javax.swing.JLabel lblTopCarPhoto3;
+    private javax.swing.JLabel lblTopCarPhoto4;
     private javax.swing.JLabel lblTotalCarsCount;
     private javax.swing.JLabel lblTotalCarsTitle;
     private javax.swing.JLabel lblTotalCustomerCount;

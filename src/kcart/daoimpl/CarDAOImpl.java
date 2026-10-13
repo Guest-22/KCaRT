@@ -273,4 +273,73 @@ public class CarDAOImpl implements CarDAO {
 
         return false;
     }
+
+    // Get count for admin dashboard overview.
+    @Override
+    public int getAvailableCarCount() {
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME
+                + " WHERE " + COL_STATUS + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "Available");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving available car count:\n" + e.getMessage());
+        }
+
+        return 0;
+    }
+
+    @Override
+    public int getTotalCarCount() {
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME;
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving total car count:\n" + e.getMessage());
+        }
+
+        return 0;
+    }
+
+    // Retrieve the top four rented cars.
+    @Override
+    public List<Car> getTopRentedCars() {
+        List<Car> list = new ArrayList<>();
+
+        String sql = "SELECT CONCAT(c." + COL_BRAND + ", ' ', c." + COL_MODEL
+                + ") AS car_name, c." + COL_PHOTO
+                + " FROM " + TABLE_NAME + " c "
+                + "INNER JOIN tbl_rental r ON c." + COL_ID + " = r.car_id "
+                + "GROUP BY c." + COL_ID + ", c." + COL_BRAND
+                + ", c." + COL_MODEL + ", c." + COL_PHOTO + " "
+                + "ORDER BY COUNT(r.rental_id) DESC, c." + COL_ID + " ASC "
+                + "LIMIT 4";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Car car = new Car(
+                        rs.getString("car_name"),
+                        rs.getBytes(COL_PHOTO)
+                );
+
+                list.add(car);
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving top rented cars:\n" + e.getMessage());
+        }
+
+        return list;
+    }
 }

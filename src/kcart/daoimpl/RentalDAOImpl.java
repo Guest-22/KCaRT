@@ -20,6 +20,14 @@ public class RentalDAOImpl implements RentalDAO {
     private static final String COL_STATUS = "rental_status";
     private static final String COL_CREATED_AT = "created_at";
 
+    // Other details for recent recent rentals table.
+    private static final String COL_FIRST_NAME = "first_name";
+    private static final String COL_MIDDLE_NAME = "middle_name";
+    private static final String COL_LAST_NAME = "last_name";
+    private static final String COL_BRAND = "brand";
+    private static final String COL_MODEL = "model";
+    private static final String COL_PLATE_NO = "plate_no";
+    private static final String COL_CAR_STATUS = "car_status";
     private Connection conn;
 
     public RentalDAOImpl() {
@@ -246,6 +254,117 @@ public class RentalDAOImpl implements RentalDAO {
         }
 
         return null;
+    }
+
+    // Admin Dashboard Overview count details.
+    // Retrieve the number of active rentals
+    @Override
+    public int getActiveRentalCount() {
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME
+                + " WHERE " + COL_STATUS + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "Active");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving active rental count:\n" + e.getMessage());
+        }
+
+        return 0;
+    }
+
+    // Retrieve the number of pending rentals
+    @Override
+    public int getPendingRentalCount() {
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME
+                + " WHERE " + COL_STATUS + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "Pending");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving pending rental count:\n" + e.getMessage());
+        }
+
+        return 0;
+    }
+
+    // Retrieve the number of late rentals
+    @Override
+    public int getLateRentalCount() {
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME
+                + " WHERE " + COL_STATUS + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "Late");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving late rental count:\n" + e.getMessage());
+        }
+
+        return 0;
+    }
+
+    // Retrieve the five most recent rentals for the admin dashboard.
+    @Override
+    public List<Rental> getRecentRentals() {
+        List<Rental> list = new ArrayList<>();
+
+        String sql = "SELECT "
+                + "r." + COL_ID + ", "
+                + "CONCAT(c.last_name, ', ', c.first_name, "
+                + "IF(c.middle_name IS NOT NULL AND c.middle_name <> '', "
+                + "CONCAT(' ', LEFT(c.middle_name, 1), '.'), '')) "
+                + "AS customer_full_name, "
+                + "CONCAT(car.brand, ' ', car.model, ' (', "
+                + "car.plate_no, ')') AS car_info, "
+                + "r." + COL_START_DATE + ", "
+                + "r." + COL_RETURN_DATE + ", "
+                + "r." + COL_STATUS + " "
+                + "FROM " + TABLE_NAME + " r "
+                + "INNER JOIN tbl_customer c "
+                + "ON r." + COL_CUSTOMER_ID + " = c.customer_id "
+                + "INNER JOIN tbl_car car "
+                + "ON r." + COL_CAR_ID + " = car.car_id "
+                + "ORDER BY r." + COL_CREATED_AT + " DESC, "
+                + "r." + COL_ID + " DESC "
+                + "LIMIT 30";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Rental rental = new Rental(
+                        rs.getInt(COL_ID),
+                        rs.getString("customer_full_name"),
+                        rs.getString("car_info"),
+                        rs.getDate(COL_START_DATE),
+                        rs.getDate(COL_RETURN_DATE),
+                        rs.getString(COL_STATUS)
+                );
+
+                list.add(rental);
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving recent rentals:\n" + e.getMessage());
+        }
+
+        return list;
     }
 
 }

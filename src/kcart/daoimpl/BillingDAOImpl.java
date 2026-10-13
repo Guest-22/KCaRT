@@ -227,4 +227,44 @@ public class BillingDAOImpl implements BillingDAO {
 
         return null;
     }
+
+    // Retrieves earnings for the current month.
+    @Override
+    public double getMonthlyEarnings() {
+        String sql = "SELECT COALESCE(SUM(" + COL_PAY_AMOUNT + "), 0) "
+                + "FROM " + TABLE_PAYMENT
+                + " WHERE " + COL_PAY_DATE + " >= "
+                + "DATE_FORMAT(CURDATE(), '%Y-%m-01')"
+                + " AND " + COL_PAY_DATE + " < "
+                + "DATE_FORMAT(CURDATE() + INTERVAL 1 MONTH, '%Y-%m-01')";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving monthly earnings:\n" + e.getMessage());
+        }
+
+        return 0.0;
+    }
+
+    // Retrieves total earnings.
+    @Override
+    public double getTotalEarnings() {
+        String sql = "SELECT COALESCE(SUM(" + COL_PAY_AMOUNT + "), 0) "
+                + "FROM " + TABLE_PAYMENT;
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            Message.error("Error retrieving total earnings:\n" + e.getMessage());
+        }
+
+        return 0.0;
+    }
 }

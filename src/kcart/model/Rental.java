@@ -26,6 +26,17 @@ public class Rental {
         this.carModel = carModel;
     }
 
+    // Model for viewing recent rentals in Admin Dashboard.
+    public Rental(int rentalId, String customerName, String carInfo,
+            Date startDate, Date expectedReturnDate, String rentalStatus) {
+        this.rentalId = rentalId;
+        this.customerName = customerName;
+        this.carInfo = carInfo;
+        this.startDate = startDate;
+        this.expectedReturnDate = expectedReturnDate;
+        this.rentalStatus = rentalStatus;
+    }
+
     // Model for adding new rental entry to DB; Used by Add Rental/Reservation form.
     public Rental(int customerId, int carId, int processedBy, Date startDate, Date expectedReturnDate, String rentalStatus) {
         this.customerId = customerId;

@@ -3,6 +3,7 @@ package kcart.model;
 import java.sql.Timestamp;
 
 public class Car {
+
     private int carId;
     private String plateNo;
     private String brand;
@@ -17,11 +18,11 @@ public class Car {
     private byte[] carPhoto;
     private String carStatus;
     private java.sql.Timestamp createdAt;
-    
+
     // Model for previewing selected car.
     public Car(int carId, String plateNo, String brand, String model, String carType,
-               int year, String color, String transmissionType, String fuelType,
-               int seatCap, double dailyRate, String carStatus, Timestamp createdAt) {
+            int year, String color, String transmissionType, String fuelType,
+            int seatCap, double dailyRate, String carStatus, Timestamp createdAt) {
         this.carId = carId;
         this.plateNo = plateNo;
         this.brand = brand;
@@ -36,10 +37,10 @@ public class Car {
         this.carStatus = carStatus;
         this.createdAt = createdAt;
     }
-    
+
     public Car(int carId, String plateNo, String brand, String model, String carType,
-               int year, String color, String transmissionType, String fuelType,
-               int seatCap, double dailyRate, String carStatus) {
+            int year, String color, String transmissionType, String fuelType,
+            int seatCap, double dailyRate, String carStatus) {
         this.carId = carId;
         this.plateNo = plateNo;
         this.brand = brand;
@@ -53,10 +54,10 @@ public class Car {
         this.dailyRate = dailyRate;
         this.carStatus = carStatus;
     }
-    
+
     public Car(String plateNo, String brand, String model, String carType,
-               int year, String color, String transmissionType, String fuelType,
-               int seatCap, double dailyRate, String carStatus) {
+            int year, String color, String transmissionType, String fuelType,
+            int seatCap, double dailyRate, String carStatus) {
         this.plateNo = plateNo;
         this.brand = brand;
         this.model = model;
@@ -79,7 +80,13 @@ public class Car {
         this.year = year;
         this.dailyRate = dailyRate;
     }
-    
+
+    // Constructor for Top Rented Cars dashboard.
+    public Car(String carName, byte[] carPhoto) {
+        this.brand = carName;
+        this.carPhoto = carPhoto;
+    }
+
     // Getter/Setter method.
     public int getCarId() {
         return carId;
@@ -112,7 +119,7 @@ public class Car {
     public void setModel(String model) {
         this.model = model;
     }
-    
+
     public String getCarType() {
         return carType;
     }
@@ -120,7 +127,7 @@ public class Car {
     public void setCarType(String carType) {
         this.carType = carType;
     }
-    
+
     public int getYear() {
         return year;
     }

@@ -12,5 +12,8 @@ public interface RentalDAO {
     int getCarIdByRentalId(int rentalId);
     int getCustomerIdByRentalId(int rentalId);
     Rental getRentalDetails(int rentalId);
-    
+    int getActiveRentalCount();
+    int getPendingRentalCount();
+    int getLateRentalCount();
+    List<Rental> getRecentRentals();
 }

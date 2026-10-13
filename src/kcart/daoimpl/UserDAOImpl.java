@@ -132,41 +132,37 @@ public class UserDAOImpl implements UserDAO {
         return list;
     }
 
-    // Update existing user info. w/ new values.
+    // Update existing user info (w or w/0 password).
     @Override
     public boolean editUser(User user) {
         String sql;
 
-        // Updates user info. (w/o password).
+        // Update user info without changing password.
         if (user.getPassword() == null) {
-
-            sql = "UPDATE tbl_user SET "
-                    + "first_name = ?, "
-                    + "middle_name = ?, "
-                    + "last_name = ?, "
-                    + "contact_no = ?, "
-                    + "role = ?, "
-                    + "username = ?, "
-                    + "status = ? "
-                    + "WHERE user_id = ?";
-
+            sql = "UPDATE " + TABLE_NAME + " SET "
+                    + COL_FIRST_NAME + " = ?, "
+                    + COL_MIDDLE_NAME + " = ?, "
+                    + COL_LAST_NAME + " = ?, "
+                    + COL_CONTACT_NO + " = ?, "
+                    + COL_ROLE + " = ?, "
+                    + COL_USERNAME + " = ?, "
+                    + COL_USER_STATUS + " = ? "
+                    + "WHERE " + COL_USER_ID + " = ?";
         } else {
-
-            // Update user info. (w/ password).
-            sql = "UPDATE tbl_user SET "
-                    + "first_name = ?, "
-                    + "middle_name = ?, "
-                    + "last_name = ?, "
-                    + "contact_no = ?, "
-                    + "role = ?, "
-                    + "username = ?, "
-                    + "password = ?, "
-                    + "status = ? "
-                    + "WHERE user_id = ?";
+            // Update user info with a new password.
+            sql = "UPDATE " + TABLE_NAME + " SET "
+                    + COL_FIRST_NAME + " = ?, "
+                    + COL_MIDDLE_NAME + " = ?, "
+                    + COL_LAST_NAME + " = ?, "
+                    + COL_CONTACT_NO + " = ?, "
+                    + COL_ROLE + " = ?, "
+                    + COL_USERNAME + " = ?, "
+                    + COL_PASSWORD + " = ?, "
+                    + COL_USER_STATUS + " = ? "
+                    + "WHERE " + COL_USER_ID + " = ?";
         }
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, user.getFirstName());
             stmt.setString(2, user.getMiddleName());
             stmt.setString(3, user.getLastName());
@@ -175,12 +171,9 @@ public class UserDAOImpl implements UserDAO {
             stmt.setString(6, user.getUsername());
 
             if (user.getPassword() == null) {
-
                 stmt.setString(7, user.getUserStatus());
                 stmt.setInt(8, user.getUserId());
-
             } else {
-
                 stmt.setString(7, user.getPassword());
                 stmt.setString(8, user.getUserStatus());
                 stmt.setInt(9, user.getUserId());
@@ -197,6 +190,7 @@ public class UserDAOImpl implements UserDAO {
 
     // Returns user's full name for processed by txtfield.
     @Override
+
     public String getUserFullNameById(int userId) {
         String sql = "SELECT "
                 + COL_FIRST_NAME + ", "
