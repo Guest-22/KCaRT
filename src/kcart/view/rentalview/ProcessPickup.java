@@ -15,6 +15,10 @@ import kcart.model.Customer;
 import kcart.model.Rental;
 import kcart.util.Message;
 import kcart.util.ActiveSession;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 
 public class ProcessPickup extends javax.swing.JFrame {
 
@@ -34,9 +38,36 @@ public class ProcessPickup extends javax.swing.JFrame {
         this.carId = carId;
 
         this.setLocationRelativeTo(null);
+        setupTimeSpinners();
+
         loadCarDetails();
         loadCustomerDetails();
         loadRentalDetails();
+    }
+
+    private void setupTimeSpinners() {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        Date defaultTime = calendar.getTime();
+
+        spnStartTime.setModel(
+                new SpinnerDateModel(defaultTime, null, null, Calendar.MINUTE)
+        );
+        spnStartTime.setEditor(
+                new JSpinner.DateEditor(spnStartTime, "hh:mm a")
+        );
+
+        spnReturnTime.setModel(
+                new SpinnerDateModel(defaultTime, null, null, Calendar.MINUTE)
+        );
+        spnReturnTime.setEditor(
+                new JSpinner.DateEditor(spnReturnTime, "hh:mm a")
+        );
     }
 
     private void loadRentalDetails() {
@@ -45,12 +76,52 @@ public class ProcessPickup extends javax.swing.JFrame {
 
         if (rental != null) {
             // Fill the textfields with rental dates.
-            txtRentalId.setText(String.valueOf(rentalId));
-            txtStartDate.setDate(rental.getStartDate());
-            txtReturnDate.setDate(rental.getExpectedReturnDate());
+            txtRentalId.setText(String.valueOf(rental.getRentalId()));
+
+            // Populate dates
+            txtStartDate.setDate(
+                    java.util.Date.from(
+                            rental.getStartDate()
+                                    .atZone(java.time.ZoneId.systemDefault())
+                                    .toInstant()
+                    )
+            );
+
+            txtReturnDate.setDate(
+                    java.util.Date.from(
+                            rental.getExpectedReturnDate()
+                                    .atZone(java.time.ZoneId.systemDefault())
+                                    .toInstant()
+                    )
+            );
+
+            // Populate time spinners.
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+
+            calendar.set(
+                    java.util.Calendar.HOUR_OF_DAY,
+                    rental.getStartDate().getHour()
+            );
+            calendar.set(
+                    java.util.Calendar.MINUTE,
+                    rental.getStartDate().getMinute()
+            );
+            spnStartTime.setValue(calendar.getTime());
+
+            calendar.set(
+                    java.util.Calendar.HOUR_OF_DAY,
+                    rental.getExpectedReturnDate().getHour()
+            );
+            calendar.set(
+                    java.util.Calendar.MINUTE,
+                    rental.getExpectedReturnDate().getMinute()
+            );
+            spnReturnTime.setValue(calendar.getTime());
+
             // Updates no. of days and cost after the data is retrieved.
             updateRentalDays();
             calculateTotalCost();
+
         } else {
             Message.error("Rental not found for ID: " + rentalId);
         }
@@ -178,6 +249,8 @@ public class ProcessPickup extends javax.swing.JFrame {
         lblExtraPad1 = new javax.swing.JLabel();
         txtStartDate = new com.toedter.calendar.JDateChooser();
         txtReturnDate = new com.toedter.calendar.JDateChooser();
+        spnStartTime = new javax.swing.JSpinner();
+        spnReturnTime = new javax.swing.JSpinner();
         pnlContent2 = new javax.swing.JPanel();
         lblContact = new javax.swing.JLabel();
         lblFullName = new javax.swing.JLabel();
@@ -295,6 +368,10 @@ public class ProcessPickup extends javax.swing.JFrame {
             }
         });
 
+        spnStartTime.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        spnReturnTime.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
         pnlContent1.setLayout(pnlContent1Layout);
         pnlContent1Layout.setHorizontalGroup(
@@ -316,10 +393,17 @@ public class ProcessPickup extends javax.swing.JFrame {
                                 .addGap(22, 22, 22)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtRentalId, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
-                                    .addComponent(txtStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtReturnDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtReturnDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(20, 20, 20)
+                                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(spnReturnTime)
+                                            .addComponent(spnStartTime))))))
                         .addGap(18, 18, 18)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblExtraPad1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(pnlContent1Layout.createSequentialGroup()
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblNoOfDays)
@@ -327,8 +411,7 @@ public class ProcessPickup extends javax.swing.JFrame {
                                 .addGap(15, 15, 15)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNoOfDays, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
-                                    .addComponent(txtCost)))
-                            .addComponent(lblExtraPad1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(txtCost))))
                         .addGap(39, 39, 39))))
         );
         pnlContent1Layout.setVerticalGroup(
@@ -340,33 +423,36 @@ public class ProcessPickup extends javax.swing.JFrame {
                 .addComponent(lblRentalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContent1Layout.createSequentialGroup()
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addComponent(txtNoOfDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblTotalCost)
+                                .addComponent(spnStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlContent1Layout.createSequentialGroup()
+                                .addComponent(lblNoOfDays)
+                                .addGap(28, 28, 28)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblReturnDate)
+                                .addGroup(pnlContent1Layout.createSequentialGroup()
+                                    .addComponent(lblExtraPad1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(1, 1, 1)))
+                            .addComponent(spnReturnTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtRentalId, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblRentalID, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlContent1Layout.createSequentialGroup()
-                                .addComponent(lblStartDate)
-                                .addGap(3, 3, 3))
-                            .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addComponent(txtNoOfDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblTotalCost)
-                    .addGroup(pnlContent1Layout.createSequentialGroup()
-                        .addComponent(lblNoOfDays)
-                        .addGap(28, 28, 28)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(lblReturnDate)
-                        .addGroup(pnlContent1Layout.createSequentialGroup()
-                            .addComponent(lblExtraPad1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(1, 1, 1)))
-                    .addComponent(txtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblStartDate)
+                            .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
@@ -735,7 +821,7 @@ public class ProcessPickup extends javax.swing.JFrame {
                 .addGroup(pnlContent4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -969,6 +1055,8 @@ public class ProcessPickup extends javax.swing.JFrame {
     private javax.swing.JPanel pnlContent3;
     private javax.swing.JPanel pnlContent4;
     private javax.swing.JPanel pnlMain;
+    private javax.swing.JSpinner spnReturnTime;
+    private javax.swing.JSpinner spnStartTime;
     private javax.swing.JTextField txtBrand;
     private javax.swing.JTextField txtCarId;
     private javax.swing.JTextField txtContact;

@@ -144,7 +144,8 @@ public class SortUtil {
         for (int i = 0; i < rentals.size() - 1; i++) {
             int minIndex = i;
             for (int j = i + 1; j < rentals.size(); j++) {
-                if (rentals.get(j).getStartDate().before(rentals.get(minIndex).getStartDate())) {
+                if (rentals.get(j).getStartDate().isBefore(
+                        rentals.get(minIndex).getStartDate())) {
                     minIndex = j;
                 }
             }
@@ -159,7 +160,8 @@ public class SortUtil {
         for (int i = 0; i < rentals.size() - 1; i++) {
             int minIndex = i;
             for (int j = i + 1; j < rentals.size(); j++) {
-                if (rentals.get(j).getExpectedReturnDate().before(rentals.get(minIndex).getExpectedReturnDate())) {
+                if (rentals.get(j).getExpectedReturnDate().isBefore(
+                        rentals.get(minIndex).getExpectedReturnDate())) {
                     minIndex = j;
                 }
             }

@@ -12,6 +12,10 @@ import kcart.model.Customer;
 import kcart.model.Rental;
 import kcart.util.ActiveSession;
 import kcart.util.Message;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 
 public class EditRental extends javax.swing.JFrame {
 
@@ -31,9 +35,36 @@ public class EditRental extends javax.swing.JFrame {
         this.carId = carId;
 
         this.setLocationRelativeTo(null);
+        setupTimeSpinners();
+
         loadCarDetails();
         loadCustomerDetails();
         loadRentalDetails();
+    }
+
+    private void setupTimeSpinners() {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        Date defaultTime = calendar.getTime();
+
+        spnStartTime.setModel(
+                new SpinnerDateModel(defaultTime, null, null, Calendar.MINUTE)
+        );
+        spnStartTime.setEditor(
+                new JSpinner.DateEditor(spnStartTime, "hh:mm a")
+        );
+
+        spnReturnTime.setModel(
+                new SpinnerDateModel(defaultTime, null, null, Calendar.MINUTE)
+        );
+        spnReturnTime.setEditor(
+                new JSpinner.DateEditor(spnReturnTime, "hh:mm a")
+        );
     }
 
     // Retrieves rental info.
@@ -42,13 +73,33 @@ public class EditRental extends javax.swing.JFrame {
         Rental rental = rentalDao.getRentalInfo(rentalId);
 
         if (rental != null) {
-            // Fill the textfields with rental dates.
-            txtRentalId.setText(String.valueOf(rentalId));
-            txtStartDate.setDate(rental.getStartDate());
-            txtReturnDate.setDate(rental.getExpectedReturnDate());
-            // Updates no. of days and cost after the data is retrieved.
+            // Populate rental ID
+            txtRentalId.setText(String.valueOf(rental.getRentalId()));
+
+            // Populate dates
+            txtStartDate.setDate(
+                java.util.Date.from(rental.getStartDate().atZone(java.time.ZoneId.systemDefault()).toInstant())
+            );
+
+            txtReturnDate.setDate(
+                java.util.Date.from(rental.getExpectedReturnDate().atZone(java.time.ZoneId.systemDefault()).toInstant())
+            );
+
+            // Populate time spinners.
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+
+            calendar.set(java.util.Calendar.HOUR_OF_DAY, rental.getStartDate().getHour());
+            calendar.set(java.util.Calendar.MINUTE, rental.getStartDate().getMinute());
+            spnStartTime.setValue(calendar.getTime());
+
+            calendar.set(java.util.Calendar.HOUR_OF_DAY, rental.getExpectedReturnDate().getHour());
+            calendar.set(java.util.Calendar.MINUTE, rental.getExpectedReturnDate().getMinute());
+            spnReturnTime.setValue(calendar.getTime());
+
+            // Update days and cost.
             updateRentalDays();
             calculateTotalCost();
+
         } else {
             Message.error("Rental not found for ID: " + rentalId);
         }
@@ -150,6 +201,29 @@ public class EditRental extends javax.swing.JFrame {
         }
     }
 
+    private java.time.LocalDateTime getDateTime(
+            com.toedter.calendar.JDateChooser dateChooser,
+            javax.swing.JSpinner timeSpinner) {
+
+        java.util.Date selectedDate = dateChooser.getDate();
+        java.util.Date selectedTime
+                = (java.util.Date) timeSpinner.getValue();
+
+        java.time.LocalDate date = selectedDate.toInstant()
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate();
+
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.setTime(selectedTime);
+
+        java.time.LocalTime time = java.time.LocalTime.of(
+                calendar.get(java.util.Calendar.HOUR_OF_DAY),
+                calendar.get(java.util.Calendar.MINUTE)
+        );
+
+        return java.time.LocalDateTime.of(date, time);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -174,6 +248,8 @@ public class EditRental extends javax.swing.JFrame {
         lblExtraPad1 = new javax.swing.JLabel();
         txtStartDate = new com.toedter.calendar.JDateChooser();
         txtReturnDate = new com.toedter.calendar.JDateChooser();
+        spnStartTime = new javax.swing.JSpinner();
+        spnReturnTime = new javax.swing.JSpinner();
         pnlContent2 = new javax.swing.JPanel();
         lblYear = new javax.swing.JLabel();
         lblFullName = new javax.swing.JLabel();
@@ -289,6 +365,10 @@ public class EditRental extends javax.swing.JFrame {
             }
         });
 
+        spnStartTime.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        spnReturnTime.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
         pnlContent1.setLayout(pnlContent1Layout);
         pnlContent1Layout.setHorizontalGroup(
@@ -310,8 +390,14 @@ public class EditRental extends javax.swing.JFrame {
                                 .addGap(22, 22, 22)
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtRentalId, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
-                                    .addComponent(txtStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtReturnDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addGroup(pnlContent1Layout.createSequentialGroup()
+                                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtReturnDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtStartDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(20, 20, 20)
+                                        .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(spnReturnTime)
+                                            .addComponent(spnStartTime))))))
                         .addGap(18, 18, 18)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent1Layout.createSequentialGroup()
@@ -341,14 +427,17 @@ public class EditRental extends javax.swing.JFrame {
                         .addGap(4, 4, 4)
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblStartDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                            .addComponent(txtStartDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(29, 29, 29))
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(pnlContent1Layout.createSequentialGroup()
                                 .addComponent(txtNoOfDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(4, 4, 4)
                                 .addComponent(txtCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblCost)
+                            .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblCost)
+                                .addComponent(spnStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pnlContent1Layout.createSequentialGroup()
                                 .addComponent(lblNoOfDays)
                                 .addGap(28, 28, 28)))
@@ -359,7 +448,8 @@ public class EditRental extends javax.swing.JFrame {
                                 .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(lblExtraPad1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(1, 1, 1)))))
+                                .addGap(1, 1, 1))
+                            .addComponent(spnReturnTime, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -631,7 +721,7 @@ public class EditRental extends javax.swing.JFrame {
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
@@ -670,18 +760,6 @@ public class EditRental extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNoOfDaysActionPerformed
 
-    private void txtStartDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtStartDatePropertyChange
-        if ("date".equals(evt.getPropertyName())) {
-            updateRentalDays();
-        }
-    }//GEN-LAST:event_txtStartDatePropertyChange
-
-    private void txtReturnDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtReturnDatePropertyChange
-        if ("date".equals(evt.getPropertyName())) {
-            updateRentalDays();
-        }
-    }//GEN-LAST:event_txtReturnDatePropertyChange
-
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
@@ -692,7 +770,9 @@ public class EditRental extends javax.swing.JFrame {
             if (txtCustomerId.getText().trim().isEmpty()
                     || txtCarId.getText().trim().isEmpty()
                     || txtStartDate.getDate() == null
-                    || txtReturnDate.getDate() == null) {
+                    || txtReturnDate.getDate() == null
+                    || spnStartTime.getValue() == null
+                    || spnReturnTime.getValue() == null) {
 
                 Message.error("Please fill in all required fields.");
                 return;
@@ -716,11 +796,19 @@ public class EditRental extends javax.swing.JFrame {
             int carId
                     = Integer.parseInt(txtCarId.getText().trim());
 
-            java.sql.Date startDate
-                    = new java.sql.Date(txtStartDate.getDate().getTime());
+            java.time.LocalDateTime startDate
+                    = getDateTime(txtStartDate, spnStartTime);
 
-            java.sql.Date expectedReturnDate
-                    = new java.sql.Date(txtReturnDate.getDate().getTime());
+            java.time.LocalDateTime expectedReturnDate
+                    = getDateTime(txtReturnDate, spnReturnTime);
+
+            if (!expectedReturnDate.isAfter(startDate)) {
+                Message.error(
+                        "Expected return date and time must be after "
+                        + "the start date and time."
+                );
+                return;
+            }
 
             // Build Rental object.
             Rental rental = new Rental(
@@ -783,6 +871,18 @@ public class EditRental extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_txtCustomerIdActionPerformed
+
+    private void txtReturnDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtReturnDatePropertyChange
+        if ("date".equals(evt.getPropertyName())) {
+            updateRentalDays();
+        }
+    }//GEN-LAST:event_txtReturnDatePropertyChange
+
+    private void txtStartDatePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtStartDatePropertyChange
+        if ("date".equals(evt.getPropertyName())) {
+            updateRentalDays();
+        }
+    }//GEN-LAST:event_txtStartDatePropertyChange
 
     /**
      * @param args the command line arguments
@@ -847,6 +947,8 @@ public class EditRental extends javax.swing.JFrame {
     private javax.swing.JPanel pnlContent2;
     private javax.swing.JPanel pnlContent3;
     private javax.swing.JPanel pnlMain;
+    private javax.swing.JSpinner spnReturnTime;
+    private javax.swing.JSpinner spnStartTime;
     private javax.swing.JTextField txtBrand;
     private javax.swing.JTextField txtCarId;
     private javax.swing.JTextField txtContact;

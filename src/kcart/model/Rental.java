@@ -1,6 +1,6 @@
 package kcart.model;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.sql.Timestamp;
 
 public class Rental {
@@ -14,8 +14,8 @@ public class Rental {
     private String carModel;
     private int processedBy; // Fetch using ActiveSession.
     private String processedByName;
-    private Date startDate;
-    private Date expectedReturnDate;
+    private LocalDateTime startDate;
+    private LocalDateTime expectedReturnDate;
     private String rentalStatus;
     private Timestamp createdAt;
 
@@ -28,7 +28,8 @@ public class Rental {
 
     // Model for viewing recent rentals in Admin Dashboard.
     public Rental(int rentalId, String customerName, String carInfo,
-            Date startDate, Date expectedReturnDate, String rentalStatus) {
+            LocalDateTime startDate, LocalDateTime expectedReturnDate,
+            String rentalStatus) {
         this.rentalId = rentalId;
         this.customerName = customerName;
         this.carInfo = carInfo;
@@ -37,8 +38,10 @@ public class Rental {
         this.rentalStatus = rentalStatus;
     }
 
-    // Model for adding new rental entry to DB; Used by Add Rental/Reservation form.
-    public Rental(int customerId, int carId, int processedBy, Date startDate, Date expectedReturnDate, String rentalStatus) {
+    // Model for adding new rental entry to DB.
+    public Rental(int customerId, int carId, int processedBy,
+            LocalDateTime startDate, LocalDateTime expectedReturnDate,
+            String rentalStatus) {
         this.customerId = customerId;
         this.carId = carId;
         this.processedBy = processedBy;
@@ -47,8 +50,9 @@ public class Rental {
         this.rentalStatus = rentalStatus;
     }
 
-    // Model for editing rental (start and return date are only editable; rest are not).
-    public Rental(int rentalId, int customerId, int carId, int processedBy, Date startDate, Date expectedReturnDate) {
+    // Model for editing rental.
+    public Rental(int rentalId, int customerId, int carId, int processedBy,
+            LocalDateTime startDate, LocalDateTime expectedReturnDate) {
         this.rentalId = rentalId;
         this.customerId = customerId;
         this.carId = carId;
@@ -57,7 +61,8 @@ public class Rental {
         this.expectedReturnDate = expectedReturnDate;
     }
 
-    public Rental(int rentalId, int customerId, int carId, Date startDate, Date expectedReturnDate) {
+    public Rental(int rentalId, int customerId, int carId,
+            LocalDateTime startDate, LocalDateTime expectedReturnDate) {
         this.rentalId = rentalId;
         this.customerId = customerId;
         this.carId = carId;
@@ -65,10 +70,10 @@ public class Rental {
         this.expectedReturnDate = expectedReturnDate;
     }
 
-    // Model for retrieving all the necessary rental info. for Rental Menu.
+    // Model for retrieving all necessary rental info. for Rental Menu.
     public Rental(int rentalId, int customerId, String customerName,
             int carId, String carInfo, int processedBy, String processedByName,
-            Date startDate, Date expectedReturnDate,
+            LocalDateTime startDate, LocalDateTime expectedReturnDate,
             String rentalStatus, Timestamp createdAt) {
         this.rentalId = rentalId;
         this.customerId = customerId;
@@ -83,7 +88,8 @@ public class Rental {
         this.createdAt = createdAt;
     }
 
-    public Rental(int rentalId, Date startDate, Date expectedReturnDate) {
+    public Rental(int rentalId, LocalDateTime startDate,
+            LocalDateTime expectedReturnDate) {
         this.rentalId = rentalId;
         this.startDate = startDate;
         this.expectedReturnDate = expectedReturnDate;
@@ -105,9 +111,13 @@ public class Rental {
         this.carModel = carModel;
     }
 
-    // Getter/Setter method.
+    // Getter/Setter methods.
     public int getRentalId() {
         return rentalId;
+    }
+
+    public void setRentalId(int rentalId) {
+        this.rentalId = rentalId;
     }
 
     public int getProcessedBy() {
@@ -124,10 +134,6 @@ public class Rental {
 
     public void setProcessedByName(String processedByName) {
         this.processedByName = processedByName;
-    }
-
-    public void setRentalId(int rentalId) {
-        this.rentalId = rentalId;
     }
 
     public int getCustomerId() {
@@ -162,19 +168,19 @@ public class Rental {
         this.carInfo = carInfo;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getExpectedReturnDate() {
+    public LocalDateTime getExpectedReturnDate() {
         return expectedReturnDate;
     }
 
-    public void setExpectedReturnDate(Date expectedReturnDate) {
+    public void setExpectedReturnDate(LocalDateTime expectedReturnDate) {
         this.expectedReturnDate = expectedReturnDate;
     }
 

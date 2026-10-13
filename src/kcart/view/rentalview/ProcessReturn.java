@@ -45,24 +45,31 @@ public class ProcessReturn extends javax.swing.JFrame {
 
         if (rental != null) {
             SimpleDateFormat dateFormat
-                    = new SimpleDateFormat("MMM d, yyyy");
+                    = new SimpleDateFormat("MMM d, yyyy hh:mm a");
 
             txtRentalId.setText(String.valueOf(rentalId));
 
             txtStartDate.setText(
-                    dateFormat.format(rental.getStartDate())
+                    rental.getStartDate().format(
+                            java.time.format.DateTimeFormatter
+                                    .ofPattern("MMM d, yyyy hh:mm a")
+                    )
             );
 
             txtReturnDate.setText(
-                    dateFormat.format(rental.getExpectedReturnDate())
+                    rental.getExpectedReturnDate().format(
+                            java.time.format.DateTimeFormatter
+                                    .ofPattern("MMM d, yyyy hh:mm a")
+                    )
             );
 
             // Calculate number of rental days.
-            long difference = rental.getExpectedReturnDate().getTime()
-                    - rental.getStartDate().getTime();
+            long difference = java.time.Duration.between(
+                    rental.getStartDate(),
+                    rental.getExpectedReturnDate()
+            ).toMinutes();
 
-            long noOfDays = difference
-                    / (1000 * 60 * 60 * 24);
+            long noOfDays = (long) Math.ceil(difference / 1440.0);
 
             txtNoOfDays.setText(String.valueOf(noOfDays));
 

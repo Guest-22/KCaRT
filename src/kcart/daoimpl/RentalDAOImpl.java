@@ -7,6 +7,8 @@ import kcart.util.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import kcart.util.Message;
+import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class RentalDAOImpl implements RentalDAO {
 
@@ -47,12 +49,13 @@ public class RentalDAOImpl implements RentalDAO {
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, rental.getCustomerId());
             stmt.setInt(2, rental.getCarId());
-            stmt.setInt(3, rental.getProcessedBy()); // int FK
-            stmt.setDate(4, rental.getStartDate());
-            stmt.setDate(5, rental.getExpectedReturnDate());
+            stmt.setInt(3, rental.getProcessedBy());
+            stmt.setTimestamp(4, Timestamp.valueOf(rental.getStartDate()));
+            stmt.setTimestamp(5, Timestamp.valueOf(rental.getExpectedReturnDate()));
             stmt.setString(6, rental.getRentalStatus());
 
             return stmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
             Message.error("Error adding rental:\n" + e.getMessage());
             return false;
@@ -63,12 +66,15 @@ public class RentalDAOImpl implements RentalDAO {
     @Override
     public List<Rental> getAllRentals() {
         List<Rental> list = new ArrayList<>();
+
         String sql = "SELECT r." + COL_ID + ", r." + COL_CUSTOMER_ID + ", "
-                + "CONCAT(c." + "last_name" + ", ', ', c." + "first_name"
-                + ", ' ', LEFT(c." + "middle_name" + ",1)) AS customer_name, "
-                + "r." + COL_CAR_ID + ", CONCAT(car.brand, ' ', car.model, ' (', car.plate_no, ')') AS car_info, "
+                + "CONCAT(c.last_name, ', ', c.first_name, "
+                + "' ', LEFT(c.middle_name, 1)) AS customer_name, "
+                + "r." + COL_CAR_ID + ", "
+                + "CONCAT(car.brand, ' ', car.model, ' (', car.plate_no, ')') AS car_info, "
                 + "r." + COL_PROCESSED_BY + ", u.username AS processed_by_name, "
-                + "r." + COL_START_DATE + ", r." + COL_RETURN_DATE + ", r." + COL_STATUS + ", r." + COL_CREATED_AT
+                + "r." + COL_START_DATE + ", r." + COL_RETURN_DATE + ", "
+                + "r." + COL_STATUS + ", r." + COL_CREATED_AT
                 + " FROM " + TABLE_NAME + " r "
                 + "JOIN tbl_customer c ON r." + COL_CUSTOMER_ID + " = c.customer_id "
                 + "JOIN tbl_car car ON r." + COL_CAR_ID + " = car.car_id "
@@ -85,16 +91,19 @@ public class RentalDAOImpl implements RentalDAO {
                         rs.getString("car_info"),
                         rs.getInt(COL_PROCESSED_BY),
                         rs.getString("processed_by_name"),
-                        rs.getDate(COL_START_DATE),
-                        rs.getDate(COL_RETURN_DATE),
+                        rs.getTimestamp(COL_START_DATE).toLocalDateTime(),
+                        rs.getTimestamp(COL_RETURN_DATE).toLocalDateTime(),
                         rs.getString(COL_STATUS),
                         rs.getTimestamp(COL_CREATED_AT)
                 );
+
                 list.add(rental);
             }
+
         } catch (SQLException e) {
             Message.error("Error retrieving all rentals:\n" + e.getMessage());
         }
+
         return list;
     }
 
@@ -109,11 +118,10 @@ public class RentalDAOImpl implements RentalDAO {
                 + "WHERE " + COL_ID + " = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, rental.getCustomerId());
             stmt.setInt(2, rental.getCarId());
-            stmt.setDate(3, rental.getStartDate());
-            stmt.setDate(4, rental.getExpectedReturnDate());
+            stmt.setTimestamp(3, Timestamp.valueOf(rental.getStartDate()));
+            stmt.setTimestamp(4, Timestamp.valueOf(rental.getExpectedReturnDate()));
             stmt.setInt(5, rental.getRentalId());
 
             return stmt.executeUpdate() > 0;
@@ -136,17 +144,17 @@ public class RentalDAOImpl implements RentalDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    Rental rental = new Rental(
+                    return new Rental(
                             rentalId,
-                            rs.getDate(COL_START_DATE),
-                            rs.getDate(COL_RETURN_DATE)
+                            rs.getTimestamp(COL_START_DATE).toLocalDateTime(),
+                            rs.getTimestamp(COL_RETURN_DATE).toLocalDateTime()
                     );
-                    return rental;
                 }
             }
         } catch (SQLException e) {
             Message.error("Error retrieving rental info:\n" + e.getMessage());
         }
+
         return null;
     }
 
@@ -320,7 +328,6 @@ public class RentalDAOImpl implements RentalDAO {
         return 0;
     }
 
-    // Retrieve the 30 most recent rentals for the admin dashboard.
     @Override
     public List<Rental> getRecentRentals() {
         List<Rental> list = new ArrayList<>();
@@ -356,8 +363,8 @@ public class RentalDAOImpl implements RentalDAO {
                         rs.getInt(COL_ID),
                         rs.getString("customer_full_name"),
                         rs.getString("car_info"),
-                        rs.getDate(COL_START_DATE),
-                        rs.getDate(COL_RETURN_DATE),
+                        rs.getTimestamp(COL_START_DATE).toLocalDateTime(),
+                        rs.getTimestamp(COL_RETURN_DATE).toLocalDateTime(),
                         rs.getString(COL_STATUS)
                 );
 
@@ -371,7 +378,6 @@ public class RentalDAOImpl implements RentalDAO {
         return list;
     }
 
-    // Retrieve upcoming pickups for the staff dashboard.
     @Override
     public List<Rental> getUpcomingPickups() {
         List<Rental> list = new ArrayList<>();
@@ -394,7 +400,7 @@ public class RentalDAOImpl implements RentalDAO {
                 + "INNER JOIN tbl_car car "
                 + "ON r." + COL_CAR_ID + " = car.car_id "
                 + "WHERE r." + COL_STATUS + " = 'Pending' "
-                + "AND r." + COL_START_DATE + " >= CURDATE() "
+                + "AND r." + COL_START_DATE + " >= NOW() "
                 + "ORDER BY r." + COL_START_DATE + " ASC, "
                 + "r." + COL_ID + " ASC "
                 + "LIMIT 25";
@@ -406,7 +412,7 @@ public class RentalDAOImpl implements RentalDAO {
                         rs.getInt(COL_ID),
                         rs.getString("customer_full_name"),
                         rs.getString("car_info"),
-                        rs.getDate(COL_START_DATE),
+                        rs.getTimestamp(COL_START_DATE).toLocalDateTime(),
                         null,
                         null
                 );
@@ -421,7 +427,6 @@ public class RentalDAOImpl implements RentalDAO {
         return list;
     }
 
-    // Retrieve due returns for the staff dashboard.
     @Override
     public List<Rental> getDueReturns() {
         List<Rental> list = new ArrayList<>();
@@ -446,8 +451,8 @@ public class RentalDAOImpl implements RentalDAO {
                 + "INNER JOIN tbl_car car "
                 + "ON r." + COL_CAR_ID + " = car.car_id "
                 + "WHERE r." + COL_STATUS + " IN ('Active', 'Late') "
-                // Retrieves rentals before 3 days deadline and so on.
-                + "AND r." + COL_RETURN_DATE + " <= DATE_ADD(CURDATE(), INTERVAL 3 DAY) "
+                + "AND r." + COL_RETURN_DATE
+                + " <= DATE_ADD(NOW(), INTERVAL 3 DAY) "
                 + "ORDER BY r." + COL_RETURN_DATE + " ASC, "
                 + "r." + COL_ID + " ASC "
                 + "LIMIT 25";
@@ -459,8 +464,8 @@ public class RentalDAOImpl implements RentalDAO {
                         rs.getInt(COL_ID),
                         rs.getString("customer_full_name"),
                         rs.getString("car_info"),
-                        rs.getDate(COL_START_DATE),
-                        rs.getDate(COL_RETURN_DATE),
+                        rs.getTimestamp(COL_START_DATE).toLocalDateTime(),
+                        rs.getTimestamp(COL_RETURN_DATE).toLocalDateTime(),
                         rs.getString(COL_STATUS)
                 );
 
