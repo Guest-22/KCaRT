@@ -54,6 +54,7 @@ public class StaffDashboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("KCaRT | Dashboard");
         setMinimumSize(new java.awt.Dimension(1200, 700));
+        setResizable(false);
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));
         pnlMain.setPreferredSize(new java.awt.Dimension(1200, 600));

@@ -149,6 +149,12 @@ public class BillingMenu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("KCaRT | Billing");
         setMinimumSize(new java.awt.Dimension(1200, 700));
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));
         pnlMain.setPreferredSize(new java.awt.Dimension(1200, 600));
@@ -528,7 +534,12 @@ public class BillingMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-
+        if ("Admin".equalsIgnoreCase(ActiveSession.role)) {
+            new AdminDashboard().setVisible(true);
+        } else {
+            new StaffDashboard().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
@@ -625,6 +636,10 @@ public class BillingMenu extends javax.swing.JFrame {
             // Message.error("Something went wrong: " + e.getMessage());
         }
     }//GEN-LAST:event_tblRecordMouseClicked
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        populateBillingRecord("");
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
