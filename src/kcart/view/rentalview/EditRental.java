@@ -33,7 +33,7 @@ public class EditRental extends javax.swing.JFrame {
         this.rentalId = rentalId;
         this.customerId = customerId;
         this.carId = carId;
-
+        
         this.setLocationRelativeTo(null);
         setupTimeSpinners();
 
@@ -73,16 +73,16 @@ public class EditRental extends javax.swing.JFrame {
         Rental rental = rentalDao.getRentalInfo(rentalId);
 
         if (rental != null) {
-            // Populate rental ID
+            // Populate rental ID.
             txtRentalId.setText(String.valueOf(rental.getRentalId()));
-
+        
             // Populate dates
             txtStartDate.setDate(
-                java.util.Date.from(rental.getStartDate().atZone(java.time.ZoneId.systemDefault()).toInstant())
+                    java.util.Date.from(rental.getStartDate().atZone(java.time.ZoneId.systemDefault()).toInstant())
             );
 
             txtReturnDate.setDate(
-                java.util.Date.from(rental.getExpectedReturnDate().atZone(java.time.ZoneId.systemDefault()).toInstant())
+                    java.util.Date.from(rental.getExpectedReturnDate().atZone(java.time.ZoneId.systemDefault()).toInstant())
             );
 
             // Populate time spinners.
@@ -324,7 +324,6 @@ public class EditRental extends javax.swing.JFrame {
         txtRentalId.setBackground(new java.awt.Color(204, 204, 204));
         txtRentalId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtRentalId.setForeground(new java.awt.Color(0, 0, 0));
-        txtRentalId.setEnabled(false);
 
         txtNoOfDays.setEditable(false);
         txtNoOfDays.setBackground(new java.awt.Color(204, 204, 204));
@@ -494,7 +493,8 @@ public class EditRental extends javax.swing.JFrame {
             }
         });
 
-        txtCustomerId.setBackground(new java.awt.Color(255, 255, 255));
+        txtCustomerId.setEditable(false);
+        txtCustomerId.setBackground(new java.awt.Color(204, 204, 204));
         txtCustomerId.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtCustomerId.setForeground(new java.awt.Color(0, 0, 0));
         txtCustomerId.addActionListener(new java.awt.event.ActionListener() {
@@ -810,6 +810,50 @@ public class EditRental extends javax.swing.JFrame {
                 return;
             }
 
+            RentalDAO rentalDao = new RentalDAOImpl();
+            CarDAO carDao = new CarDAOImpl();
+            CustomerDAO customerDao = new CustomerDAOImpl();
+
+            // Verify customer status.
+            Customer customer = customerDao.getCustomerById(customerId);
+
+            if (customer == null) {
+                Message.error("Customer not found.");
+                return;
+            }
+
+            if (!"Active".equalsIgnoreCase(customer.getCustomerStatus())) {
+                Message.error("This customer is inactive and cannot rent a car.");
+                return;
+            }
+
+            // Verify that the rental is still Pending.
+            Rental currentRental = rentalDao.getRentalInfo(rentalId);
+
+            if (currentRental == null
+                    || !"Pending".equalsIgnoreCase(currentRental.getRentalStatus())) {
+                Message.error("Only pending rentals can be edited.");
+                return;
+            }
+
+            // Get the previous car ID.
+            int previousCarId = currentRental.getCarId();
+
+            // Verify replacement car availability if the car is changed.
+            if (carId != previousCarId) {
+                Car car = carDao.getCarById(carId);
+
+                if (car == null) {
+                    Message.error("Car not found.");
+                    return;
+                }
+
+                if (!"Available".equalsIgnoreCase(car.getCarStatus())) {
+                    Message.error("This car is not available for rental.");
+                    return;
+                }
+            }
+
             // Build Rental object.
             Rental rental = new Rental(
                     rentalId,
@@ -819,55 +863,129 @@ public class EditRental extends javax.swing.JFrame {
                     expectedReturnDate
             );
 
-            RentalDAO rentalDao = new RentalDAOImpl();
-
             boolean success = rentalDao.editRental(rental);
 
-            if (success) {
-                Message.show("Rental updated successfully!", "Success");
-                this.dispose();
-            } else {
+            if (!success) {
                 Message.error("Failed to update rental.");
+                return;
             }
 
+            // Update car statuses only if the car was changed.
+            if (carId != previousCarId) {
+                // Mark the previous car as Available.
+                boolean previousCarSuccess
+                        = carDao.updateCarStatus(previousCarId, "Available");
+
+                if (!previousCarSuccess) {
+                    Message.error(
+                            "Rental updated, but the previous car could not be "
+                            + "marked as Available."
+                    );
+                    return;
+                }
+
+                // Mark the replacement car as Reserved.
+                boolean newCarSuccess
+                        = carDao.updateCarStatus(carId, "Reserved");
+
+                if (!newCarSuccess) {
+                    Message.error(
+                            "Rental updated and previous car released, but the "
+                            + "replacement car could not be marked as Reserved."
+                    );
+                    return;
+                }
+            }
+
+            Message.show("Rental updated successfully!", "Success");
+            this.dispose();
+
         } catch (Exception e) {
-            // Message.error("Error updating rental:\n" + e.getMessage());
+            Message.error("Error updating rental:\n" + e.getMessage());
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void txtCarIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCarIdActionPerformed
         if (!txtCarId.getText().trim().isEmpty()) {
             try {
-                if (!isInteger(txtCarId.getText().trim())) {
-                    Message.error("Car ID must be a whole number.");
+                carId = Integer.parseInt(txtCarId.getText().trim());
+
+                // Get the inputted Car ID and retrieve the necessary details.
+                CarDAO carDao = new CarDAOImpl();
+                Car car = carDao.getCarById(carId);
+
+                if (car == null) {
+                    Message.error("Car not found.");
+                    txtCarId.setText("");
+                    txtBrand.setText("");
+                    txtModel.setText("");
+                    cmbType.setSelectedIndex(0);
+                    txtYear.setText("");
+                    txtDailyRate.setText("");
                     return;
                 }
 
-                carId = Integer.parseInt(txtCarId.getText().trim());
-
-                CarDAO carDao = new CarDAOImpl();
-
-                if (!carDao.isCarAvailable(carId)) {
-                    Message.error("Car is not available or invalid.");
+                // Verify car availability.
+                if (!"Available".equalsIgnoreCase(car.getCarStatus())) {
+                    Message.error("This car is not available for rental.");
+                    txtCarId.setText("");
+                    txtBrand.setText("");
+                    txtModel.setText("");
+                    cmbType.setSelectedIndex(0);
+                    txtYear.setText("");
+                    txtDailyRate.setText("");
                     return;
                 }
 
                 loadCarDetails();
                 calculateTotalCost();
 
-            } catch (Exception e) {
-                // Message.error("Error checking car availability:\n" + e.getMessage());
+            } catch (NumberFormatException e) {
+                Message.error("Invalid Car ID format.");
+                txtCarId.setText("");
+                txtBrand.setText("");
+                txtModel.setText("");
+                cmbType.setSelectedIndex(0);
+                txtYear.setText("");
+                txtDailyRate.setText("");
             }
         }
     }//GEN-LAST:event_txtCarIdActionPerformed
 
     private void txtCustomerIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerIdActionPerformed
-        if (!txtCustomerId.getText().isEmpty()) {
+        if (!txtCustomerId.getText().trim().isEmpty()) {
             try {
-                customerId = Integer.parseInt(txtCustomerId.getText());
+                customerId = Integer.parseInt(txtCustomerId.getText().trim());
+
+                // Get customer details.
+                CustomerDAO customerDao = new CustomerDAOImpl();
+                Customer customer = customerDao.getCustomerById(customerId);
+
+                // Verify customer status.
+                if (customer == null) {
+                    Message.error("Customer not found.");
+                    txtCustomerId.setText("");
+                    txtCustomerName.setText("");
+                    txtContact.setText("");
+                    return;
+                }
+
+                if (!"Active".equalsIgnoreCase(customer.getCustomerStatus())) {
+                    Message.error("This customer is inactive and cannot rent a car.");
+                    txtCustomerId.setText("");
+                    txtCustomerName.setText("");
+                    txtContact.setText("");
+                    return;
+                }
+
+                // Load customer details if active.
                 loadCustomerDetails(); // Reload using new customerId.
+
             } catch (NumberFormatException e) {
                 Message.error("Invalid Customer ID format.");
+                txtCustomerId.setText("");
+                txtCustomerName.setText("");
+                txtContact.setText("");
             }
         }
     }//GEN-LAST:event_txtCustomerIdActionPerformed

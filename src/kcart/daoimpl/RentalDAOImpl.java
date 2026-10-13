@@ -135,7 +135,11 @@ public class RentalDAOImpl implements RentalDAO {
     // Retrieves start and return date for editing purposes in case the customer wants to extend.
     @Override
     public Rental getRentalInfo(int rentalId) {
-        String sql = "SELECT " + COL_START_DATE + ", " + COL_RETURN_DATE + " "
+        String sql = "SELECT "
+                + COL_START_DATE + ", "
+                + COL_RETURN_DATE + ", "
+                + COL_STATUS + ", "
+                + COL_CAR_ID + " "
                 + "FROM " + TABLE_NAME + " "
                 + "WHERE " + COL_ID + " = ?";
 
@@ -144,11 +148,16 @@ public class RentalDAOImpl implements RentalDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Rental(
+                    Rental rental = new Rental(
                             rentalId,
                             rs.getTimestamp(COL_START_DATE).toLocalDateTime(),
                             rs.getTimestamp(COL_RETURN_DATE).toLocalDateTime()
                     );
+
+                    rental.setRentalStatus(rs.getString(COL_STATUS));
+                    rental.setCarId(rs.getInt(COL_CAR_ID));
+
+                    return rental;
                 }
             }
         } catch (SQLException e) {

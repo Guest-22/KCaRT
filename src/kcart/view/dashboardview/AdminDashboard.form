@@ -1023,7 +1023,7 @@
                               <Component id="lblHeader1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="scrlRecord" min="-2" pref="474" max="-2" attributes="0"/>
-                              <EmptySpace pref="227" max="32767" attributes="0"/>
+                              <EmptySpace pref="248" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1151,7 +1151,7 @@
                                   <Component id="lblTopCarName3" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblTopCarName4" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="367" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>

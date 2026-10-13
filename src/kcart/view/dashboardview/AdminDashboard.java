@@ -797,7 +797,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addComponent(lblHeader1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrlRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(227, Short.MAX_VALUE))
+                .addContainerGap(248, Short.MAX_VALUE))
         );
 
         pnlTopRentedCars.setBackground(new java.awt.Color(255, 255, 255));
@@ -886,7 +886,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addGroup(pnlTopRentedCarsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTopCarName3)
                     .addComponent(lblTopCarName4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(367, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlRecordLayout = new javax.swing.GroupLayout(pnlRecord);

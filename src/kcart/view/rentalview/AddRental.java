@@ -755,10 +755,34 @@ public class AddRental extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void txtCustomerIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerIdActionPerformed
-        if (!txtCustomerId.getText().isEmpty()) {
+        if (!txtCustomerId.getText().trim().isEmpty()) {
             try {
-                int customerId = Integer.parseInt(txtCustomerId.getText());
+                int customerId = Integer.parseInt(txtCustomerId.getText().trim());
+
+                // Get customer details.
+                CustomerDAO customerDao = new CustomerDAOImpl();
+                Customer customer = customerDao.getCustomerById(customerId);
+
+                // Verify customer status.
+                if (customer == null) {
+                    Message.error("Customer not found.");
+                    txtCustomerId.setText("");
+                    txtCustomerName.setText("");
+                    txtContact.setText("");
+                    return;
+                }
+
+                if (!"Active".equalsIgnoreCase(customer.getCustomerStatus())) {
+                    Message.error("This customer is inactive and cannot rent a car.");
+                    txtCustomerId.setText("");
+                    txtCustomerName.setText("");
+                    txtContact.setText("");
+                    return;
+                }
+
+                // Load customer details if active.
                 loadCustomerDetails(customerId);
+
             } catch (NumberFormatException e) {
                 Message.error("Invalid Customer ID format.");
             }
@@ -778,13 +802,48 @@ public class AddRental extends javax.swing.JFrame {
     }//GEN-LAST:event_txtStartDatePropertyChange
 
     private void txtCarIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCarIdActionPerformed
-        if (!txtCarId.getText().isEmpty()) {
+        if (!txtCarId.getText().trim().isEmpty()) {
             try {
-                int carId = Integer.parseInt(txtCarId.getText());
-                // Get the inputted Car ID in textfield and retrieve the necessary details.
-                loadCarDetails(carId);
+                carId = Integer.parseInt(txtCarId.getText().trim());
+
+                // Get the inputted Car ID and retrieve the necessary details.
+                CarDAO carDao = new CarDAOImpl();
+                Car car = carDao.getCarById(carId);
+
+                if (car == null) {
+                    Message.error("Car not found.");
+                    txtCarId.setText("");
+                    txtBrand.setText("");
+                    txtModel.setText("");
+                    cmbType.setSelectedIndex(0);
+                    txtYear.setText("");
+                    txtDailyRate.setText("");
+                    return;
+                }
+
+                // Verify car availability.
+                if (!"Available".equalsIgnoreCase(car.getCarStatus())) {
+                    Message.error("This car is not available for rental.");
+                    txtCarId.setText("");
+                    txtBrand.setText("");
+                    txtModel.setText("");
+                    cmbType.setSelectedIndex(0);
+                    txtYear.setText("");
+                    txtDailyRate.setText("");
+                    return;
+                }
+
+                loadCarDetails();
+                calculateTotalCost();
+
             } catch (NumberFormatException e) {
                 Message.error("Invalid Car ID format.");
+                txtCarId.setText("");
+                txtBrand.setText("");
+                txtModel.setText("");
+                cmbType.setSelectedIndex(0);
+                txtYear.setText("");
+                txtDailyRate.setText("");
             }
         }
     }//GEN-LAST:event_txtCarIdActionPerformed

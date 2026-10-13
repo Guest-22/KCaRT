@@ -6,6 +6,8 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import kcart.dao.RentalDAO;
 import kcart.daoimpl.RentalDAOImpl;
+import kcart.dao.CarDAO;
+import kcart.daoimpl.CarDAOImpl;
 import kcart.util.SortUtil;
 import kcart.util.SearchUtil;
 import kcart.model.Rental;
@@ -72,11 +74,64 @@ public class RentalMenu extends javax.swing.JFrame {
         }
     }
 
+    // Mark late if the car hasnt been returned past the expected return date.
+    private void markLateRentals() {
+        RentalDAO rentalDao = new RentalDAOImpl();
+
+        List<Rental> rentals = rentalDao.getAllRentals();
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+
+        for (Rental r : rentals) {
+            if ("Active".equalsIgnoreCase(r.getRentalStatus())
+                    && r.getExpectedReturnDate() != null
+                    && now.isAfter(r.getExpectedReturnDate())) {
+
+                // Mark rental as Late.
+                rentalDao.updateRentalStatus(r.getRentalId(), "Late");
+            }
+        }
+    }
+
+    // Mark dismissed if past 1 hour the initial start date.
+    private void dismissExpiredRentals() {
+        RentalDAO rentalDao = new RentalDAOImpl();
+        CarDAO carDao = new CarDAOImpl();
+
+        List<Rental> rentals = rentalDao.getAllRentals();
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+
+        for (Rental r : rentals) {
+            if ("Pending".equalsIgnoreCase(r.getRentalStatus())
+                    && r.getStartDate() != null
+                    && !now.isBefore(r.getStartDate().plusHours(1))) {
+
+                // Mark rental as Dismissed.
+                boolean rentalSuccess = rentalDao.updateRentalStatus(
+                        r.getRentalId(), "Dismissed");
+
+                if (rentalSuccess) {
+                    // Mark car as Available.
+                    boolean carSuccess = carDao.updateCarStatus(
+                            r.getCarId(), "Available");
+
+                    if (!carSuccess) {
+                        Message.error("Rental #" + r.getRentalId()
+                                + " was dismissed, but its car status could not be updated.");
+                    }
+                }
+            }
+        }
+    }
+
     private void populateRentalRecord(String keyword) {
         DefaultTableModel rentalModel = (DefaultTableModel) tblRecord.getModel();
         rentalModel.setRowCount(0); // Clear existing rows.
 
         try {
+            // Verify and update status if dismissed or late.
+            dismissExpiredRentals();
+            markLateRentals();
+
             RentalDAO rentalDao = new RentalDAOImpl();
             List<Rental> rentals = rentalDao.getAllRentals();
 
