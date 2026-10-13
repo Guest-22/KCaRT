@@ -19,6 +19,8 @@ import kcart.view.rentalview.RentalMenu;
 import kcart.view.returnview.ReturnMenu;
 import kcart.view.billingview.BillingMenu;
 import kcart.view.userview.UserMenu;
+import kcart.util.StatusCellRenderer;
+import kcart.util.TableStyleUtil;
 
 public class CustomerMenu extends javax.swing.JFrame {
 
@@ -29,9 +31,11 @@ public class CustomerMenu extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-        lblWelcome.setText("Welcome, " + ActiveSession.loggedInUsername);
+        lblWelcome1.setText(ActiveSession.loggedInUsername);
         applyRoleRestrictions();
         setDefaultTglSort();
+
+        styleCustomerTable();
         populateCustomerRecord("");
     }
 
@@ -52,6 +56,15 @@ public class CustomerMenu extends javax.swing.JFrame {
         tglSort.setOpaque(true);
         tglSort.setBackground(Color.BLACK);
         tglSort.setForeground(Color.WHITE);
+    }
+
+    private void styleCustomerTable() {
+        TableStyleUtil.applyBlackWhiteStyle(tblRecord);
+
+        StatusCellRenderer renderer = new StatusCellRenderer(7, StatusCellRenderer.StatusType.CUSTOMER);
+        for (int i = 0; i < tblRecord.getColumnCount(); i++) {
+            tblRecord.getColumnModel().getColumn(i).setCellRenderer(renderer);
+        }
     }
 
     // Populate the customer table.
@@ -120,7 +133,6 @@ public class CustomerMenu extends javax.swing.JFrame {
 
         pnlMain = new javax.swing.JPanel();
         pnlSideNav = new javax.swing.JPanel();
-        lblWelcome = new javax.swing.JLabel();
         pnlMenu = new javax.swing.JPanel();
         btnDashboard = new javax.swing.JButton();
         btnCustomer = new javax.swing.JButton();
@@ -130,6 +142,8 @@ public class CustomerMenu extends javax.swing.JFrame {
         btnBilling = new javax.swing.JButton();
         btnUser = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
+        lblWelcome = new javax.swing.JLabel();
+        lblWelcome1 = new javax.swing.JLabel();
         pnlContent = new javax.swing.JPanel();
         pnlRecord = new javax.swing.JPanel();
         lblHeader = new javax.swing.JLabel();
@@ -160,12 +174,6 @@ public class CustomerMenu extends javax.swing.JFrame {
         pnlMain.setPreferredSize(new java.awt.Dimension(1200, 600));
 
         pnlSideNav.setBackground(new java.awt.Color(0, 0, 0));
-
-        lblWelcome.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
-        lblWelcome.setForeground(new java.awt.Color(255, 255, 255));
-        lblWelcome.setText("Welcome admin");
-        lblWelcome.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        lblWelcome.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
         pnlMenu.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -261,7 +269,7 @@ public class CustomerMenu extends javax.swing.JFrame {
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
             .addComponent(btnCustomer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnCar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnRental, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -292,21 +300,37 @@ public class CustomerMenu extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        lblWelcome.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
+        lblWelcome.setForeground(new java.awt.Color(255, 255, 255));
+        lblWelcome.setText("Welcome,");
+        lblWelcome.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblWelcome.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
+        lblWelcome1.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
+        lblWelcome1.setForeground(new java.awt.Color(255, 255, 255));
+        lblWelcome1.setText("null");
+        lblWelcome1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblWelcome1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
         javax.swing.GroupLayout pnlSideNavLayout = new javax.swing.GroupLayout(pnlSideNav);
         pnlSideNav.setLayout(pnlSideNavLayout);
         pnlSideNavLayout.setHorizontalGroup(
             pnlSideNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlSideNavLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlSideNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblWelcome1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlSideNavLayout.setVerticalGroup(
             pnlSideNavLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSideNavLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(lblWelcome)
+                .addGap(5, 5, 5)
+                .addComponent(lblWelcome1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -686,6 +710,7 @@ public class CustomerMenu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbSort;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblWelcome;
+    private javax.swing.JLabel lblWelcome1;
     private javax.swing.JPanel pnlAction;
     private javax.swing.JPanel pnlContent;
     private javax.swing.JPanel pnlMain;
