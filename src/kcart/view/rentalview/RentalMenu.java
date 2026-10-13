@@ -357,7 +357,7 @@ public class RentalMenu extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Rent ID", "Customer ID", "Customer Name", "Car ID", "Car Info", "User ID", "Processed By", "Start Date", "Return Date", "Status", "Created At"
+                "Rent ID", "Customer ID", "Customer", "Car ID", "Car", "User ID", "Processed By", "Start Date", "Return Date", "Status", "Created At"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -368,6 +368,8 @@ public class RentalMenu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblRecord.setSelectionBackground(new java.awt.Color(74, 144, 226));
+        tblRecord.setSelectionForeground(new java.awt.Color(255, 255, 255));
         tblRecord.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblRecordMouseClicked(evt);

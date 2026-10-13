@@ -216,6 +216,11 @@ public class AdminDashboard extends javax.swing.JFrame {
         setTitle("KCaRT | Dashboard");
         setMinimumSize(new java.awt.Dimension(1200, 700));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         pnlMain.setBackground(new java.awt.Color(204, 204, 204));
         pnlMain.setPreferredSize(new java.awt.Dimension(1200, 600));
@@ -737,6 +742,8 @@ public class AdminDashboard extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblRecord.setSelectionBackground(new java.awt.Color(74, 144, 226));
+        tblRecord.setSelectionForeground(new java.awt.Color(255, 255, 255));
         tblRecord.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblRecordMouseClicked(evt);
@@ -972,6 +979,11 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     }//GEN-LAST:event_tblRecordMouseClicked
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        populateOverview();
+        populateRecentRentals();
+    }//GEN-LAST:event_formWindowActivated
+
     /**
      * @param args the command line arguments
      */
@@ -1016,11 +1028,6 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnRental;
     private javax.swing.JButton btnReturn;
     private javax.swing.JButton btnUser;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JLabel lblActiveRentalsCount;
     private javax.swing.JLabel lblActiveRentalsTitle;
     private javax.swing.JLabel lblAvailableCarsCount;
@@ -1059,7 +1066,6 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel pnlMenu;
     private javax.swing.JPanel pnlMonthlyEarnings;
     private javax.swing.JPanel pnlOverview;
-    private javax.swing.JPanel pnlOverview1;
     private javax.swing.JPanel pnlPendingRentals;
     private javax.swing.JPanel pnlRecentRentals;
     private javax.swing.JPanel pnlRecord;

@@ -16,4 +16,6 @@ public interface RentalDAO {
     int getPendingRentalCount();
     int getLateRentalCount();
     List<Rental> getRecentRentals();
+    List<Rental> getUpcomingPickups();
+    List<Rental> getDueReturns();
 }

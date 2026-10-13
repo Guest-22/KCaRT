@@ -320,22 +320,26 @@ public class RentalDAOImpl implements RentalDAO {
         return 0;
     }
 
-    // Retrieve the five most recent rentals for the admin dashboard.
+    // Retrieve the 30 most recent rentals for the admin dashboard.
     @Override
     public List<Rental> getRecentRentals() {
         List<Rental> list = new ArrayList<>();
 
         String sql = "SELECT "
                 + "r." + COL_ID + ", "
-                + "CONCAT(c.last_name, ', ', c.first_name, "
-                + "IF(c.middle_name IS NOT NULL AND c.middle_name <> '', "
-                + "CONCAT(' ', LEFT(c.middle_name, 1), '.'), '')) "
+                + "CONCAT(c." + COL_LAST_NAME + ", ', ', "
+                + "c." + COL_FIRST_NAME + ", "
+                + "IF(c." + COL_MIDDLE_NAME + " IS NOT NULL "
+                + "AND c." + COL_MIDDLE_NAME + " <> '', "
+                + "CONCAT(' ', LEFT(c." + COL_MIDDLE_NAME + ", 1), '.'), '')) "
                 + "AS customer_full_name, "
-                + "CONCAT(car.brand, ' ', car.model, ' (', "
-                + "car.plate_no, ')') AS car_info, "
+                + "CONCAT(car." + COL_BRAND + ", ' ', "
+                + "car." + COL_MODEL + ", ' (', "
+                + "car." + COL_PLATE_NO + ", ')') AS car_info, "
                 + "r." + COL_START_DATE + ", "
                 + "r." + COL_RETURN_DATE + ", "
-                + "r." + COL_STATUS + " "
+                + "r." + COL_STATUS + ", "
+                + "r." + COL_CREATED_AT + " "
                 + "FROM " + TABLE_NAME + " r "
                 + "INNER JOIN tbl_customer c "
                 + "ON r." + COL_CUSTOMER_ID + " = c.customer_id "
@@ -362,6 +366,109 @@ public class RentalDAOImpl implements RentalDAO {
 
         } catch (SQLException e) {
             Message.error("Error retrieving recent rentals:\n" + e.getMessage());
+        }
+
+        return list;
+    }
+
+    // Retrieve upcoming pickups for the staff dashboard.
+    @Override
+    public List<Rental> getUpcomingPickups() {
+        List<Rental> list = new ArrayList<>();
+
+        String sql = "SELECT "
+                + "r." + COL_ID + ", "
+                + "CONCAT(c." + COL_LAST_NAME + ", ', ', "
+                + "c." + COL_FIRST_NAME + ", "
+                + "IF(c." + COL_MIDDLE_NAME + " IS NOT NULL "
+                + "AND c." + COL_MIDDLE_NAME + " <> '', "
+                + "CONCAT(' ', LEFT(c." + COL_MIDDLE_NAME + ", 1), '.'), '')) "
+                + "AS customer_full_name, "
+                + "CONCAT(car." + COL_BRAND + ", ' ', "
+                + "car." + COL_MODEL + ", ' (', "
+                + "car." + COL_PLATE_NO + ", ')') AS car_info, "
+                + "r." + COL_START_DATE + " "
+                + "FROM " + TABLE_NAME + " r "
+                + "INNER JOIN tbl_customer c "
+                + "ON r." + COL_CUSTOMER_ID + " = c.customer_id "
+                + "INNER JOIN tbl_car car "
+                + "ON r." + COL_CAR_ID + " = car.car_id "
+                + "WHERE r." + COL_STATUS + " = 'Pending' "
+                + "AND r." + COL_START_DATE + " >= CURDATE() "
+                + "ORDER BY r." + COL_START_DATE + " ASC, "
+                + "r." + COL_ID + " ASC "
+                + "LIMIT 25";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Rental rental = new Rental(
+                        rs.getInt(COL_ID),
+                        rs.getString("customer_full_name"),
+                        rs.getString("car_info"),
+                        rs.getDate(COL_START_DATE),
+                        null,
+                        null
+                );
+
+                list.add(rental);
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving upcoming pickups:\n" + e.getMessage());
+        }
+
+        return list;
+    }
+
+    // Retrieve due returns for the staff dashboard.
+    @Override
+    public List<Rental> getDueReturns() {
+        List<Rental> list = new ArrayList<>();
+
+        String sql = "SELECT "
+                + "r." + COL_ID + ", "
+                + "CONCAT(c." + COL_LAST_NAME + ", ', ', "
+                + "c." + COL_FIRST_NAME + ", "
+                + "IF(c." + COL_MIDDLE_NAME + " IS NOT NULL "
+                + "AND c." + COL_MIDDLE_NAME + " <> '', "
+                + "CONCAT(' ', LEFT(c." + COL_MIDDLE_NAME + ", 1), '.'), '')) "
+                + "AS customer_full_name, "
+                + "CONCAT(car." + COL_BRAND + ", ' ', "
+                + "car." + COL_MODEL + ", ' (', "
+                + "car." + COL_PLATE_NO + ", ')') AS car_info, "
+                + "r." + COL_START_DATE + ", "
+                + "r." + COL_RETURN_DATE + ", "
+                + "r." + COL_STATUS + " "
+                + "FROM " + TABLE_NAME + " r "
+                + "INNER JOIN tbl_customer c "
+                + "ON r." + COL_CUSTOMER_ID + " = c.customer_id "
+                + "INNER JOIN tbl_car car "
+                + "ON r." + COL_CAR_ID + " = car.car_id "
+                + "WHERE r." + COL_STATUS + " IN ('Active', 'Late') "
+                // Retrieves rentals before 3 days deadline and so on.
+                + "AND r." + COL_RETURN_DATE + " <= DATE_ADD(CURDATE(), INTERVAL 3 DAY) "
+                + "ORDER BY r." + COL_RETURN_DATE + " ASC, "
+                + "r." + COL_ID + " ASC "
+                + "LIMIT 25";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Rental rental = new Rental(
+                        rs.getInt(COL_ID),
+                        rs.getString("customer_full_name"),
+                        rs.getString("car_info"),
+                        rs.getDate(COL_START_DATE),
+                        rs.getDate(COL_RETURN_DATE),
+                        rs.getString(COL_STATUS)
+                );
+
+                list.add(rental);
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving due returns:\n" + e.getMessage());
         }
 
         return list;

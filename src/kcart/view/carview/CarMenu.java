@@ -106,7 +106,7 @@ public class CarMenu extends javax.swing.JFrame {
                     c.getTransmissionType(),
                     c.getFuelType(),
                     c.getSeatCap(),
-                    c.getDailyRate(),
+                    String.format("%.2f", c.getDailyRate()),
                     c.getCarStatus(),
                     (c.getCreatedAt() != null) ? c.getCreatedAt().toString() : "—"
                 };
@@ -378,6 +378,8 @@ public class CarMenu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblRecord.setSelectionBackground(new java.awt.Color(74, 144, 226));
+        tblRecord.setSelectionForeground(new java.awt.Color(255, 255, 255));
         tblRecord.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblRecordMouseClicked(evt);

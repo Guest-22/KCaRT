@@ -329,6 +329,8 @@ public class ReturnMenu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblRecord.setSelectionBackground(new java.awt.Color(74, 144, 226));
+        tblRecord.setSelectionForeground(new java.awt.Color(255, 255, 255));
         scrlRecord.setViewportView(tblRecord);
 
         txtSearch.setBackground(new java.awt.Color(0, 0, 0));
