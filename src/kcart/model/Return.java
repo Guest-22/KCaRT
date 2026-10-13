@@ -1,6 +1,7 @@
 package kcart.model;
 
-import java.sql.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Return {
 
@@ -8,14 +9,14 @@ public class Return {
     private int rentalId;
     private int processedBy;
     private String processedByName;
-    private Date returnDate;
+    private LocalDateTime returnDate;
     private String condition;
     private String remarks;
     private Timestamp createdAt;
 
     // Model for populating Return Menu table.
-    public Return(int returnId, int rentalId, int processedBy, String processedByName, Date returnDate,
-            String condition, String remarks, Timestamp createdAt) {
+    public Return(int returnId, int rentalId, int processedBy, String processedByName,
+            LocalDateTime returnDate, String condition, String remarks, Timestamp createdAt) {
         this.returnId = returnId;
         this.rentalId = rentalId;
         this.processedBy = processedBy;
@@ -25,9 +26,10 @@ public class Return {
         this.remarks = remarks;
         this.createdAt = createdAt;
     }
-    
+
     // Model for inserting return record.
-    public Return(int rentalId, int processedBy, Date returnDate, String condition, String remarks) {
+    public Return(int rentalId, int processedBy, LocalDateTime returnDate,
+            String condition, String remarks) {
         this.rentalId = rentalId;
         this.processedBy = processedBy;
         this.returnDate = returnDate;
@@ -68,11 +70,11 @@ public class Return {
         this.processedByName = processedByName;
     }
 
-    public Date getReturnDate() {
+    public LocalDateTime getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
     }
 

@@ -40,7 +40,10 @@ public class ReturnDAOImpl implements ReturnDAO {
 
             stmt.setInt(1, returnInfo.getRentalId());
             stmt.setInt(2, returnInfo.getProcessedBy());
-            stmt.setDate(3, returnInfo.getReturnDate());
+            stmt.setTimestamp(
+                    3,
+                    Timestamp.valueOf(returnInfo.getReturnDate())
+            );
             stmt.setString(4, returnInfo.getCondition());
             stmt.setString(5, returnInfo.getRemarks());
 
@@ -64,19 +67,22 @@ public class ReturnDAOImpl implements ReturnDAO {
 
         String sql = "SELECT r.*, "
                 + "CONCAT(u.last_name, ', ', u.first_name) AS processed_by_name "
-                + "FROM tbl_return r "
+                + "FROM " + TABLE_NAME + " r "
                 + "INNER JOIN tbl_user u "
-                + "ON r.processed_by = u.user_id";
+                + "ON r." + COL_PROCESSED_BY + " = u.user_id";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
+                Timestamp returnTimestamp = rs.getTimestamp(COL_RETURN_DATE);
+
                 Return r = new Return(
                         rs.getInt(COL_RETURN_ID),
                         rs.getInt(COL_RENTAL_ID),
                         rs.getInt(COL_PROCESSED_BY),
                         rs.getString("processed_by_name"),
-                        rs.getDate(COL_RETURN_DATE),
+                        returnTimestamp != null
+                                ? returnTimestamp.toLocalDateTime() : null,
                         rs.getString(COL_CONDITION),
                         rs.getString(COL_REMARKS),
                         rs.getTimestamp(COL_CREATED_AT)

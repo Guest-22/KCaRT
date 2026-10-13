@@ -9,6 +9,7 @@ import kcart.model.Car;
 import kcart.model.Rental;
 import kcart.util.Message;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import kcart.dao.CustomerDAO;
 import kcart.dao.ReturnDAO;
 import kcart.daoimpl.CustomerDAOImpl;
@@ -16,6 +17,9 @@ import kcart.daoimpl.ReturnDAOImpl;
 import kcart.model.Customer;
 import kcart.model.Return;
 import kcart.util.ActiveSession;
+import java.util.Date;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 
 public class ProcessReturn extends javax.swing.JFrame {
 
@@ -33,9 +37,29 @@ public class ProcessReturn extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
         initializeStartDate();
+        setupTimeSpinners();
+
         loadRentalDetails();
         loadCustomerDetails();
         loadCarDetails();
+    }
+
+    private void setupTimeSpinners() {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        Date defaultTime = calendar.getTime();
+
+        spnReturnTime.setModel(
+                new SpinnerDateModel(defaultTime, null, null, Calendar.MINUTE)
+        );
+        spnReturnTime.setEditor(
+                new JSpinner.DateEditor(spnReturnTime, "hh:mm a")
+        );
     }
 
     // Retrieves rental info.
@@ -211,8 +235,9 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblRemark = new javax.swing.JLabel();
         lblCondition = new javax.swing.JLabel();
         lblActualReturnDate = new javax.swing.JLabel();
-        cmbCondition = new javax.swing.JComboBox<>();
         txtActualReturnDate = new com.toedter.calendar.JDateChooser();
+        spnReturnTime = new javax.swing.JSpinner();
+        cmbCondition = new javax.swing.JComboBox<>();
         pnlContent4 = new javax.swing.JPanel();
         btnAdditionalBilling = new javax.swing.JButton();
         btnCompleteReturn = new javax.swing.JButton();
@@ -593,20 +618,15 @@ public class ProcessReturn extends javax.swing.JFrame {
         lblRemark.setText("Remark:");
         lblRemark.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblCondition.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblCondition.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lblCondition.setForeground(new java.awt.Color(255, 255, 255));
-        lblCondition.setText("Condition");
+        lblCondition.setText("Condition:");
         lblCondition.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblActualReturnDate.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         lblActualReturnDate.setForeground(new java.awt.Color(255, 255, 255));
         lblActualReturnDate.setText("Actual Return Date:");
         lblActualReturnDate.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        cmbCondition.setBackground(new java.awt.Color(255, 255, 255));
-        cmbCondition.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        cmbCondition.setForeground(new java.awt.Color(0, 0, 0));
-        cmbCondition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Good", "Damaged" }));
 
         txtActualReturnDate.setBackground(new java.awt.Color(255, 255, 255));
         txtActualReturnDate.setForeground(new java.awt.Color(0, 0, 0));
@@ -616,6 +636,13 @@ public class ProcessReturn extends javax.swing.JFrame {
                 txtActualReturnDatePropertyChange(evt);
             }
         });
+
+        spnReturnTime.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        cmbCondition.setBackground(new java.awt.Color(255, 255, 255));
+        cmbCondition.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cmbCondition.setForeground(new java.awt.Color(0, 0, 0));
+        cmbCondition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Good", "Damaged" }));
 
         javax.swing.GroupLayout pnlContent3Layout = new javax.swing.GroupLayout(pnlContent3);
         pnlContent3.setLayout(pnlContent3Layout);
@@ -633,30 +660,33 @@ public class ProcessReturn extends javax.swing.JFrame {
                         .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlContent3Layout.createSequentialGroup()
                                 .addComponent(txtActualReturnDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(26, 26, 26)
-                                .addComponent(lblCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbCondition, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(20, 20, 20)
+                                .addComponent(spnReturnTime)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblCondition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(scrlRemark))))
                 .addGap(46, 46, 46))
         );
         pnlContent3Layout.setVerticalGroup(
             pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContent3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(7, Short.MAX_VALUE)
                 .addComponent(lblReturnDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblActualReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblActualReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtActualReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmbCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtActualReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addComponent(spnReturnTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblRemark, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scrlRemark, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(98, 98, 98))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlContent4.setBackground(new java.awt.Color(0, 0, 0));
@@ -737,7 +767,7 @@ public class ProcessReturn extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlContent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(pnlContent3, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlContent3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlContent4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -765,24 +795,66 @@ public class ProcessReturn extends javax.swing.JFrame {
         String customerName = txtCustomerName.getText().trim();
 
         // Get return info.
-        java.sql.Date returnDate = new java.sql.Date(txtActualReturnDate.getDate().getTime());
+        if (txtActualReturnDate.getDate() == null
+                || spnReturnTime.getValue() == null) {
+            Message.error("Please select the actual return date and time.");
+            return;
+        }
+
+        java.util.Date selectedDate = txtActualReturnDate.getDate();
+        java.util.Date selectedTime
+                = (java.util.Date) spnReturnTime.getValue();
+
+        java.time.LocalDate date = selectedDate.toInstant()
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate();
+
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.setTime(selectedTime);
+
+        java.time.LocalTime time = java.time.LocalTime.of(
+                calendar.get(java.util.Calendar.HOUR_OF_DAY),
+                calendar.get(java.util.Calendar.MINUTE)
+        );
+
+        java.time.LocalDateTime returnDate
+                = java.time.LocalDateTime.of(date, time);
+
         String condition = cmbCondition.getSelectedItem().toString().trim();
         String remark = txtaRemark.getText().trim();
 
-        new AdditionalBilling(rentalId, carType, carBrand, carModel, customerName,
+        new AdditionalBilling(rentalId, carType,carBrand, carModel, customerName,
                 returnDate, condition, remark).setVisible(true);
     }//GEN-LAST:event_btnAdditionalBillingActionPerformed
 
     private void btnCompleteReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompleteReturnActionPerformed
         try {
             // Validate required field.
-            if (txtActualReturnDate.getDate() == null) {
-                Message.error("Please select the actual return date.");
+            if (txtActualReturnDate.getDate() == null
+                    || spnReturnTime.getValue() == null) {
+                Message.error("Please select the actual return date and time.");
                 return;
             }
 
             // Get actual return date.
-            java.sql.Date returnDate = new java.sql.Date(txtActualReturnDate.getDate().getTime());
+            java.util.Date selectedDate = txtActualReturnDate.getDate();
+            java.util.Date selectedTime
+                    = (java.util.Date) spnReturnTime.getValue();
+
+            java.time.LocalDate date = selectedDate.toInstant()
+                    .atZone(java.time.ZoneId.systemDefault())
+                    .toLocalDate();
+
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+            calendar.setTime(selectedTime);
+
+            java.time.LocalTime time = java.time.LocalTime.of(
+                    calendar.get(java.util.Calendar.HOUR_OF_DAY),
+                    calendar.get(java.util.Calendar.MINUTE)
+            );
+
+            java.time.LocalDateTime returnDateTime
+                    = java.time.LocalDateTime.of(date, time);
 
             // Get condition and remarks.
             String condition = cmbCondition.getSelectedItem().toString().trim();
@@ -795,7 +867,7 @@ public class ProcessReturn extends javax.swing.JFrame {
             Return returnInfo = new Return(
                     rentalId,
                     processedBy,
-                    returnDate,
+                    returnDateTime,
                     condition,
                     remarks
             );
@@ -919,6 +991,7 @@ public class ProcessReturn extends javax.swing.JFrame {
     private javax.swing.JPanel pnlContent4;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JScrollPane scrlRemark;
+    private javax.swing.JSpinner spnReturnTime;
     private com.toedter.calendar.JDateChooser txtActualReturnDate;
     private javax.swing.JTextField txtBrand;
     private javax.swing.JTextField txtCarId;

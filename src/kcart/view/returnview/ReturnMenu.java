@@ -82,7 +82,6 @@ public class ReturnMenu extends javax.swing.JFrame {
                 case "Sort by Condition":
                     SortUtil.sortReturnByCondition(returns);
                     break;
-
             }
 
             // Reverse if DESC.
@@ -91,13 +90,17 @@ public class ReturnMenu extends javax.swing.JFrame {
             }
 
             // Populate table with return records.
+            java.time.format.DateTimeFormatter dateTimeFormat
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy hh:mm a");
+
             for (Return r : returns) {
                 Object[] row = {
                     r.getReturnId(),
                     r.getRentalId(),
                     r.getProcessedBy(),
                     r.getProcessedByName(),
-                    r.getReturnDate(),
+                    r.getReturnDate() != null
+                    ? r.getReturnDate().format(dateTimeFormat) : "—",
                     r.getCondition(),
                     r.getRemarks(),
                     r.getCreatedAt()
@@ -105,13 +108,8 @@ public class ReturnMenu extends javax.swing.JFrame {
 
                 returnModel.addRow(row);
             }
-
-            // Hidden return id col.
-            tblRecord.getColumnModel().getColumn(2).setMinWidth(0);
-            tblRecord.getColumnModel().getColumn(2).setMaxWidth(0);
-            tblRecord.getColumnModel().getColumn(2).setWidth(0);
         } catch (Exception e) {
-            // Message.error("Error loading return table:\n" + e.getMessage());
+            // Message.error("Error populating return records:\n" + e.getMessage());
         }
     }
 

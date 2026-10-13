@@ -19,14 +19,16 @@ public class AdditionalBilling extends javax.swing.JFrame {
     private int rentalId;
     private String carType, carBrand, carModel;
     private String customerName;
-    private Date returnDate;
+    private java.time.LocalDateTime returnDate;
     private String condition, remark;
 
     public AdditionalBilling() {
 
     }
 
-    public AdditionalBilling(int rentalId, String carType, String carBrand, String carModel, String customerName, Date returnDate, String condition, String remark) {
+    public AdditionalBilling(int rentalId, String carType, String carBrand, String carModel,
+            String customerName, java.time.LocalDateTime returnDate,
+            String condition, String remark) {
         initComponents();
 
         this.rentalId = rentalId;
@@ -417,7 +419,9 @@ public class AdditionalBilling extends javax.swing.JFrame {
         String invoiceAmountText = txtInvoiceAmount.getText().trim();
 
         // Get payment info.
-        String payMethod = cmbMethod.getSelectedItem().toString();
+        String payMethod = cmbMethod.getSelectedItem() != null
+                ? cmbMethod.getSelectedItem().toString()
+                : "";
         String payAmountText = txtPayAmount.getText().trim();
 
         // Validate required fields.
@@ -436,13 +440,29 @@ public class AdditionalBilling extends javax.swing.JFrame {
             return;
         }
 
+        if (returnDate == null) {
+            Message.error("Return date and time are missing.");
+            return;
+        }
+
+        if (payMethod.isEmpty()) {
+            Message.error("Please select a payment method.");
+            return;
+        }
+
         try {
             // Convert amounts.
             double invoiceAmount = Double.parseDouble(invoiceAmountText);
             double payAmount = Double.parseDouble(payAmountText);
 
+            if (!Double.isFinite(invoiceAmount) || invoiceAmount <= 0
+                    || !Double.isFinite(payAmount) || payAmount <= 0) {
+                Message.error("Amounts must be valid positive numbers.");
+                return;
+            }
+
             // Payment must match the invoice amount.
-            if (payAmount != invoiceAmount) {
+            if (Double.compare(payAmount, invoiceAmount) != 0) {
                 Message.error("Payment amount must match the invoice amount.");
                 return;
             }
@@ -531,7 +551,7 @@ public class AdditionalBilling extends javax.swing.JFrame {
             }
 
             Message.show("Additional billing completed successfully!", "Success");
-            
+
             this.dispose();
         } catch (NumberFormatException e) {
             Message.error("Please enter a valid amount.");
