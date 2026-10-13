@@ -100,6 +100,10 @@ public class CustomerMenu extends javax.swing.JFrame {
                 Collections.reverse(customers);
             }
 
+            // Format date and time.
+            java.time.format.DateTimeFormatter dateTimeFormat
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy | hh:mm a");
+
             // Populate table with customer records.
             for (Customer c : customers) {
                 Object[] row = {
@@ -113,7 +117,9 @@ public class CustomerMenu extends javax.swing.JFrame {
                     c.getEmail(),
                     c.getAddress(),
                     c.getCustomerStatus(),
-                    (c.getCreatedAt() != null) ? c.getCreatedAt().toString() : "—"
+                    (c.getCreatedAt() != null)
+                    ? c.getCreatedAt().toLocalDateTime().format(dateTimeFormat)
+                    : "—"
                 };
                 customerModel.addRow(row);
             }

@@ -65,13 +65,17 @@ public class StaffDashboard extends javax.swing.JFrame {
             RentalDAO rentalDAO = new RentalDAOImpl();
             List<Rental> rentals = rentalDAO.getUpcomingPickups();
 
+            // Format date and time.
+            java.time.format.DateTimeFormatter dateTimeFormat
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy | hh:mm a");
+
             for (Rental r : rentals) {
                 Object[] row = {
                     r.getRentalId(),
                     r.getCustomerName(),
                     r.getCarInfo(),
                     r.getStartDate() != null
-                    ? r.getStartDate().toString() : "—"
+                    ? r.getStartDate().format(dateTimeFormat) : "—"
                 };
 
                 model.addRow(row);
@@ -92,13 +96,17 @@ public class StaffDashboard extends javax.swing.JFrame {
             RentalDAO rentalDAO = new RentalDAOImpl();
             List<Rental> rentals = rentalDAO.getDueReturns();
 
+            // Format date and time.
+            java.time.format.DateTimeFormatter dateTimeFormat
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy | hh:mm a");
+
             for (Rental r : rentals) {
                 Object[] row = {
                     r.getRentalId(),
                     r.getCustomerName(),
                     r.getCarInfo(),
                     r.getExpectedReturnDate() != null
-                    ? r.getExpectedReturnDate().toString() : "—",
+                    ? r.getExpectedReturnDate().format(dateTimeFormat) : "—",
                     r.getRentalStatus()
                 };
 

@@ -88,6 +88,9 @@ public class UserMenu extends javax.swing.JFrame {
                 Collections.reverse(users);
             }
 
+            java.time.format.DateTimeFormatter dateTimeFormat
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy | hh:mm a");
+
             // Populate table with user records.
             for (User u : users) {
                 Object[] row = {
@@ -99,7 +102,9 @@ public class UserMenu extends javax.swing.JFrame {
                     u.getRole(),
                     u.getUsername(),
                     u.getUserStatus(),
-                    (u.getCreatedAt() != null) ? u.getCreatedAt().toString() : "—"
+                    (u.getCreatedAt() != null)
+                    ? u.getCreatedAt().toLocalDateTime().format(dateTimeFormat)
+                    : "—"
                 };
 
                 userModel.addRow(row);

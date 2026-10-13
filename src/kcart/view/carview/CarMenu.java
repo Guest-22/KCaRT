@@ -105,6 +105,9 @@ public class CarMenu extends javax.swing.JFrame {
                 Collections.reverse(cars);
             }
 
+            java.time.format.DateTimeFormatter dateTimeFormat
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy | hh:mm a");
+
             // Populate table with car records.
             for (Car c : cars) {
                 Object[] row = {
@@ -120,7 +123,8 @@ public class CarMenu extends javax.swing.JFrame {
                     c.getSeatCap(),
                     String.format("%.2f", c.getDailyRate()),
                     c.getCarStatus(),
-                    (c.getCreatedAt() != null) ? c.getCreatedAt().toString() : "—"
+                    (c.getCreatedAt() != null)
+                    ? c.getCreatedAt().toLocalDateTime().format(dateTimeFormat) : "—"
                 };
                 carModel.addRow(row);
             }

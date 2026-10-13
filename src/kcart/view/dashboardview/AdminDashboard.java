@@ -60,15 +60,19 @@ public class AdminDashboard extends javax.swing.JFrame {
             RentalDAO rentalDAO = new RentalDAOImpl();
             List<Rental> rentals = rentalDAO.getRecentRentals();
 
+            // Format date only (no time).
+            java.time.format.DateTimeFormatter dateFormat
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy");
+
             for (Rental r : rentals) {
                 Object[] row = {
                     r.getRentalId(),
                     r.getCustomerName(),
                     r.getCarInfo(),
                     r.getStartDate() != null
-                    ? r.getStartDate().toString() : "—",
+                    ? r.getStartDate().format(dateFormat) : "—",
                     r.getExpectedReturnDate() != null
-                    ? r.getExpectedReturnDate().toString() : "—",
+                    ? r.getExpectedReturnDate().format(dateFormat) : "—",
                     r.getRentalStatus()
                 };
 

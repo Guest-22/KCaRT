@@ -91,7 +91,7 @@ public class ReturnMenu extends javax.swing.JFrame {
 
             // Populate table with return records.
             java.time.format.DateTimeFormatter dateTimeFormat
-                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy hh:mm a");
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy | hh:mm a");
 
             for (Return r : returns) {
                 Object[] row = {

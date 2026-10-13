@@ -97,6 +97,9 @@ public class BillingMenu extends javax.swing.JFrame {
             if (selectedOrder.equals("DESC")) {
                 Collections.reverse(billings);
             }
+            
+            java.time.format.DateTimeFormatter dateTimeFormat
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy | hh:mm a");
 
             // Populate table with billing records.
             for (Billing b : billings) {
@@ -107,7 +110,7 @@ public class BillingMenu extends javax.swing.JFrame {
                     b.getInvoiceAmount(),
                     b.getInvoiceStatus(),
                     (b.getPaymentDate() != null)
-                    ? b.getPaymentDate().toString()
+                    ? b.getPaymentDate().toLocalDateTime().format(dateTimeFormat)
                     : "—"
                 };
 

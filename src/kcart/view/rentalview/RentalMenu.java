@@ -164,7 +164,7 @@ public class RentalMenu extends javax.swing.JFrame {
 
             // Populate table with rental records.
             java.time.format.DateTimeFormatter dateTimeFormat
-                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy hh:mm a");
+                    = java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy | hh:mm a");
 
             for (Rental r : rentals) {
                 Object[] row = {
@@ -180,7 +180,9 @@ public class RentalMenu extends javax.swing.JFrame {
                     (r.getExpectedReturnDate() != null)
                     ? r.getExpectedReturnDate().format(dateTimeFormat) : "—",
                     r.getRentalStatus(),
-                    (r.getCreatedAt() != null) ? r.getCreatedAt().toString() : "—" // hidden
+                    (r.getCreatedAt() != null)
+                    ? r.getCreatedAt().toLocalDateTime().format(dateTimeFormat)
+                    : "—"
                 };
                 rentalModel.addRow(row);
             }
