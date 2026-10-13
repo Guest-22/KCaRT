@@ -681,6 +681,22 @@ public class RentalMenu extends javax.swing.JFrame {
             return;
         }
 
+        // Get the currently selected row.
+        int row = tblRecord.getSelectedRow();
+
+        if (row < 0) {
+            Message.error("Please select a rental record first.");
+            return;
+        }
+
+        // Rental status is col.adad     index 9.
+        String rentalStatus = tblRecord.getValueAt(row, 9).toString();
+
+        if (!"Pending".equalsIgnoreCase(rentalStatus)) {
+            Message.error("Pickup can only be processed for Pending rentals.");
+            return;
+        }
+
         // If valid, open Process Pickup form and pass rentalId, customerId, and carId as arguments.
         new ProcessPickup(selectedRentalId, selectedCustomerId, selectedCarId).setVisible(true);
     }//GEN-LAST:event_btnProcessPickupActionPerformed
@@ -691,7 +707,24 @@ public class RentalMenu extends javax.swing.JFrame {
             return;
         }
 
-        // Opens process return form referencing the rental id.
+        // Get the currently selected row.
+        int row = tblRecord.getSelectedRow();
+
+        if (row < 0) {
+            Message.error("Please select a rental record first.");
+            return;
+        }
+
+        // Rental status is column index 9.
+        String rentalStatus = tblRecord.getValueAt(row, 9).toString();
+
+        // Only Active or Late rentals can be processed for return.
+        if (!"Active".equalsIgnoreCase(rentalStatus)
+                && !"Late".equalsIgnoreCase(rentalStatus)) {
+            Message.error("Return can only be processed for Active or Late rentals.");
+            return;
+        }
+        // Open Process Return form.
         new ProcessReturn(selectedRentalId).setVisible(true);
     }//GEN-LAST:event_btnProcessReturnActionPerformed
 

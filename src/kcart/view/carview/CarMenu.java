@@ -772,7 +772,24 @@ public class CarMenu extends javax.swing.JFrame {
             return;
         }
 
-        // If valid, open AddRental form and pass the selected car ID as reference.
+        // Get the currently selected row.
+        int row = tblRecord.getSelectedRow();
+
+        if (row < 0) {
+            Message.error("Please select a car record first.");
+            return;
+        }
+
+        // Car status is col. index 11.
+        String carStatus = tblRecord.getValueAt(row, 11).toString();
+
+        // Only Available cars can be reserved.
+        if (!"Available".equalsIgnoreCase(carStatus)) {
+            Message.error("Only Available cars can be reserved.");
+            return;
+        }
+
+        // Open AddRental form.
         new AddRental(selectedCarId).setVisible(true);
     }//GEN-LAST:event_btnAddReservationActionPerformed
 
