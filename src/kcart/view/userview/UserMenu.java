@@ -32,7 +32,7 @@ public class UserMenu extends javax.swing.JFrame {
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         lblWelcome.setText("Welcome, " + ActiveSession.loggedInUsername);
         setDefaultTglSort();
-        
+
         populateUserRecord("");
     }
 
@@ -93,27 +93,10 @@ public class UserMenu extends javax.swing.JFrame {
 
                 userModel.addRow(row);
             }
-
-            // Hide user_id.
-            tblRecord.getColumnModel().getColumn(0).setMinWidth(0);
-            tblRecord.getColumnModel().getColumn(0).setMaxWidth(0);
-            tblRecord.getColumnModel().getColumn(0).setWidth(0);
-
-            // Hide middle_name.
-            tblRecord.getColumnModel().getColumn(3).setMinWidth(0);
-            tblRecord.getColumnModel().getColumn(3).setMaxWidth(0);
-            tblRecord.getColumnModel().getColumn(3).setWidth(0);
-
-            // Hide created_at.
-            tblRecord.getColumnModel().getColumn(8).setMinWidth(0);
-            tblRecord.getColumnModel().getColumn(8).setMaxWidth(0);
-            tblRecord.getColumnModel().getColumn(8).setWidth(0);
-
         } catch (Exception e) {
             // Message.error("Error loading user table:\n" + e.getMessage());
         }
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

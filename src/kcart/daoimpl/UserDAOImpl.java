@@ -132,19 +132,38 @@ public class UserDAOImpl implements UserDAO {
         return list;
     }
 
-    // Update existing user data w/ new values.
+    // Update existing user info. w/ new values.
     @Override
     public boolean editUser(User user) {
-        String sql = "UPDATE " + TABLE_NAME + " SET "
-                + COL_FIRST_NAME + " = ?, "
-                + COL_MIDDLE_NAME + " = ?, "
-                + COL_LAST_NAME + " = ?, "
-                + COL_CONTACT_NO + " = ?, "
-                + COL_ROLE + " = ?, "
-                + COL_USERNAME + " = ?, "
-                + COL_PASSWORD + " = ?, "
-                + COL_USER_STATUS + " = ? "
-                + "WHERE " + COL_USER_ID + " = ?";
+        String sql;
+
+        // Updates user info. (w/o password).
+        if (user.getPassword() == null) {
+
+            sql = "UPDATE tbl_user SET "
+                    + "first_name = ?, "
+                    + "middle_name = ?, "
+                    + "last_name = ?, "
+                    + "contact_no = ?, "
+                    + "role = ?, "
+                    + "username = ?, "
+                    + "status = ? "
+                    + "WHERE user_id = ?";
+
+        } else {
+
+            // Update user info. (w/ password).
+            sql = "UPDATE tbl_user SET "
+                    + "first_name = ?, "
+                    + "middle_name = ?, "
+                    + "last_name = ?, "
+                    + "contact_no = ?, "
+                    + "role = ?, "
+                    + "username = ?, "
+                    + "password = ?, "
+                    + "status = ? "
+                    + "WHERE user_id = ?";
+        }
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -154,18 +173,65 @@ public class UserDAOImpl implements UserDAO {
             stmt.setString(4, user.getContactNo());
             stmt.setString(5, user.getRole());
             stmt.setString(6, user.getUsername());
-            stmt.setString(7, user.getPassword());
-            stmt.setString(8, user.getUserStatus());
-            stmt.setInt(9, user.getUserId());
 
-            int rows = stmt.executeUpdate();
+            if (user.getPassword() == null) {
 
-            return rows > 0;
+                stmt.setString(7, user.getUserStatus());
+                stmt.setInt(8, user.getUserId());
+
+            } else {
+
+                stmt.setString(7, user.getPassword());
+                stmt.setString(8, user.getUserStatus());
+                stmt.setInt(9, user.getUserId());
+            }
+
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            Message.error("Database error while editing user: " + e.getMessage());
-            return false;
+            Message.error("Error editing user:\n" + e.getMessage());
         }
+
+        return false;
     }
-    
+
+    // Returns user's full name for processed by txtfield.
+    @Override
+    public String getUserFullNameById(int userId) {
+        String sql = "SELECT "
+                + COL_FIRST_NAME + ", "
+                + COL_MIDDLE_NAME + ", "
+                + COL_LAST_NAME
+                + " FROM " + TABLE_NAME
+                + " WHERE " + COL_USER_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    String firstName = rs.getString(COL_FIRST_NAME);
+                    String middleName = rs.getString(COL_MIDDLE_NAME);
+                    String lastName = rs.getString(COL_LAST_NAME);
+
+                    String middleInitial = "";
+
+                    if (middleName != null && !middleName.trim().isEmpty()) {
+                        middleInitial = " " + middleName.substring(0, 1).toUpperCase() + ".";
+                    }
+
+                    return firstName + middleInitial + " " + lastName;
+                }
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving user full name:\n" + e.getMessage());
+        }
+
+        return "";
+    }
+
 }

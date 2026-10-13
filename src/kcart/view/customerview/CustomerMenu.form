@@ -429,7 +429,7 @@
                             <Column editable="false" title="Cust ID" type="java.lang.Object"/>
                             <Column editable="false" title="Last Name" type="java.lang.Object"/>
                             <Column editable="false" title="First Name" type="java.lang.Object"/>
-                            <Column editable="false" title="Middle Name" type="java.lang.Object"/>
+                            <Column editable="false" title="M.I." type="java.lang.Object"/>
                             <Column editable="false" title="Contact" type="java.lang.Object"/>
                             <Column editable="false" title="Email" type="java.lang.Object"/>
                             <Column editable="false" title="Address" type="java.lang.Object"/>

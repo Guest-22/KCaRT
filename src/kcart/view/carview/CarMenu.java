@@ -113,11 +113,11 @@ public class CarMenu extends javax.swing.JFrame {
                 carModel.addRow(row);
             }
 
-            // Hide car_id.
-            tblRecord.getColumnModel().getColumn(0).setMinWidth(0);
-            tblRecord.getColumnModel().getColumn(0).setMaxWidth(0);
-            tblRecord.getColumnModel().getColumn(0).setWidth(0);
-
+             // Hide plate_no.
+            tblRecord.getColumnModel().getColumn(1).setMinWidth(0);
+            tblRecord.getColumnModel().getColumn(1).setMaxWidth(0);
+            tblRecord.getColumnModel().getColumn(1).setWidth(0);
+            
             // Hide created_at.
             tblRecord.getColumnModel().getColumn(12).setMinWidth(0);
             tblRecord.getColumnModel().getColumn(12).setMaxWidth(0);
@@ -361,7 +361,7 @@ public class CarMenu extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Plate No.", "Brand", "Model", "Type", "Year", "Color", "Transmission", "Fuel", "Seat", "Daily Rate", "Status", "Created At"
+                "Car ID", "Plate No.", "Brand", "Model", "Type", "Year", "Color", "Transmission", "Fuel", "Seat", "Daily Rate", "Status", "Created At"
             }
         ) {
             boolean[] canEdit = new boolean [] {

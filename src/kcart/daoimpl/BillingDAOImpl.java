@@ -183,4 +183,48 @@ public class BillingDAOImpl implements BillingDAO {
 
         return null;
     }
+
+    // Get payment record via invoiceId.
+    @Override
+    public Billing getPaymentByInvoiceId(int invoiceId) {
+
+        String sql = "SELECT "
+                + "i." + COL_INVOICE_ID + ", "
+                + "p." + COL_PAYMENT_ID + ", "
+                + "p." + COL_PROCESSED_BY + ", "
+                + "p." + COL_PAY_METHOD + ", "
+                + "p." + COL_PAY_AMOUNT + ", "
+                + "p." + COL_PAY_DATE + " "
+                + "FROM " + TABLE_INVOICE + " i "
+                + "LEFT JOIN " + TABLE_PAYMENT + " p "
+                + "ON i." + COL_INVOICE_ID + " = p." + COL_PAYMENT_INVOICE_ID + " "
+                + "WHERE i." + COL_INVOICE_ID + " = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, invoiceId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+
+                if (rs.next()) {
+
+                    Billing billing = new Billing();
+
+                    billing.setInvoiceId(rs.getInt(COL_INVOICE_ID));
+                    billing.setPaymentId(rs.getInt(COL_PAYMENT_ID));
+                    billing.setProcessedBy(rs.getInt(COL_PROCESSED_BY));
+                    billing.setPayMethod(rs.getString(COL_PAY_METHOD));
+                    billing.setPayAmount(rs.getDouble(COL_PAY_AMOUNT));
+                    billing.setPaymentDate(rs.getTimestamp(COL_PAY_DATE));
+
+                    return billing;
+                }
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving billing payment details:\n" + e.getMessage());
+        }
+
+        return null;
+    }
 }

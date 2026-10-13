@@ -434,7 +434,7 @@
                         </Property>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="13" rowCount="4">
-                            <Column editable="false" title="ID" type="java.lang.Object"/>
+                            <Column editable="false" title="Car ID" type="java.lang.Object"/>
                             <Column editable="false" title="Plate No." type="java.lang.Object"/>
                             <Column editable="false" title="Brand" type="java.lang.Object"/>
                             <Column editable="false" title="Model" type="java.lang.Object"/>

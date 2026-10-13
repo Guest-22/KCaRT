@@ -93,11 +93,11 @@ public class RentalMenu extends javax.swing.JFrame {
             for (Rental r : rentals) {
                 Object[] row = {
                     r.getRentalId(),
-                    r.getCustomerId(), // hidden
+                    r.getCustomerId(),
                     r.getCustomerName(),
-                    r.getCarId(), // hidden
+                    r.getCarId(),
                     r.getCarInfo(),
-                    r.getProcessedBy(), // hidden
+                    r.getProcessedBy(),
                     r.getProcessedByName(),
                     (r.getStartDate() != null) ? r.getStartDate().toString() : "—",
                     (r.getExpectedReturnDate() != null) ? r.getExpectedReturnDate().toString() : "—",
@@ -121,12 +121,6 @@ public class RentalMenu extends javax.swing.JFrame {
             tblRecord.getColumnModel().getColumn(5).setMinWidth(0);
             tblRecord.getColumnModel().getColumn(5).setMaxWidth(0);
             tblRecord.getColumnModel().getColumn(5).setWidth(0);
-
-            // Hide created_at (col 10).
-            tblRecord.getColumnModel().getColumn(10).setMinWidth(0);
-            tblRecord.getColumnModel().getColumn(10).setMaxWidth(0);
-            tblRecord.getColumnModel().getColumn(10).setWidth(0);
-
         } catch (Exception e) {
             Message.error("Error loading rental table:\n" + e.getMessage());
         }

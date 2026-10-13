@@ -1,5 +1,6 @@
 package kcart.view.billingview;
 
+import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
 import kcart.util.SearchUtil;
 import kcart.util.SortUtil;
@@ -30,6 +31,7 @@ public class BillingMenu extends javax.swing.JFrame {
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         lblWelcome.setText("Welcome, " + ActiveSession.loggedInUsername);
         applyRoleRestrictions();
+        setDefaultTglSort();
 
         populateBillingRecord("");
     }
@@ -40,6 +42,16 @@ public class BillingMenu extends javax.swing.JFrame {
             btnReturn.setVisible(false);
             btnUser.setVisible(false);
         }
+    }
+
+    // Sets the default toggle button style.
+    private void setDefaultTglSort() {
+        tglSort.setFocusPainted(false);
+        tglSort.setContentAreaFilled(false);
+        tglSort.setBorderPainted(false);
+        tglSort.setOpaque(true);
+        tglSort.setBackground(Color.BLACK);
+        tglSort.setForeground(Color.WHITE);
     }
 
     private void populateBillingRecord(String keyword) {
@@ -90,11 +102,11 @@ public class BillingMenu extends javax.swing.JFrame {
                 billingModel.addRow(row);
             }
 
-            // Hide payment_date.
+            /* Hide payment_date.
             tblRecord.getColumnModel().getColumn(5).setMinWidth(0);
             tblRecord.getColumnModel().getColumn(5).setMaxWidth(0);
             tblRecord.getColumnModel().getColumn(5).setWidth(0);
-
+             */
         } catch (Exception e) {
             // Message.error("Error loading billing table:\n" + e.getMessage());
         }
@@ -559,11 +571,17 @@ public class BillingMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-
+        String keyword = txtSearch.getText().trim();
+        if (keyword.isEmpty()) {
+            Message.error("Please enter a keyword to search.");
+            return;
+        }
+        populateBillingRecord(keyword);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void cmbSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSortActionPerformed
-
+        String sortQuery = txtSearch.getText().trim();
+        populateBillingRecord(sortQuery);
     }//GEN-LAST:event_cmbSortActionPerformed
 
     private void tglSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglSortActionPerformed

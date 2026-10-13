@@ -9,4 +9,5 @@ public interface BillingDAO {
     boolean addPayment(Billing billing, int invoiceId);
     List<Billing> getAllBillings();
     Billing getInvoiceDetails(int invoiceId);
+     Billing getPaymentByInvoiceId(int invoiceId);
 }

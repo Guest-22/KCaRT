@@ -20,12 +20,12 @@ public class Billing {
     private double payAmount;
     private Timestamp paymentDate;
 
-    public Billing(){
-        
+    public Billing() {
+
     }
-    
+
     // Model for populating billing table.
-    public Billing(int invoiceId, int rentalId, String description, double invoiceAmount, 
+    public Billing(int invoiceId, int rentalId, String description, double invoiceAmount,
             String invoiceStatus, Timestamp paymentDate) {
         this.invoiceId = invoiceId;
         this.rentalId = rentalId;

@@ -9,4 +9,5 @@ public interface UserDAO {
     boolean addUser(User user);
     List<User> getAllUsers();
     boolean editUser(User user);
+    String getUserFullNameById(int userId);
 }

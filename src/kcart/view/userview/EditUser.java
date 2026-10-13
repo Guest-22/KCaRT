@@ -6,6 +6,7 @@ import kcart.model.User;
 import java.util.List;
 import kcart.util.Message;
 import kcart.util.PasswordHasher;
+import kcart.view.rentalview.AdditionalBilling;
 
 public class EditUser extends javax.swing.JFrame {
 
@@ -365,22 +366,30 @@ public class EditUser extends javax.swing.JFrame {
             if (txtFirstName.getText().trim().isEmpty()
                     || txtLastName.getText().trim().isEmpty()
                     || txtContact.getText().trim().isEmpty()
-                    || txtUsername.getText().trim().isEmpty()
-                    || txtPassword.getPassword().length == 0
-                    || txtConfirmPassword.getPassword().length == 0) {
+                    || txtUsername.getText().trim().isEmpty()) {
 
                 Message.error("Please fill in all required fields before editing.");
                 return;
             }
 
             // Get password values.
-            String password = String.valueOf(txtPassword.getPassword());
-            String confirmPassword = String.valueOf(txtConfirmPassword.getPassword());
+            String password = String.valueOf(txtPassword.getPassword()).trim();
+            String confirmPassword = String.valueOf(txtConfirmPassword.getPassword()).trim();
 
-            // Check if passwords match.
-            if (!password.equals(confirmPassword)) {
-                Message.error("Passwords do not match.");
-                return;
+            boolean changePassword = !password.isEmpty() || !confirmPassword.isEmpty();
+
+            // Check if passwords match or empty.
+            if (changePassword) {
+
+                if (password.isEmpty() || confirmPassword.isEmpty()) {
+                    Message.error("Please fill in both password fields.");
+                    return;
+                }
+
+                if (!password.equals(confirmPassword)) {
+                    Message.error("Passwords do not match.");
+                    return;
+                }
             }
 
             // Collect values.
@@ -393,9 +402,13 @@ public class EditUser extends javax.swing.JFrame {
             String status = cmbStatus.getSelectedItem().toString();
 
             // Hash password.
-            String hashedPassword = PasswordHasher.hashPassword(password);
+            String hashedPassword = null;
 
-            // Build User object with userId.
+            if (changePassword) {
+                hashedPassword = PasswordHasher.hashPassword(password);
+            }
+
+            // Build User object with userId as reference.
             User user = new User(
                     userId,
                     firstName,
@@ -424,7 +437,7 @@ public class EditUser extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     /**

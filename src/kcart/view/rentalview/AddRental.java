@@ -763,6 +763,10 @@ public class AddRental extends javax.swing.JFrame {
             boolean success = rentalDao.addRental(rental);
 
             if (success) {
+                // Update car status to Reserved
+                CarDAO carDao = new CarDAOImpl();
+                carDao.updateCarStatus(carId, "Reserved");
+
                 Message.show("Rental added successfully!", "Success");
                 this.dispose();
             } else {

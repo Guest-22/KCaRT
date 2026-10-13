@@ -93,7 +93,9 @@ public class CustomerMenu extends javax.swing.JFrame {
                     c.getCustomerId(),
                     c.getLastName(),
                     c.getFirstName(),
-                    c.getMiddleName(),
+                    (c.getMiddleName() != null && !c.getMiddleName().trim().isEmpty())
+                    ? c.getMiddleName().substring(0, 1).toUpperCase() + "."
+                    : "",
                     c.getContactNo(),
                     c.getEmail(),
                     c.getAddress(),
@@ -102,17 +104,6 @@ public class CustomerMenu extends javax.swing.JFrame {
                 };
                 customerModel.addRow(row);
             }
-
-            // Hide middle_name.
-            tblRecord.getColumnModel().getColumn(3).setMinWidth(0);
-            tblRecord.getColumnModel().getColumn(3).setMaxWidth(0);
-            tblRecord.getColumnModel().getColumn(3).setWidth(0);
-
-            // Hide created_at.
-            tblRecord.getColumnModel().getColumn(8).setMinWidth(0);
-            tblRecord.getColumnModel().getColumn(8).setMaxWidth(0);
-            tblRecord.getColumnModel().getColumn(8).setWidth(0);
-
         } catch (Exception e) {
             // Message.error("Error loading customer table:\n" + e.getMessage());
         }
@@ -333,7 +324,7 @@ public class CustomerMenu extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cust ID", "Last Name", "First Name", "Middle Name", "Contact", "Email", "Address", "Status", "Created At"
+                "Cust ID", "Last Name", "First Name", "M.I.", "Contact", "Email", "Address", "Status", "Created At"
             }
         ) {
             boolean[] canEdit = new boolean [] {

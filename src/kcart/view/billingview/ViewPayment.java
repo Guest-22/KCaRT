@@ -1,5 +1,11 @@
 package kcart.view.billingview;
 
+import kcart.dao.BillingDAO;
+import kcart.daoimpl.BillingDAOImpl;
+import kcart.model.Billing;
+import kcart.dao.UserDAO;
+import kcart.daoimpl.UserDAOImpl;
+
 public class ViewPayment extends javax.swing.JFrame {
 
     private int invoiceId;
@@ -13,13 +19,30 @@ public class ViewPayment extends javax.swing.JFrame {
 
         this.invoiceId = invoiceId;
         this.setLocationRelativeTo(null);
+        populatePaymentRecord();
     }
-    
-    private void populatePaymentRecord(){
-        
+
+    private void populatePaymentRecord() {
+        BillingDAO billingDAO = new BillingDAOImpl();
+        Billing billing = billingDAO.getPaymentByInvoiceId(invoiceId);
+
+        if (billing != null) {
+
+            lblPaymentId1.setText(String.valueOf(billing.getPaymentId()));
+            lblInvoiceId1.setText(String.valueOf(billing.getInvoiceId()));
+            lblMethod1.setText(billing.getPayMethod());
+            lblAmount1.setText(String.valueOf(billing.getPayAmount()));
+            UserDAO userDAO = new UserDAOImpl();
+
+            String fullName = userDAO.getUserFullNameById(
+                    billing.getProcessedBy()
+            );
+
+            lblProcessedBy1.setText(fullName);
+            lblCreatedAt1.setText(String.valueOf(billing.getPaymentDate()));
+
+        }
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,26 +61,27 @@ public class ViewPayment extends javax.swing.JFrame {
         lblInvoiceId = new javax.swing.JLabel();
         lblMethod = new javax.swing.JLabel();
         lblAmount = new javax.swing.JLabel();
-        lblStatus = new javax.swing.JLabel();
         lblProcessedBy = new javax.swing.JLabel();
         lblCreatedAt = new javax.swing.JLabel();
         lblPaymentId1 = new javax.swing.JLabel();
         lblInvoiceId1 = new javax.swing.JLabel();
         lblMethod1 = new javax.swing.JLabel();
         lblAmount1 = new javax.swing.JLabel();
-        lblStatus1 = new javax.swing.JLabel();
         lblProcessedBy1 = new javax.swing.JLabel();
-        lblCreatedBy1 = new javax.swing.JLabel();
+        lblCreatedAt1 = new javax.swing.JLabel();
         pnlContent3 = new javax.swing.JPanel();
         btnClose = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("KCaRT | Payment Details");
-        setMinimumSize(new java.awt.Dimension(410, 350));
+        setMaximumSize(new java.awt.Dimension(370, 330));
+        setMinimumSize(new java.awt.Dimension(370, 330));
+        setPreferredSize(new java.awt.Dimension(370, 360));
 
         pnlMain.setBackground(new java.awt.Color(0, 0, 0));
-        pnlMain.setMaximumSize(new java.awt.Dimension(410, 520));
-        pnlMain.setMinimumSize(new java.awt.Dimension(410, 520));
+        pnlMain.setMaximumSize(new java.awt.Dimension(370, 330));
+        pnlMain.setMinimumSize(new java.awt.Dimension(370, 330));
+        pnlMain.setPreferredSize(new java.awt.Dimension(370, 330));
 
         pnlContent1.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -76,9 +100,7 @@ public class ViewPayment extends javax.swing.JFrame {
         );
         pnlContent1Layout.setVerticalGroup(
             pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContent1Layout.createSequentialGroup()
-                .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(lblHeader, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
         pnlContent2.setBackground(new java.awt.Color(0, 0, 0));
@@ -102,11 +124,6 @@ public class ViewPayment extends javax.swing.JFrame {
         lblAmount.setForeground(new java.awt.Color(255, 255, 255));
         lblAmount.setText("Amount:");
         lblAmount.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        lblStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblStatus.setForeground(new java.awt.Color(255, 255, 255));
-        lblStatus.setText("Status:");
-        lblStatus.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblProcessedBy.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblProcessedBy.setForeground(new java.awt.Color(255, 255, 255));
@@ -134,17 +151,13 @@ public class ViewPayment extends javax.swing.JFrame {
         lblAmount1.setForeground(new java.awt.Color(255, 255, 255));
         lblAmount1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblStatus1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblStatus1.setForeground(new java.awt.Color(255, 255, 255));
-        lblStatus1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
         lblProcessedBy1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblProcessedBy1.setForeground(new java.awt.Color(255, 255, 255));
         lblProcessedBy1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        lblCreatedBy1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lblCreatedBy1.setForeground(new java.awt.Color(255, 255, 255));
-        lblCreatedBy1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblCreatedAt1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblCreatedAt1.setForeground(new java.awt.Color(255, 255, 255));
+        lblCreatedAt1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout pnlContent2Layout = new javax.swing.GroupLayout(pnlContent2);
         pnlContent2.setLayout(pnlContent2Layout);
@@ -157,18 +170,16 @@ public class ViewPayment extends javax.swing.JFrame {
                     .addComponent(lblInvoiceId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblMethod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblProcessedBy, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                    .addComponent(lblProcessedBy, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                     .addComponent(lblCreatedAt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(29, 29, 29)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPaymentId1, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                    .addComponent(lblPaymentId1, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                     .addComponent(lblInvoiceId1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblMethod1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblAmount1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblStatus1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblProcessedBy1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblCreatedBy1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblCreatedAt1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(47, 47, 47))
         );
         pnlContent2Layout.setVerticalGroup(
@@ -192,17 +203,13 @@ public class ViewPayment extends javax.swing.JFrame {
                     .addComponent(lblAmount1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblStatus1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProcessedBy, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProcessedBy1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlContent2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCreatedAt, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCreatedBy1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(lblCreatedAt1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlContent3.setBackground(new java.awt.Color(0, 0, 0));
@@ -233,40 +240,37 @@ public class ViewPayment extends javax.swing.JFrame {
             .addGroup(pnlContent3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlContent2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(3, 3, 3))
-            .addComponent(pnlContent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlContent3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlContent2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainLayout.createSequentialGroup()
-                .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnlContent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContent2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlContent2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlContent3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(64, 64, 64))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnlMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -316,7 +320,7 @@ public class ViewPayment extends javax.swing.JFrame {
     private javax.swing.JLabel lblAmount;
     private javax.swing.JLabel lblAmount1;
     private javax.swing.JLabel lblCreatedAt;
-    private javax.swing.JLabel lblCreatedBy1;
+    private javax.swing.JLabel lblCreatedAt1;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblInvoiceId;
     private javax.swing.JLabel lblInvoiceId1;
@@ -326,8 +330,6 @@ public class ViewPayment extends javax.swing.JFrame {
     private javax.swing.JLabel lblPaymentId1;
     private javax.swing.JLabel lblProcessedBy;
     private javax.swing.JLabel lblProcessedBy1;
-    private javax.swing.JLabel lblStatus;
-    private javax.swing.JLabel lblStatus1;
     private javax.swing.JPanel pnlContent1;
     private javax.swing.JPanel pnlContent2;
     private javax.swing.JPanel pnlContent3;

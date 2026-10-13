@@ -127,7 +127,7 @@ public class SearchUtil {
         return filtered;
     }
 
-    // Filter by keyword.
+    // Filter by billing table by keyword (invoice id, rental id, description, status).
     public static List<Billing> searchBillingsByKeyword(
             List<Billing> billings, String keyword) {
 

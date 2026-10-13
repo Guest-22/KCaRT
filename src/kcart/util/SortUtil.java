@@ -331,6 +331,5 @@ public class SortUtil {
             billings.set(maxIndex, billings.get(i));
             billings.set(i, temp);
         }
-
     }
 }

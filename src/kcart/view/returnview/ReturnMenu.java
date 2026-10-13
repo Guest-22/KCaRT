@@ -93,16 +93,10 @@ public class ReturnMenu extends javax.swing.JFrame {
                 returnModel.addRow(row);
             }
 
-            // Hidden cols.
+            // Hidden return id col.
             tblRecord.getColumnModel().getColumn(2).setMinWidth(0);
             tblRecord.getColumnModel().getColumn(2).setMaxWidth(0);
             tblRecord.getColumnModel().getColumn(2).setWidth(0);
-            
-            tblRecord.getColumnModel().getColumn(7).setMinWidth(0);
-            tblRecord.getColumnModel().getColumn(7).setMaxWidth(0);
-            tblRecord.getColumnModel().getColumn(7).setWidth(0);
-
-
         } catch (Exception e) {
             // Message.error("Error loading return table:\n" + e.getMessage());
         }
