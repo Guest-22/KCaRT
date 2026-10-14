@@ -97,5 +97,23 @@ public class ReturnDAOImpl implements ReturnDAO {
 
         return list;
     }
+    
+    // Retrieves the number of returns recorded today.
+    @Override
+    public int getTodaysReturnCount() {
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME + " "
+                + "WHERE DATE(" + COL_CREATED_AT + ") = CURDATE()";
 
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving today's return count:\n" + e.getMessage());
+        }
+
+        return 0;
+    }
 }

@@ -267,4 +267,24 @@ public class BillingDAOImpl implements BillingDAO {
 
         return 0.0;
     }
+
+    // Retrieves the total payments recorded today.
+    @Override
+    public double getTodaysPayment() {
+        String sql = "SELECT COALESCE(SUM(" + COL_PAY_AMOUNT + "), 0) "
+                + "FROM " + TABLE_PAYMENT + " "
+                + "WHERE DATE(" + COL_PAY_DATE + ") = CURDATE()";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+
+        } catch (SQLException e) {
+            Message.error("Error retrieving today's payments:\n" + e.getMessage());
+        }
+
+        return 0.0;
+    }
 }

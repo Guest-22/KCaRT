@@ -2,6 +2,7 @@ package kcart.view.dashboardview;
 
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import kcart.dao.BillingDAO;
 import kcart.dao.RentalDAO;
 import kcart.daoimpl.RentalDAOImpl;
 import kcart.model.Rental;
@@ -16,6 +17,11 @@ import kcart.view.rentalview.RentalMenu;
 import kcart.view.returnview.ReturnMenu;
 import kcart.view.billingview.BillingMenu;
 import kcart.view.userview.UserMenu;
+import kcart.dao.CarDAO;
+import kcart.dao.ReturnDAO;
+import kcart.daoimpl.BillingDAOImpl;
+import kcart.daoimpl.CarDAOImpl;
+import kcart.daoimpl.ReturnDAOImpl;
 
 public class StaffDashboard extends javax.swing.JFrame {
 
@@ -41,8 +47,33 @@ public class StaffDashboard extends javax.swing.JFrame {
         }
     }
 
+    // Populate the Staff Dashboard overview.
     private void populateOverview() {
+        CarDAO carDAO = new CarDAOImpl();
+        lblAvailableCarsCount.setText(
+                String.valueOf(carDAO.getAvailableCarCount())
+        );
 
+        RentalDAO rentalDAO = new RentalDAOImpl();
+        lblActiveRentalsCount.setText(
+                String.valueOf(rentalDAO.getActiveRentalCount())
+        );
+        lblPendingRentalsCount.setText(
+                String.valueOf(rentalDAO.getPendingRentalCount())
+        );
+        lblLateRentalsCount.setText(
+                String.valueOf(rentalDAO.getLateRentalCount())
+        );
+        
+        ReturnDAO returnDAO = new ReturnDAOImpl();
+        lblTodaysReturnCount.setText(
+                String.valueOf(returnDAO.getTodaysReturnCount())
+        );
+        
+        BillingDAO billingDAO = new BillingDAOImpl();
+        lblTodaysPaymentsCount.setText(
+                String.format("₱%,.2f", billingDAO.getTodaysPayment())
+        );
     }
 
     private void styleUpcomingPickupsAndDueReturns() {
